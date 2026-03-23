@@ -14,7 +14,7 @@
   "quotes": [],
   "homefront": [],
   "settings": {
-    "maintenance": false,
+    "maintenance": true,
     "maintMsg": "שווה לכם לחכות 10 דקות לשדרוג המערכת..",
     "zmanimConfig": {
       "alot": true,
@@ -38,5 +38,5 @@
     "ytUrl": "https://www.youtube.com/live/vkBaTewZ2ik?si=ArZW1ur6uACT-vtG",
     "ytMode": "video"
   },
-  "_updated": "2026-03-23T12:45:01.039Z"
+  "_updated": "2026-03-23T12:51:48.193Z"
 }
