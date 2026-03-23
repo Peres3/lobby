@@ -15,7 +15,7 @@
   "homefront": [],
   "settings": {
     "maintenance": true,
-    "maintMsg": ""
+    "maintMsg": "בעבודה"
   },
   "music": {},
   "sleep": {},
@@ -29,5 +29,5 @@
     "ytUrl": "https://www.youtube.com/live/vkBaTewZ2ik?si=ArZW1ur6uACT-vtG",
     "ytMode": "video"
   },
-  "_updated": "2026-03-23T12:05:39.989Z"
+  "_updated": "2026-03-23T12:05:45.562Z"
 }
