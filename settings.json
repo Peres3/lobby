@@ -1,0 +1,26 @@
+{
+  "announcements": [
+    {
+      "title": "בדיקה",
+      "body": "בדיקה\nחדש\n123",
+      "img": "",
+      "dateFrom": "2026-03-23",
+      "dateTo": "",
+      "timeFrom": "",
+      "timeTo": "",
+      "active": true
+    }
+  ],
+  "quotes": [],
+  "homefront": [],
+  "settings": {},
+  "music": {},
+  "sleep": {},
+  "emergency": {},
+  "design": {},
+  "building": {},
+  "gallery": [],
+  "content": {},
+  "widgets": {},
+  "_updated": "2026-03-23T11:23:20.956Z"
+}
