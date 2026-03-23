@@ -1,0 +1,49 @@
+{
+  "announcements": [],
+  "settings": {
+    "maintenance": false,
+    "maintMsg": "שווה לכם לחכות 10 דקות לשדרוג המערכת..",
+    "zmanimConfig": {
+      "alot": true,
+      "sunrise": true,
+      "sofKriat": false,
+      "chatzot": true,
+      "mincha": false,
+      "sunset": true,
+      "tzeit": true
+    },
+    "hideNews": true,
+    "hideTimes": false,
+    "weatherCity": "31.7318,34.7430",
+    "qrUrl": ""
+  },
+  "sleep": {
+    "manualOff": false,
+    "enabled": false,
+    "days": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "from": "23:00",
+    "to": "07:00"
+  },
+  "emergency": {},
+  "design": {
+    "gold": "#ffff00",
+    "bg": "#ffffff",
+    "text": "#ff0000"
+  },
+  "gallery": [],
+  "widgets": {
+    "ytShow": false,
+    "ytUrl": "https://www.youtube.com/live/vkBaTewZ2ik?si=ArZW1ur6uACT-vtG",
+    "ytMode": "video",
+    "galEnabled": false
+  },
+  "quotes": [],
+  "homefront": [],
+  "_updated": "2026-03-23T20:27:11.287Z"
+}
