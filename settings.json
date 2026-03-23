@@ -14,8 +14,8 @@
   "quotes": [],
   "homefront": [],
   "settings": {
-    "maintenance": true,
-    "maintMsg": "אני הולך לעשות לכם אחלה שדרוג. תחכו בסבלנות כ-10 דקות"
+    "maintenance": false,
+    "maintMsg": "בעבודה"
   },
   "music": {},
   "sleep": {},
@@ -29,5 +29,5 @@
     "ytUrl": "https://www.youtube.com/live/vkBaTewZ2ik?si=ArZW1ur6uACT-vtG",
     "ytMode": "video"
   },
-  "_updated": "2026-03-23T12:13:35.088Z"
+  "_updated": "2026-03-23T12:13:55.644Z"
 }
