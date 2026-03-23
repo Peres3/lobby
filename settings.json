@@ -1,5 +1,18 @@
 {
-  "announcements": [],
+  "announcements": [
+    {
+      "title": "חדש",
+      "body": "ישן",
+      "img": "",
+      "dateFrom": "2026-03-23",
+      "dateTo": "",
+      "timeFrom": "",
+      "timeTo": "",
+      "active": true
+    }
+  ],
+  "quotes": [],
+  "homefront": [],
   "settings": {
     "maintenance": false,
     "maintMsg": "שווה לכם לחכות 10 דקות לשדרוג המערכת..",
@@ -17,6 +30,7 @@
     "weatherCity": "31.7318,34.7430",
     "qrUrl": ""
   },
+  "music": {},
   "sleep": {
     "manualOff": false,
     "enabled": false,
@@ -36,14 +50,14 @@
     "bg": "#ffffff",
     "text": "#ff0000"
   },
+  "building": {},
   "gallery": [],
+  "content": {},
   "widgets": {
     "ytShow": false,
     "ytUrl": "https://www.youtube.com/live/vkBaTewZ2ik?si=ArZW1ur6uACT-vtG",
     "ytMode": "video",
     "galEnabled": false
   },
-  "quotes": [],
-  "homefront": [],
-  "_updated": "2026-03-23T20:27:11.287Z"
+  "_updated": "2026-03-23T20:33:51.724Z"
 }
