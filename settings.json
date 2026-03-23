@@ -52,7 +52,7 @@
   },
   "emergency": {},
   "design": {
-    "gold": "#1a6cf6",
+    "gold": "#ffff00",
     "bg": "#ffffff",
     "text": "#e8eeff"
   },
@@ -65,5 +65,5 @@
     "ytMode": "video",
     "galEnabled": false
   },
-  "_updated": "2026-03-23T15:16:00.854Z"
+  "_updated": "2026-03-23T15:16:22.985Z"
 }
