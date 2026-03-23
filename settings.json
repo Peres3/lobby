@@ -37,7 +37,19 @@
     }
   },
   "music": {},
-  "sleep": {},
+  "sleep": {
+    "manualOff": true,
+    "enabled": false,
+    "days": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "from": "23:00",
+    "to": "07:00"
+  },
   "emergency": {},
   "design": {},
   "building": {},
@@ -49,5 +61,5 @@
     "ytMode": "video",
     "galEnabled": false
   },
-  "_updated": "2026-03-23T15:15:02.677Z"
+  "_updated": "2026-03-23T15:15:08.724Z"
 }
