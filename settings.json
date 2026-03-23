@@ -15,7 +15,7 @@
   "homefront": [],
   "settings": {
     "maintenance": true,
-    "maintMsg": "בעבודה"
+    "maintMsg": "אני הולך לעשות לכם אחלה שדרוג. תחכו בסבלנות כ-10 דקות"
   },
   "music": {},
   "sleep": {},
@@ -25,9 +25,9 @@
   "gallery": [],
   "content": {},
   "widgets": {
-    "ytShow": false,
+    "ytShow": true,
     "ytUrl": "https://www.youtube.com/live/vkBaTewZ2ik?si=ArZW1ur6uACT-vtG",
     "ytMode": "video"
   },
-  "_updated": "2026-03-23T12:12:30.133Z"
+  "_updated": "2026-03-23T12:12:56.047Z"
 }
