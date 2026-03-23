@@ -22,9 +22,9 @@
   "gallery": [],
   "content": {},
   "widgets": {
-    "ytShow": false,
+    "ytShow": true,
     "ytUrl": "https://www.youtube.com/live/vkBaTewZ2ik?si=ArZW1ur6uACT-vtG",
     "ytMode": "video"
   },
-  "_updated": "2026-03-23T11:27:34.673Z"
+  "_updated": "2026-03-23T11:27:38.738Z"
 }
