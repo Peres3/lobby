@@ -51,7 +51,11 @@
     "to": "07:00"
   },
   "emergency": {},
-  "design": {},
+  "design": {
+    "gold": "#1a6cf6",
+    "bg": "#ffffff",
+    "text": "#e8eeff"
+  },
   "building": {},
   "gallery": [],
   "content": {},
@@ -61,5 +65,5 @@
     "ytMode": "video",
     "galEnabled": false
   },
-  "_updated": "2026-03-23T15:15:44.051Z"
+  "_updated": "2026-03-23T15:15:58.799Z"
 }
