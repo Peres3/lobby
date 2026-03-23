@@ -24,7 +24,7 @@ html,body{width:100vw;height:100vh;overflow:hidden;background:var(--bg);font-fam
 .hdr{
   height:11vh;
   background:linear-gradient(120deg,#005B8E 0%,#0277BD 40%,#0288D1 70%,#039BE5 100%);
-  display:flex;flex-direction:row-reverse;
+  display:flex;flex-direction:row;
   align-items:center;padding:0 1.4vw;gap:0;
   box-shadow:0 3px 16px rgba(1,87,155,.4);position:relative;
 }
@@ -58,7 +58,8 @@ html,body{width:100vw;height:100vh;overflow:hidden;background:var(--bg);font-fam
 /* ─── LAYOUT ──────────────────────────────────────────── */
 .screen{height:calc(100vh - 11vh - 3vh);display:grid;
   grid-template-columns:22vw 1fr 30vw;
-  gap:.65vw;padding:.65vw .65vw 0;direction:ltr;}
+  gap:.65vw;padding:.65vw .65vw 0;direction:ltr;
+  align-items:stretch;}
 
 /* ─── CARD ─────────────────────────────────────────────── */
 .card{background:var(--W);border-radius:var(--r);box-shadow:var(--sh);
@@ -74,9 +75,9 @@ html,body{width:100vw;height:100vh;overflow:hidden;background:var(--bg);font-fam
 .cb{padding:.45vh .65vw;flex:1;overflow:hidden;min-height:0;display:flex;flex-direction:column;}
 
 /* ─── LEFT: info ─────────────────────────────────────── */
-.lcol{display:flex;flex-direction:column;gap:.55vh;direction:rtl;}
+.lcol{display:flex;flex-direction:column;gap:.55vh;direction:rtl;height:100%;}
 .lcol .card{flex-shrink:0;}
-.lcol .card.grow{flex:1;}
+.lcol .card.grow{flex:1 !important;min-height:0;flex-shrink:1 !important;}
 
 /* Weather */
 .w-top{display:flex;align-items:center;gap:.5vw;margin-bottom:.25vh;}
@@ -253,12 +254,12 @@ html,body{width:100vw;height:100vh;overflow:hidden;background:var(--bg);font-fam
 
 <!-- HEADER -->
 <div class="hdr">
-  <!-- LEFT: status (leftmost in LTR grid) -->
-  <div class="h-left" style="direction:rtl;order:3;">
-    <div class="conn-p"><div class="cdot" id="cdot"></div><span class="ctxt" id="ctxt">מתחבר...</span></div>
+  <!-- RTL: first=rightmost. bldg RIGHT, clock CENTER, status LEFT -->
+  <div class="h-bldg">
+    <div class="h-name" id="bldgN">שמעון פרס 3</div>
+    <div class="h-addr">קריית מלאכי · לובי ראשי</div>
   </div>
-  <!-- CENTER: clock + dates -->
-  <div class="h-clock" style="order:2;">
+  <div class="h-clock">
     <div class="clk" id="clk">00<span class="colon">:</span>00<span class="colon">:</span>00</div>
     <div class="h-dates">
       <span class="h-d" id="dayN">--</span>
@@ -268,10 +269,8 @@ html,body{width:100vw;height:100vh;overflow:hidden;background:var(--bg);font-fam
       <span class="h-heb" id="dateH">--</span>
     </div>
   </div>
-  <!-- RIGHT: building name (rightmost = order:1 in RTL) -->
-  <div class="h-bldg" style="order:1;">
-    <div class="h-name" id="bldgN">שמעון פרס 3</div>
-    <div class="h-addr">קריית מלאכי · לובי ראשי</div>
+  <div class="h-left">
+    <div class="conn-p"><div class="cdot" id="cdot"></div><span class="ctxt" id="ctxt">מתחבר...</span></div>
   </div>
 </div>
 
