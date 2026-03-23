@@ -15,7 +15,7 @@
   "homefront": [],
   "settings": {
     "maintenance": true,
-    "maintMsg": "בעבודה",
+    "maintMsg": "שווה לכם לחכות 10 דקות לשדרוג המערכת..",
     "zmanimConfig": {
       "alot": true,
       "sunrise": true,
@@ -38,5 +38,5 @@
     "ytUrl": "https://www.youtube.com/live/vkBaTewZ2ik?si=ArZW1ur6uACT-vtG",
     "ytMode": "video"
   },
-  "_updated": "2026-03-23T12:22:45.606Z"
+  "_updated": "2026-03-23T12:22:59.565Z"
 }
