@@ -8,7 +8,7 @@
       "dateTo": "",
       "timeFrom": "",
       "timeTo": "",
-      "active": true
+      "active": false
     }
   ],
   "quotes": [],
@@ -38,5 +38,5 @@
     "ytUrl": "https://www.youtube.com/live/vkBaTewZ2ik?si=ArZW1ur6uACT-vtG",
     "ytMode": "video"
   },
-  "_updated": "2026-03-23T15:12:03.292Z"
+  "_updated": "2026-03-23T15:12:55.615Z"
 }
