@@ -491,6 +491,7 @@ document.querySelectorAll('.tab').forEach(t=>{
     document.querySelectorAll('.page').forEach(x=>x.classList.remove('act'));
     t.classList.add('act');
     $('page-'+t.dataset.page).classList.add('act');
+    if(t.dataset.page==='settings'){loadTokenInfo();loadSettingsUI();}
   });
 });
 
@@ -806,10 +807,20 @@ function resetDesign(){$('colorMain').value='#1565C0';$('colorBg').value='#EEF3F
 
 // ═══ TOKEN ═══
 function loadTokenInfo(){
-  const t=getToken();const el=$('tokenInfo');if(!el)return;
-  if(t)el.textContent='Token נוכחי: '+t.slice(0,8)+'········'+t.slice(-4)+' ('+t.length+' תווים)';
-  else el.textContent='לא הוגדר Token';
-  const inp=$('ghToken');if(inp)inp.placeholder=t?'ghp_xxxxxxxx (קיים)':'ghp_xxxxxxxxxxxx';
+  const t=getToken();
+  const el=$('tokenInfo');
+  if(el){
+    if(t)el.textContent='Token נוכחי: '+t.slice(0,8)+'········'+t.slice(-4)+' ('+t.length+' תווים)';
+    else el.textContent='לא הוגדר Token';
+  }
+  const inp=$('ghToken');
+  if(inp){
+    inp.placeholder=t?'ghp_xxxxxxxx (קיים — '+t.length+' תווים)':'ghp_xxxxxxxxxxxx';
+    if(t) inp.value=''; // Clear to show placeholder with existing token info
+  }
+  // Also update connection status
+  if(t){const d=$('cdot'),c=$('ctxt');if(d&&!d.classList.contains('ok')){if(c)c.textContent='יש Token';}}
+  else{const d=$('cdot'),c=$('ctxt');if(d)d.className='cdot';if(c)c.textContent='אין Token';}
 }
 function saveToken(){const t=$('ghToken').value.trim();if(!t){showToast('הכנס Token','error');return;}localStorage.setItem('sp3_ghToken',t);loadTokenInfo();showToast('✅ Token נשמר');checkConn();}
 async function testConn(){showToast('🔗 בודק חיבור...');await checkConn();}
