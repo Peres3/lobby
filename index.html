@@ -385,9 +385,7 @@ setTimeout(applyS,100);setInterval(applyS,15000);
 
 // ANNOUNCEMENTS
 // ANNOUNCEMENTS_START
-const ANNOUNCEMENTS=[
-  {"title":"חדש","body":"ישן","img":"","dateFrom":"2026-03-23","dateTo":"","timeFrom":"","timeTo":"","active":true}
-];
+const ANNOUNCEMENTS=[];
 // ANNOUNCEMENTS_END
 let _aI=[],_aX=0,_aTm=null;
 function pd(s){if(!s)return null;if(s.includes('-')){const[y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d);}const p=s.split('/');if(p.length<3)return null;const yr=p[2].length===2?2000+parseInt(p[2]):parseInt(p[2]);return new Date(yr,parseInt(p[1])-1,parseInt(p[0]));}
