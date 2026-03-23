@@ -21,6 +21,10 @@
   "building": {},
   "gallery": [],
   "content": {},
-  "widgets": {},
-  "_updated": "2026-03-23T11:23:20.956Z"
+  "widgets": {
+    "ytShow": false,
+    "ytUrl": "https://www.youtube.com/live/vkBaTewZ2ik?si=ArZW1ur6uACT-vtG",
+    "ytMode": "video"
+  },
+  "_updated": "2026-03-23T11:27:08.909Z"
 }
