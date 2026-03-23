@@ -54,7 +54,7 @@
   "design": {
     "gold": "#ffff00",
     "bg": "#ffffff",
-    "text": "#ff0000"
+    "text": "#000000"
   },
   "building": {},
   "gallery": [],
@@ -65,5 +65,5 @@
     "ytMode": "video",
     "galEnabled": false
   },
-  "_updated": "2026-03-23T15:16:26.476Z"
+  "_updated": "2026-03-23T15:16:49.043Z"
 }
