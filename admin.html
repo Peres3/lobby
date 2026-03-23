@@ -515,7 +515,7 @@ async function publishAll(){
   try{
     // 1. Build settings.json
     const all={
-      announcements:sg(K.a)||[],settings:sg(K.s)||{},sleep:sg(K.sl)||{},
+      announcements:announcements||sg(K.a)||[],settings:sg(K.s)||{},sleep:sg(K.sl)||{},
       emergency:sg(K.e)||{},design:sg(K.d)||{},gallery:sg(K.g)||[],
       widgets:sg(K.w)||{},quotes:sg(K.q)||[],homefront:sg(K.hf)||[],
       _updated:new Date().toISOString()
@@ -605,14 +605,17 @@ function addAnn(publish=false){
   });
   ss(K.a,announcements);renderAnnList();markDirty();
   clearAnnForm();showToast('✅ הודעה נוספה');
-  if(publish)publishAll();
+  if(publish){
+    // Small delay to ensure localStorage is written
+    setTimeout(()=>publishAll(),100);
+  }
 }
 function clearAnnForm(){
   ['aTitle','aBody','aFrom','aTo','aTimeFrom','aTimeTo'].forEach(id=>{const el=$(id);if(el)el.value='';});
   $('aActive').checked=true;clearAnnImg();
 }
-function toggleAnn(i){announcements[i].active=!announcements[i].active;ss(K.a,announcements);renderAnnList();markDirty();}
-function deleteAnn(i){announcements.splice(i,1);ss(K.a,announcements);renderAnnList();markDirty();showToast('🗑️ נמחק');}
+function toggleAnn(i){announcements[i].active=!announcements[i].active;ss(K.a,announcements);renderAnnList();markDirty();showToast('שינוי נשמר — לחץ פרסם');}
+function deleteAnn(i){announcements.splice(i,1);ss(K.a,announcements);renderAnnList();markDirty();showToast('🗑️ נמחק — לחץ פרסם לעדכון המסך');}
 function editAnn(i){
   const a=announcements[i];
   $('aTitle').value=a.title||'';$('aBody').value=a.body||'';
