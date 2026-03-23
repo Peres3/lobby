@@ -8,13 +8,13 @@
       "dateTo": "",
       "timeFrom": "",
       "timeTo": "",
-      "active": false
+      "active": true
     }
   ],
   "quotes": [],
   "homefront": [],
   "settings": {
-    "maintenance": false,
+    "maintenance": true,
     "maintMsg": "שווה לכם לחכות 10 דקות לשדרוג המערכת..",
     "zmanimConfig": {
       "alot": true,
@@ -38,5 +38,5 @@
     "ytUrl": "https://www.youtube.com/live/vkBaTewZ2ik?si=ArZW1ur6uACT-vtG",
     "ytMode": "video"
   },
-  "_updated": "2026-03-23T12:35:46.503Z"
+  "_updated": "2026-03-23T12:35:59.355Z"
 }
