@@ -15,7 +15,16 @@
   "homefront": [],
   "settings": {
     "maintenance": false,
-    "maintMsg": "בעבודה"
+    "maintMsg": "בעבודה",
+    "zmanimConfig": {
+      "alot": true,
+      "sunrise": true,
+      "sofKriat": false,
+      "chatzot": true,
+      "mincha": false,
+      "sunset": true,
+      "tzeit": true
+    }
   },
   "music": {},
   "sleep": {},
@@ -29,5 +38,5 @@
     "ytUrl": "https://www.youtube.com/live/vkBaTewZ2ik?si=ArZW1ur6uACT-vtG",
     "ytMode": "video"
   },
-  "_updated": "2026-03-23T12:13:55.644Z"
+  "_updated": "2026-03-23T12:17:26.789Z"
 }
