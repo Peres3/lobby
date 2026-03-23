@@ -8,7 +8,7 @@
       "dateTo": "",
       "timeFrom": "",
       "timeTo": "",
-      "active": false
+      "active": true
     },
     {
       "title": "תמונה שנוצרה דרך AI",
@@ -48,5 +48,5 @@
     "ytUrl": "https://www.youtube.com/live/vkBaTewZ2ik?si=ArZW1ur6uACT-vtG",
     "ytMode": "video"
   },
-  "_updated": "2026-03-23T15:10:58.366Z"
+  "_updated": "2026-03-23T15:11:30.067Z"
 }
