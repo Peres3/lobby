@@ -392,7 +392,7 @@ function pd(s){if(!s)return null;if(s.includes('-')){const[y,m,d]=s.split('-').m
 function loadAnns(){
   const now=new Date(),td=new Date(now);td.setHours(0,0,0,0);
   const nm=now.getHours()*60+now.getMinutes();
-  const src=sg(K.a)||[];const list=src.length?src:ANNOUNCEMENTS;
+  const src=sg(K.a);const list=src!==null?src:ANNOUNCEMENTS;
   const act=list.filter(a=>{
     if(!a.active)return false;
     if(a.dateFrom){const d=pd(a.dateFrom);if(d&&td<d)return false;}
