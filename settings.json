@@ -15,7 +15,7 @@
   "homefront": [],
   "settings": {
     "maintenance": true,
-    "maintMsg": "בעבודה",
+    "maintMsg": "שווה לכם לחכות 10 דקות בשביל השדרוג הבא",
     "zmanimConfig": {
       "alot": true,
       "sunrise": true,
@@ -38,5 +38,5 @@
     "ytUrl": "https://www.youtube.com/live/vkBaTewZ2ik?si=ArZW1ur6uACT-vtG",
     "ytMode": "video"
   },
-  "_updated": "2026-03-23T12:18:18.126Z"
+  "_updated": "2026-03-23T12:18:36.240Z"
 }
