@@ -34,7 +34,11 @@
       "mincha": false,
       "sunset": true,
       "tzeit": true
-    }
+    },
+    "hideNews": true,
+    "hideTimes": false,
+    "weatherCity": "31.7318,34.7430",
+    "qrUrl": ""
   },
   "music": {},
   "sleep": {
@@ -65,5 +69,5 @@
     "ytMode": "video",
     "galEnabled": false
   },
-  "_updated": "2026-03-23T15:17:38.634Z"
+  "_updated": "2026-03-23T15:17:46.606Z"
 }
