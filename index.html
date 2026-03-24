@@ -130,10 +130,22 @@ html,body{width:100vw;height:100vh;overflow:hidden;background:var(--bg);font-fam
 
 .gal-card{flex:1;min-height:0;}
 .gal-frame{flex:1;min-height:0;position:relative;background:#111;overflow:hidden;}
-.gal-frame img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+.gal-frame img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#111;
   transition:opacity .9s ease,transform 7s ease;}
 .gal-frame img.on{opacity:1;transform:scale(1.04);}
 .gal-frame img.off{opacity:0;transform:scale(1);}
+.gal-frame img.slide-in-left{opacity:1;animation:slideInL .8s ease forwards;}
+.gal-frame img.slide-out-right{opacity:0;animation:slideOutR .8s ease forwards;}
+.gal-frame img.slide-in-right{opacity:1;animation:slideInR .8s ease forwards;}
+.gal-frame img.slide-out-left{opacity:0;animation:slideOutL .8s ease forwards;}
+.gal-frame img.zoom-in{opacity:1;animation:zoomIn .8s ease forwards;}
+.gal-frame img.zoom-out{opacity:0;animation:zoomOut .8s ease forwards;}
+@keyframes slideInL{from{transform:translateX(-100%)}to{transform:translateX(0)}}
+@keyframes slideOutR{from{transform:translateX(0)}to{transform:translateX(100%)}}
+@keyframes slideInR{from{transform:translateX(100%)}to{transform:translateX(0)}}
+@keyframes slideOutL{from{transform:translateX(0)}to{transform:translateX(-100%)}}
+@keyframes zoomIn{from{transform:scale(0.5);opacity:0}to{transform:scale(1);opacity:1}}
+@keyframes zoomOut{from{transform:scale(1);opacity:1}to{transform:scale(1.5);opacity:0}}
 .gal-ov{position:absolute;bottom:0;left:0;right:0;
   background:linear-gradient(transparent,rgba(0,0,0,.5));padding:.45vh .65vw;}
 .gal-cap{font-size:clamp(.4rem,.52vw,.58rem);color:rgba(255,255,255,.78);}
@@ -385,9 +397,7 @@ setTimeout(applyS,100);setInterval(applyS,15000);
 
 // ANNOUNCEMENTS
 // ANNOUNCEMENTS_START
-const ANNOUNCEMENTS=[
-  {"title":"חדש","body":"ישן\nהיום","img":"","dateFrom":"2026-03-23","dateTo":"2026-03-26","timeFrom":"","timeTo":"","active":false}
-];
+const ANNOUNCEMENTS=[];
 // ANNOUNCEMENTS_END
 let _aI=[],_aX=0,_aTm=null;
 function pd(s){if(!s)return null;if(s.includes('-')){const[y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d);}const p=s.split('/');if(p.length<3)return null;const yr=p[2].length===2?2000+parseInt(p[2]):parseInt(p[2]);return new Date(yr,parseInt(p[1])-1,parseInt(p[0]));}
@@ -443,10 +453,24 @@ function startGal(){
   ov2.innerHTML='<div class="gal-cap" id="gCap"></div><div class="gal-dots" id="gDots"></div>';
   frame.appendChild(ov2);updGD();
   if(_gTm)clearInterval(_gTm);
-  if(imgs.length>1)_gTm=setInterval(()=>{
-    const ii=frame.querySelectorAll('img');if(!ii.length)return;
-    ii[_gX].className='off';_gX=(_gX+1)%ii.length;ii[_gX].className='on';updGD();
-  },5000);
+  if(imgs.length>1){
+    const w=sg(K.w)||{};
+    const interval=(w.galInterval||5)*1000;
+    const trans=w.galTrans||'fade';
+    // Apply transition class
+    frame.querySelectorAll('img').forEach(img=>{img.dataset.trans=trans;});
+    _gTm=setInterval(()=>{
+      const ii=frame.querySelectorAll('img');if(!ii.length)return;
+      const cur=ii[_gX];
+      const nxt=(_gX+1)%ii.length;
+      // Apply transition
+      if(trans==='slide-right'){cur.className='slide-out-right';ii[nxt].className='slide-in-left';}
+      else if(trans==='slide-left'){cur.className='slide-out-left';ii[nxt].className='slide-in-right';}
+      else if(trans==='zoom'){cur.className='zoom-out';ii[nxt].className='zoom-in';}
+      else{cur.className='off';ii[nxt].className='on';} // fade (default)
+      _gX=nxt;updGD();
+    },interval);
+  }
 }
 function updGD(){const d=$('gDots');if(!d)return;d.innerHTML=_gImgs.map((_,i)=>`<div class="gal-dot${i===_gX?' a':''}"></div>`).join('');}
 
