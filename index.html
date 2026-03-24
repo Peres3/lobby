@@ -385,9 +385,7 @@ setTimeout(applyS,100);setInterval(applyS,15000);
 
 // ANNOUNCEMENTS
 // ANNOUNCEMENTS_START
-const ANNOUNCEMENTS=[
-  {"title":"חדש","body":"ישן\nהיום","img":"","dateFrom":"2026-03-23","dateTo":"2026-03-26","timeFrom":"","timeTo":"","active":false}
-];
+const ANNOUNCEMENTS=[];
 // ANNOUNCEMENTS_END
 let _aI=[],_aX=0,_aTm=null;
 function pd(s){if(!s)return null;if(s.includes('-')){const[y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d);}const p=s.split('/');if(p.length<3)return null;const yr=p[2].length===2?2000+parseInt(p[2]):parseInt(p[2]);return new Date(yr,parseInt(p[1])-1,parseInt(p[0]));}
@@ -455,9 +453,12 @@ function updateSlot(){
   const w=sg(K.w)||{},hfI=sg(K.hf)||[];
   const slot=$('rslot');if(!slot)return;
   if(w.ytShow&&w.ytUrl&&w.ytMode!=='music'){
-    const yt=w.ytUrl.match(/[?&]list=([^&]+)/),vid=w.ytUrl.match(/(?:v=|youtu\.be\/)([^?&]+)/);
+    const yt=w.ytUrl.match(/[?&]list=([^&]+)/);
+    const vid=w.ytUrl.match(/(?:v=|youtu\.be\/)([^?&]+)/);
+    const live=w.ytUrl.match(/youtube\.com\/live\/([^?&]+)/);
+    const vidId=vid?vid[1]:live?live[1]:null;
     const src=yt?`https://www.youtube.com/embed/videoseries?list=${yt[1]}&autoplay=1&mute=0&controls=1&rel=0&loop=1&enablejsapi=1`
-      :vid?`https://www.youtube.com/embed/${vid[1]}?autoplay=1&mute=0&controls=1&rel=0&loop=1&playlist=${vid[1]}&enablejsapi=1`:w.ytUrl;
+      :vidId?`https://www.youtube.com/embed/${vidId}?autoplay=1&mute=0&controls=1&rel=0&loop=1&playlist=${vidId}&enablejsapi=1`:w.ytUrl;
     if(!slot.querySelector('iframe')||slot.querySelector('iframe').src!==src)
       slot.innerHTML=`<div class="yt-wrap"><div class="yt-h"><span class="yt-ht">▶ YouTube</span><span class="yt-badge">📺 סרטון</span></div><div class="yt-fw"><iframe src="${src}" allow="autoplay;encrypted-media" allowfullscreen></iframe></div></div>`;
   } else if(w.ytShow&&w.ytUrl&&w.ytMode==='music'){
@@ -470,7 +471,11 @@ function updateSlot(){
 }
 let _mf=null;
 function startMusicBg(url){if(_mf)return;const yt=url.match(/[?&]list=([^&]+)/),vid=url.match(/(?:v=|youtu\.be\/)([^?&]+)/);
-  const src=yt?`https://www.youtube.com/embed/videoseries?list=${yt[1]}&autoplay=1&loop=1&controls=0&enablejsapi=1`:vid?`https://www.youtube.com/embed/${vid[1]}?autoplay=1&loop=1&controls=0&enablejsapi=1&playlist=${vid[1]}`:null;
+  const ytM=url.match(/[?&]list=([^&]+)/);
+  const vidM=url.match(/(?:v=|youtu\.be\/)([^?&]+)/);
+  const liveM=url.match(/youtube\.com\/live\/([^?&]+)/);
+  const vidMId=vidM?vidM[1]:liveM?liveM[1]:null;
+  const src=ytM?`https://www.youtube.com/embed/videoseries?list=${ytM[1]}&autoplay=1&loop=1&controls=0&enablejsapi=1`:vidMId?`https://www.youtube.com/embed/${vidMId}?autoplay=1&loop=1&controls=0&enablejsapi=1&playlist=${vidMId}`:null;
   if(!src)return;_mf=document.createElement('iframe');_mf.style.cssText='position:fixed;top:-9999px;left:-9999px;width:200px;height:200px;';_mf.allow='autoplay;encrypted-media';_mf.src=src;document.body.appendChild(_mf);}
 
 // OVERLAYS
