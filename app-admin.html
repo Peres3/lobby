@@ -329,45 +329,38 @@ html,body{min-height:100%;background:var(--bg);font-family:'Heebo',sans-serif;co
 const CFG_FILE='app-config.json';
 const DEFAULT_MASTER='admin123';
 
-// Config object (loaded from GitHub)
 let cfg={
-  masterPassword: DEFAULT_MASTER,
-  ghUser:'peres3',
-  ghRepo:'lobby',
-  ghToken:'',
-  users:[
-    {id:1,name:'מנהל',username:'admin',password:'1234',role:'admin'}
-  ],
+  masterPassword:DEFAULT_MASTER,
+  ghUser:'peres3',ghRepo:'lobby',ghToken:'',
+  users:[{id:1,name:'מנהל',username:'admin',password:'1234',role:'admin'}],
   tabs:[
     {id:1,name:'לובי',icon:'📺',url:'https://peres3.github.io/lobby/'},
     {id:2,name:'ניהול',icon:'⚙️',url:'https://peres3.github.io/lobby/admin.html'},
     {id:3,name:'Debug',icon:'🔧',url:''}
   ]
 };
-
 let _ghUser='peres3',_ghRepo='lobby',_ghToken='';
-let _loggedIn=false;
+let _loggedIn=false,_saving=false;
 
-// ── GITHUB HELPERS ──
-function getUser(){return document.getElementById('cfgUser')&&document.getElementById('cfgUser').value.trim()||cfg.ghUser||_ghUser||'peres3';}
-function getRepo(){return document.getElementById('cfgRepo')&&document.getElementById('cfgRepo').value.trim()||cfg.ghRepo||_ghRepo||'lobby';}
-function getTok(){return document.getElementById('ghToken')&&document.getElementById('ghToken').value.trim()||_ghToken||cfg.ghToken||'';}
-function ghUrl(path,branch){return `https://api.github.com/repos/${getUser()}/${getRepo()}/contents/${path}`+(branch?`?ref=${branch}`:'')}
-async function ghGet(path){
-  return fetch(ghUrl(path),{headers:{Authorization:'token '+(_ghToken||cfg.ghToken),'Content-Type':'application/json'}});
-}
-function b64enc(s){const bytes=new TextEncoder().encode(s);let bin='';bytes.forEach(b=>bin+=String.fromCharCode(b));return btoa(bin);}
+// ── GITHUB ──
+function getUser(){return (document.getElementById('cfgUser')&&document.getElementById('cfgUser').value.trim())||cfg.ghUser||_ghUser||'peres3';}
+function getRepo(){return (document.getElementById('cfgRepo')&&document.getElementById('cfgRepo').value.trim())||cfg.ghRepo||_ghRepo||'lobby';}
+function getTok(){return (document.getElementById('ghToken')&&document.getElementById('ghToken').value.trim())||_ghToken||cfg.ghToken||'';}
+
 async function ghFetch2(path,opts={}){
   const tok=getTok();
   const url=`https://api.github.com/repos/${getUser()}/${getRepo()}/contents/${path}`;
   return fetch(url,{...opts,headers:{Authorization:'token '+tok,'Content-Type':'application/json',...(opts.headers||{})}});
 }
+
+function b64enc(s){const bytes=new TextEncoder().encode(s);let bin='';bytes.forEach(b=>bin+=String.fromCharCode(b));return btoa(bin);}
+
 async function ghPut(path,content,maxRetries=3){
   for(let i=0;i<maxRetries;i++){
     const shaR=await ghFetch2(path);
     let sha=null;
     console.log('ghPut GET',path,shaR.status);
-    if(shaR.ok){const d=await shaR.json();sha=d.sha;console.log('SHA:',sha&&sha.substring(0,8));}
+    if(shaR.ok){const d=await shaR.json();sha=d.sha;}
     else if(shaR.status!==404){throw new Error('GET failed: '+shaR.status);}
     const body={message:'update '+new Date().toISOString(),content:b64enc(content)};
     if(sha)body.sha=sha;
@@ -376,41 +369,229 @@ async function ghPut(path,content,maxRetries=3){
     if(r.ok)return r;
     if(r.status===409){console.log('409 retry',i+1);await new Promise(x=>setTimeout(x,400));continue;}
     const e=await r.json().catch(()=>({}));
-    throw new Error((e.message||r.status)+' path='+path);
+    throw new Error((e.message||r.status)+' ('+path+')');
   }
-  throw new Error('failed after '+maxRetries+' retries');
+  throw new Error('נכשל אחרי '+maxRetries+' ניסיונות');
 }
 
-let _saving=false;
-async function saveAll(){
-  if(_saving){console.log('saveAll already running, skip');return;}
-  _saving=true;
-  // Collect settings values FIRST
-  const tokVal=document.getElementById('ghToken').value.trim();
-  const userVal=document.getElementById('cfgUser').value.trim()||_ghUser;
-  const repoVal=document.getElementById('cfgRepo').value.trim()||_ghRepo;
-  cfg.ghToken=tokVal;
-  cfg.ghUser=userVal;
-  cfg.ghRepo=repoVal;
-  _ghToken=tokVal;
-  console.log('saveAll: token=',tokVal?tokVal.substring(0,8)+'...':'EMPTY','user=',userVal,'repo=',repoVal);
+// ── LOGIN ──
+async function doMasterLogin(){
+  const pwd=document.getElementById('masterPwd').value;
+  const err=document.getElementById('loginErr');
+  err.textContent='⏳ מתחבר...';
+  // Try to load config from GitHub
+  try{
+    const r=await fetch(`https://raw.githubusercontent.com/${_ghUser}/${_ghRepo}/main/${CFG_FILE}?t=`+Date.now());
+    if(r.ok){const data=await r.json();Object.assign(cfg,data);_ghToken=cfg.ghToken||'';}
+  }catch(e){}
+  if(pwd===cfg.masterPassword||pwd===DEFAULT_MASTER){
+    _loggedIn=true;
+    document.getElementById('loginWrap').style.display='none';
+    document.getElementById('mainApp').style.display='block';
+    loadUI();
+  } else {
+    err.textContent='❌ סיסמה שגויה';
+    document.getElementById('masterPwd').value='';
+    const card=document.querySelector('.login-card');
+    card.style.animation='shake .4s ease';
+    setTimeout(()=>{card.style.animation='';err.textContent='';},3000);
+  }
+}
 
+// ── UI ──
+function loadUI(){
+  renderUsers();renderTabs();
+  document.getElementById('ghToken').value=cfg.ghToken||'';
+  document.getElementById('cfgUser').value=cfg.ghUser||_ghUser;
+  document.getElementById('cfgRepo').value=cfg.ghRepo||_ghRepo;
+}
+
+function showPage(name){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tnav').forEach(b=>b.classList.remove('active'));
+  document.getElementById('page-'+name).classList.add('active');
+  const idx={users:0,tabs:1,settings:2}[name]||0;
+  document.querySelectorAll('.tnav')[idx].classList.add('active');
+}
+
+// ── USERS ──
+function renderUsers(){
+  const el=document.getElementById('usersList');
+  if(!cfg.users||!cfg.users.length){el.innerHTML='<div style="color:var(--tx3);font-size:.8rem;text-align:center;padding:16px;">אין משתמשים</div>';return;}
+  el.innerHTML=cfg.users.map(u=>`
+    <div class="user-item">
+      <div class="user-avatar">${(u.name||u.username||'?')[0]}</div>
+      <div class="user-info">
+        <div class="user-name">${u.name||u.username}</div>
+        <div class="user-role">@${u.username} · ${u.role==='admin'?'מנהל':'משתמש'}</div>
+      </div>
+      <div class="user-actions">
+        <button class="icon-btn" onclick="editUser(${u.id})">✏️</button>
+        <button class="icon-btn red" onclick="deleteUser(${u.id})">🗑️</button>
+      </div>
+    </div>`).join('');
+}
+
+function addUser(){
+  const name=document.getElementById('newUsername').value.trim();
+  const pwd=document.getElementById('newPassword').value;
+  const role=document.getElementById('newRole').value;
+  if(!name||!pwd){showToast('❌ מלא שם משתמש וסיסמה','err');return;}
+  if(cfg.users.find(u=>u.username===name)){showToast('❌ שם משתמש כבר קיים','err');return;}
+  cfg.users.push({id:Date.now(),name,username:name,password:pwd,role});
+  renderUsers();
+  document.getElementById('newUsername').value='';
+  document.getElementById('newPassword').value='';
+  showToast('✅ משתמש נוסף');markDirty();
+}
+
+function deleteUser(id){
+  if(!confirm('למחוק משתמש?'))return;
+  cfg.users=cfg.users.filter(u=>u.id!==id);
+  renderUsers();markDirty();showToast('🗑️ נמחק');
+}
+
+function editUser(id){
+  const u=cfg.users.find(x=>x.id===id);if(!u)return;
+  openModal(`
+    <div class="modal-title">✏️ עריכת משתמש <button class="modal-close" onclick="closeModal()">✕</button></div>
+    <div class="flbl">שם תצוגה</div>
+    <input class="fi" id="euName" value="${u.name||''}" style="direction:rtl;margin-bottom:10px;">
+    <div class="flbl">שם משתמש</div>
+    <input class="fi" id="euUser" value="${u.username||''}" style="direction:ltr;margin-bottom:10px;">
+    <div class="flbl">סיסמה חדשה (ריק = לא שנה)</div>
+    <input class="fi" id="euPwd" type="password" placeholder="סיסמה חדשה" style="margin-bottom:10px;">
+    <div class="flbl">תפקיד</div>
+    <select class="fi" id="euRole" style="direction:rtl;margin-bottom:16px;">
+      <option value="user"${u.role==='user'?' selected':''}>משתמש רגיל</option>
+      <option value="admin"${u.role==='admin'?' selected':''}>מנהל</option>
+    </select>
+    <button class="btn" onclick="saveEditUser(${id})">💾 שמור</button>
+  `);
+}
+function saveEditUser(id){
+  const u=cfg.users.find(x=>x.id===id);if(!u)return;
+  u.name=document.getElementById('euName').value.trim()||u.name;
+  u.username=document.getElementById('euUser').value.trim()||u.username;
+  const pwd=document.getElementById('euPwd').value;if(pwd)u.password=pwd;
+  u.role=document.getElementById('euRole').value;
+  closeModal();renderUsers();markDirty();showToast('✅ עודכן');
+}
+
+// ── TABS ──
+function renderTabs(){
+  const el=document.getElementById('tabsList');
+  if(!cfg.tabs||!cfg.tabs.length){el.innerHTML='<div style="color:var(--tx3);font-size:.8rem;text-align:center;padding:16px;">אין כרטיסיות</div>';return;}
+  el.innerHTML=cfg.tabs.map((t,i)=>`
+    <div class="tab-item" draggable="true" data-id="${t.id}" ondragstart="dragStart(event,${i})" ondragover="dragOver(event)" ondrop="drop(event,${i})">
+      <span class="tab-drag">⠿</span>
+      <div class="tab-ico-preview">${t.icon||'📄'}</div>
+      <div class="tab-info">
+        <div class="tab-name">${t.name}</div>
+        <div class="tab-url">${t.url||'—'}</div>
+      </div>
+      <div class="user-actions">
+        <button class="icon-btn" onclick="editTab(${t.id})">✏️</button>
+        <button class="icon-btn red" onclick="deleteTab(${t.id})">🗑️</button>
+      </div>
+    </div>`).join('');
+}
+
+let _dragFrom=null;
+function dragStart(e,i){_dragFrom=i;}
+function dragOver(e){e.preventDefault();}
+function drop(e,i){
+  e.preventDefault();if(_dragFrom===null||_dragFrom===i)return;
+  const moved=cfg.tabs.splice(_dragFrom,1)[0];cfg.tabs.splice(i,0,moved);
+  _dragFrom=null;renderTabs();markDirty();
+}
+
+function addTab(){
+  const name=document.getElementById('newTabName').value.trim();
+  const icon=document.getElementById('newTabIcon').value.trim()||'📄';
+  const url=document.getElementById('newTabUrl').value.trim();
+  if(!name){showToast('❌ מלא שם כרטיסייה','err');return;}
+  cfg.tabs.push({id:Date.now(),name,icon,url});
+  renderTabs();
+  document.getElementById('newTabName').value='';
+  document.getElementById('newTabIcon').value='';
+  document.getElementById('newTabUrl').value='';
+  showToast('✅ כרטיסייה נוספה');markDirty();
+}
+
+function deleteTab(id){
+  if(!confirm('למחוק כרטיסייה?'))return;
+  cfg.tabs=cfg.tabs.filter(t=>t.id!==id);
+  renderTabs();markDirty();showToast('🗑️ נמחק');
+}
+
+function editTab(id){
+  const t=cfg.tabs.find(x=>x.id===id);if(!t)return;
+  openModal(`
+    <div class="modal-title">✏️ עריכת כרטיסייה <button class="modal-close" onclick="closeModal()">✕</button></div>
+    <div class="flbl">שם</div>
+    <input class="fi" id="etName" value="${t.name}" style="direction:rtl;margin-bottom:10px;">
+    <div class="flbl">אייקון</div>
+    <input class="fi" id="etIcon" value="${t.icon||''}" style="text-align:center;font-size:1.3rem;margin-bottom:10px;">
+    <div class="flbl">URL</div>
+    <input class="fi" id="etUrl" value="${t.url||''}" style="direction:ltr;margin-bottom:16px;" placeholder="https://...">
+    <button class="btn" onclick="saveEditTab(${id})">💾 שמור</button>
+  `);
+}
+function saveEditTab(id){
+  const t=cfg.tabs.find(x=>x.id===id);if(!t)return;
+  t.name=document.getElementById('etName').value.trim()||t.name;
+  t.icon=document.getElementById('etIcon').value.trim()||t.icon;
+  t.url=document.getElementById('etUrl').value.trim();
+  closeModal();renderTabs();markDirty();showToast('✅ עודכן');
+}
+
+// ── SETTINGS ──
+async function testToken(){
+  const tok=document.getElementById('ghToken').value.trim();
+  if(!tok){showToast('❌ הכנס token','err');return;}
+  showToast('⏳ בודק...');
+  try{
+    const r=await fetch(`https://api.github.com/repos/${getUser()}/${getRepo()}`,{headers:{Authorization:'token '+tok}});
+    if(r.ok)showToast('✅ Token תקין!','ok');
+    else showToast('❌ Token לא תקין ('+r.status+')','err');
+  }catch(e){showToast('❌ '+e.message,'err');}
+}
+
+function changeMasterPwd(){
+  const p1=document.getElementById('newMasterPwd').value;
+  const p2=document.getElementById('newMasterPwd2').value;
+  if(!p1){showToast('❌ הכנס סיסמה','err');return;}
+  if(p1!==p2){showToast('❌ סיסמאות לא תואמות','err');return;}
+  cfg.masterPassword=p1;
+  document.getElementById('newMasterPwd').value='';
+  document.getElementById('newMasterPwd2').value='';
+  showToast('✅ סיסמה עודכנה — שמור הכל');markDirty();
+}
+
+// ── SAVE ──
+let _dirty=false;
+function markDirty(){_dirty=true;document.getElementById('saveBtn').textContent='💾 שמור הכל *';}
+
+async function saveAll(){
+  if(_saving){return;}
+  _saving=true;
+  cfg.ghToken=document.getElementById('ghToken').value.trim();
+  cfg.ghUser=document.getElementById('cfgUser').value.trim()||_ghUser;
+  cfg.ghRepo=document.getElementById('cfgRepo').value.trim()||_ghRepo;
+  _ghToken=cfg.ghToken;
   const btn=document.getElementById('saveBtn');
   btn.textContent='⏳ שומר...';btn.classList.add('saving');
   const statusDiv=document.getElementById('saveStatusDiv');
-
   try{
-    const json=JSON.stringify(cfg,null,2);
-    await ghPut(CFG_FILE,json);
-    // If we get here, ghPut succeeded (it throws on error)
+    await ghPut(CFG_FILE,JSON.stringify(cfg,null,2));
     btn.textContent='✅ נשמר';
     statusDiv.innerHTML='<div class="save-status ok">✅ app-config.json נשמר בהצלחה</div>';
     _dirty=false;
     setTimeout(()=>{btn.textContent='💾 שמור הכל';btn.classList.remove('saving');_saving=false;},2000);
     showToast('✅ נשמר ב-GitHub!','ok');
   }catch(e){
-    btn.textContent='❌ שגיאה';
-    btn.classList.remove('saving');
+    btn.textContent='❌ שגיאה';btn.classList.remove('saving');
     statusDiv.innerHTML='<div class="save-status err">❌ '+e.message+'</div>';
     showToast('❌ '+e.message,'err');
     _saving=false;
@@ -418,7 +599,7 @@ async function saveAll(){
 }
 
 // ── MODAL ──
-function openModal(html){const m=document.getElementById('modal');document.getElementById('modalBox').innerHTML=html;m.classList.add('open');}
+function openModal(html){document.getElementById('modalBox').innerHTML=html;document.getElementById('modal').classList.add('open');}
 function closeModal(){document.getElementById('modal').classList.remove('open');}
 
 // ── TOAST ──
