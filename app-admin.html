@@ -363,10 +363,11 @@ async function ghPut(path,content,retries=3){
     let sha=undefined;
     try{
       const rGet=await fetch(url,{headers:{Authorization:'token '+tok}});
-      console.log('ghPut GET status:',rGet.status,'url:',url);
-      if(rGet.ok){const d=await rGet.json();sha=d.sha;console.log('ghPut SHA:',sha);}
-      else console.log('ghPut GET failed:',rGet.status);
-    }catch(e){console.log('ghPut GET error:',e.message);}
+      console.log('ghPut GET status:',rGet.status);
+      if(rGet.status===200){const d=await rGet.json();sha=d.sha;console.log('ghPut SHA:',sha);}
+      else if(rGet.status===404){sha=undefined;console.log('ghPut: file does not exist, will create');}
+      else{console.log('ghPut GET unexpected:',rGet.status);sha=undefined;}
+    }catch(e){console.log('ghPut GET error:',e.message);sha=undefined;}
     const bytes=new TextEncoder().encode(content);
     let b='';for(let j=0;j<bytes.length;j++)b+=String.fromCharCode(bytes[j]);
     const b64=btoa(b);
