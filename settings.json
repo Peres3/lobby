@@ -1,5 +1,16 @@
 {
-  "announcements": [],
+  "announcements": [
+    {
+      "title": "חדש",
+      "body": "ישן\nהיום",
+      "img": "",
+      "dateFrom": "2026-03-23",
+      "dateTo": "2026-03-26",
+      "timeFrom": "",
+      "timeTo": "",
+      "active": false
+    }
+  ],
   "settings": {
     "maintenance": false,
     "maintMsg": "שווה לכם לחכות 10 דקות לשדרוג המערכת..",
@@ -45,5 +56,5 @@
   },
   "quotes": [],
   "homefront": [],
-  "_updated": "2026-03-24T06:04:06.042Z"
+  "_updated": "2026-03-24T06:04:58.289Z"
 }
