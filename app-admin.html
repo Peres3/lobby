@@ -401,23 +401,17 @@ async function saveAll(){
 
   try{
     const json=JSON.stringify(cfg,null,2);
-    const r=await ghPut(CFG_FILE,json);
-    if(r.ok){
-      btn.textContent='✅ נשמר';
-      statusDiv.innerHTML='<div class="save-status ok">✅ app-config.json נשמר בהצלחה</div>';
-      _dirty=false;
-      setTimeout(()=>{btn.textContent='💾 שמור הכל';btn.classList.remove('saving');_saving=false;},2000);
-      showToast('✅ נשמר ב-GitHub!','ok');
-    } else {
-      const txt=await r.text();
-      btn.textContent='❌ שגיאה';
-      statusDiv.innerHTML=`<div class="save-status err">❌ שגיאה ${r.status} — בדוק token</div>`;
-      setTimeout(()=>{btn.textContent='💾 שמור הכל';btn.classList.remove('saving');},2000);
-      showToast('❌ שגיאה '+r.status,'err');
-    }
+    await ghPut(CFG_FILE,json);
+    // If we get here, ghPut succeeded (it throws on error)
+    btn.textContent='✅ נשמר';
+    statusDiv.innerHTML='<div class="save-status ok">✅ app-config.json נשמר בהצלחה</div>';
+    _dirty=false;
+    setTimeout(()=>{btn.textContent='💾 שמור הכל';btn.classList.remove('saving');_saving=false;},2000);
+    showToast('✅ נשמר ב-GitHub!','ok');
   }catch(e){
     btn.textContent='❌ שגיאה';
     btn.classList.remove('saving');
+    statusDiv.innerHTML='<div class="save-status err">❌ '+e.message+'</div>';
     showToast('❌ '+e.message,'err');
     _saving=false;
   }
