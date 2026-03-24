@@ -853,10 +853,10 @@ async function syncFromGitHub(){
 }
 
 // ═══ INIT ═══
-function init(){
+async function init(){
   loadAnnsUI();loadGalUI();loadYTUI();loadEmergUI();loadSleepUI();loadDesignUI();loadSettingsUI();loadTokenInfo();
-  checkConn();
-  if(getToken())syncFromGitHub();
+  await checkConn();
+  if(getToken())await syncFromGitHub();
 }
 init();
 </script>
