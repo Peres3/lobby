@@ -42,12 +42,12 @@
   },
   "gallery": "_gallery.json",
   "widgets": {
-    "ytShow": true,
+    "ytShow": false,
     "ytUrl": "https://www.youtube.com/live/vkBaTewZ2ik?si=ArZW1ur6uACT-vtG",
     "ytMode": "video",
     "galEnabled": false
   },
   "quotes": [],
   "homefront": [],
-  "_updated": "2026-03-24T16:37:01.750Z"
+  "_updated": "2026-03-24T16:42:44.793Z"
 }
