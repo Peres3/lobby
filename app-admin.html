@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<meta name="theme-color" content="#4A148C">
+<title>ניהול אפליקציה</title>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+:root{
+  --P:#6A1B9A;--P2:#7B1FA2;--P3:#4A148C;
+  --B:#1565C0;--G:#2e7d32;--R:#c62828;
+  --bg:#F3E5F5;--card:#fff;--tx:#1a1030;--tx2:#4a3560;--tx3:#9e8aaa;
+  --sh:0 2px 12px rgba(106,27,154,.12);--r:12px;
+  --safe-top:env(safe-area-inset-top,0px);
+  --safe-bot:env(safe-area-inset-bottom,0px);
+}
+html,body{min-height:100%;font-family:'Heebo',sans-serif;color:var(--tx);background:var(--bg);}
+
+/* LOGIN */
+#loginWrap{display:none;min-height:100vh;align-items:center;justify-content:center;flex-direction:column;padding:20px;background:linear-gradient(145deg,#EDE7F6,#D1C4E9);}
+#loginWrap.show{display:flex;}
+.lg-logo{width:72px;height:72px;border-radius:20px;background:linear-gradient(135deg,var(--P),var(--P3));display:flex;align-items:center;justify-content:center;font-size:2rem;margin-bottom:14px;box-shadow:0 6px 24px rgba(74,20,140,.35);}
+.lg-title{font-size:1.25rem;font-weight:800;color:var(--P3);margin-bottom:2px;}
+.lg-sub{font-size:.75rem;color:var(--tx3);margin-bottom:24px;}
+.lg-card{width:100%;max-width:340px;background:#fff;border-radius:18px;padding:22px 20px;box-shadow:var(--sh);}
+.lbl{font-size:.72rem;color:var(--tx2);font-weight:700;margin-bottom:4px;}
+.inp{width:100%;padding:11px 13px;border:2px solid #e0d4f0;border-radius:9px;font-size:.9rem;font-family:'Heebo',sans-serif;direction:ltr;outline:none;background:#faf7fd;transition:border-color .2s;margin-bottom:12px;}
+.inp:focus{border-color:var(--P);}
+.btn{width:100%;padding:12px;border:none;border-radius:9px;background:linear-gradient(135deg,var(--P),var(--P3));color:#fff;font-size:.9rem;font-weight:700;font-family:'Heebo',sans-serif;cursor:pointer;transition:opacity .15s;}
+.btn:active{opacity:.85;}
+.btn.blue{background:linear-gradient(135deg,var(--B),#0D47A1);}
+.btn.green{background:linear-gradient(135deg,var(--G),#1b5e20);}
+.btn.red{background:linear-gradient(135deg,var(--R),#b71c1c);}
+.btn.sm{width:auto;padding:7px 14px;font-size:.75rem;}
+.btn.ghost{background:none;border:2px solid var(--P);color:var(--P);}
+.err-msg{color:var(--R);font-size:.72rem;text-align:center;margin-top:6px;min-height:16px;}
+
+/* MAIN */
+#mainWrap{display:none;}
+#mainWrap.show{display:block;}
+
+/* TOP BAR */
+.topbar{position:sticky;top:0;z-index:100;background:linear-gradient(135deg,var(--P3),var(--P));padding:calc(10px + var(--safe-top)) 16px 10px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 10px rgba(74,20,140,.3);}
+.topbar-title{font-size:.95rem;font-weight:800;color:#fff;}
+.topbar-sub{font-size:.6rem;color:rgba(255,255,255,.6);}
+#saveBtn{padding:7px 16px;border:1.5px solid rgba(255,255,255,.4);border-radius:16px;background:rgba(255,255,255,.15);color:#fff;font-size:.75rem;font-weight:700;font-family:'Heebo',sans-serif;cursor:pointer;transition:background .15s;}
+#saveBtn:active{background:rgba(255,255,255,.25);}
+#saveBtn:disabled{opacity:.5;cursor:not-allowed;}
+
+/* TABS */
+.tabs-nav{display:flex;background:#fff;border-bottom:2px solid #E1BEE7;position:sticky;top:calc(48px + var(--safe-top));z-index:99;overflow-x:auto;scrollbar-width:none;}
+.tabs-nav::-webkit-scrollbar{display:none;}
+.tab-nav-btn{flex-shrink:0;padding:10px 16px;border:none;background:none;font-family:'Heebo',sans-serif;font-size:.75rem;font-weight:600;color:var(--tx3);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;white-space:nowrap;transition:color .15s;}
+.tab-nav-btn.active{color:var(--P);border-bottom-color:var(--P);}
+
+/* PAGES */
+.page{display:none;padding:14px;}
+.page.active{display:block;}
+.sec-title{font-size:.68rem;font-weight:700;color:var(--tx3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;padding-right:2px;}
+.card{background:#fff;border-radius:var(--r);padding:14px;box-shadow:var(--sh);margin-bottom:12px;}
+
+/* LIST ITEMS */
+.list-item{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid #f5eef8;}
+.list-item:last-child{border:none;}
+.avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--P),var(--P3));display:flex;align-items:center;justify-content:center;color:#fff;font-size:.95rem;font-weight:700;flex-shrink:0;}
+.avatar.blue{background:linear-gradient(135deg,var(--B),#0D47A1);}
+.item-info{flex:1;min-width:0;}
+.item-name{font-size:.82rem;font-weight:700;}
+.item-sub{font-size:.65rem;color:var(--tx3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.item-actions{display:flex;gap:5px;}
+.icon-btn{width:30px;height:30px;border:none;border-radius:7px;background:#f3e5f5;color:var(--P);cursor:pointer;font-size:.8rem;display:flex;align-items:center;justify-content:center;}
+.icon-btn.red{background:#ffebee;color:var(--R);}
+.icon-btn:active{opacity:.7;}
+
+/* ADD FORM */
+.add-form{background:#faf7fd;border-radius:9px;padding:12px;border:1.5px dashed #D1C4E9;}
+.form-row{display:flex;gap:7px;margin-bottom:8px;}
+.form-row .inp{margin-bottom:0;}
+
+/* MODAL */
+#modal{position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.45);display:none;align-items:flex-end;justify-content:center;}
+#modal.open{display:flex;}
+.modal-box{width:100%;max-width:480px;background:#fff;border-radius:18px 18px 0 0;padding:20px;max-height:80vh;overflow-y:auto;animation:slideUp .25s ease;}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.modal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.modal-title{font-size:.9rem;font-weight:800;}
+.modal-close{background:none;border:none;font-size:1.1rem;cursor:pointer;color:var(--tx3);padding:4px;}
+
+/* STATUS */
+.status-bar{display:flex;align-items:center;gap:6px;padding:8px 12px;border-radius:8px;font-size:.72rem;font-weight:600;margin-bottom:10px;}
+.status-bar.ok{background:#E8F5E9;color:#2e7d32;}
+.status-bar.err{background:#FFEBEE;color:#c62828;}
+.status-bar.info{background:#E3F2FD;color:#1565C0;}
+
+/* TOAST */
+#toast{position:fixed;bottom:calc(16px + var(--safe-bot));left:50%;transform:translateX(-50%) translateY(20px);background:#323232;color:#fff;padding:9px 18px;border-radius:18px;font-size:.78rem;font-weight:600;z-index:99999;opacity:0;transition:opacity .25s,transform .25s;pointer-events:none;white-space:nowrap;}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+#toast.ok{background:#2e7d32;}
+#toast.err{background:#c62828;}
+
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="loginWrap" class="show">
+  <div class="lg-logo">🛡️</div>
+  <div class="lg-title">ניהול אפליקציה</div>
+  <div class="lg-sub">שמעון פרס 3</div>
+  <div class="lg-card">
+    <div class="lbl">סיסמת מנהל</div>
+    <input class="inp" type="password" id="masterPwd" placeholder="סיסמה" onkeydown="if(event.key==='Enter')login()">
+    <button class="btn" onclick="login()">כניסה</button>
+    <div class="err-msg" id="loginErr"></div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div id="mainWrap">
+  <div class="topbar">
+    <div>
+      <div class="topbar-title">🛡️ ניהול אפליקציה</div>
+      <div class="topbar-sub" id="topSub">שמעון פרס 3</div>
+    </div>
+    <button id="saveBtn" onclick="saveToGitHub()">💾 שמור</button>
+  </div>
+
+  <div class="tabs-nav">
+    <button class="tab-nav-btn active" onclick="showPage('users',this)">👥 משתמשים</button>
+    <button class="tab-nav-btn" onclick="showPage('tabs',this)">📑 כרטיסיות</button>
+    <button class="tab-nav-btn" onclick="showPage('settings',this)">⚙️ הגדרות</button>
+  </div>
+
+  <!-- USERS -->
+  <div class="page active" id="page-users">
+    <div class="sec-title">משתמשים קיימים</div>
+    <div class="card" id="usersList"><div style="color:var(--tx3);text-align:center;padding:12px;font-size:.8rem;">טוען...</div></div>
+    <div class="sec-title">הוסף משתמש</div>
+    <div class="card">
+      <div class="add-form">
+        <div class="form-row">
+          <input class="inp" id="nu_name" placeholder="שם תצוגה" style="direction:rtl;">
+          <input class="inp" id="nu_user" placeholder="שם משתמש" style="direction:rtl;">
+        </div>
+        <div class="form-row">
+          <input class="inp" id="nu_pwd" type="password" placeholder="סיסמה">
+          <select class="inp" id="nu_role" style="direction:rtl;">
+            <option value="user">משתמש</option>
+            <option value="admin">מנהל</option>
+          </select>
+        </div>
+        <button class="btn green" onclick="addUser()" style="margin-top:4px;">➕ הוסף וש מור</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TABS -->
+  <div class="page" id="page-tabs">
+    <div class="sec-title">כרטיסיות קיימות</div>
+    <div class="card" id="tabsList"></div>
+    <div class="sec-title">הוסף כרטיסייה</div>
+    <div class="card">
+      <div class="add-form">
+        <div class="form-row">
+          <input class="inp" id="nt_icon" placeholder="🌐" style="text-align:center;max-width:60px;">
+          <input class="inp" id="nt_name" placeholder="שם כרטיסייה" style="direction:rtl;">
+        </div>
+        <input class="inp" id="nt_url" placeholder="https://..." style="direction:ltr;margin-bottom:8px;">
+        <button class="btn blue" onclick="addTab()" style="margin-top:4px;">➕ הוסף ושמור</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SETTINGS -->
+  <div class="page" id="page-settings">
+    <div class="sec-title">🔑 GitHub Token</div>
+    <div class="card">
+      <div class="lbl">Token (נשמר רק במכשיר זה)</div>
+      <input class="inp" id="s_token" placeholder="ghp_..." style="direction:ltr;margin-bottom:8px;">
+      <button class="btn ghost sm" onclick="testToken()" style="margin-bottom:8px;">🔍 בדוק</button>
+      <div id="tokenStatus"></div>
+    </div>
+    <div class="sec-title">🔐 שנה סיסמת מנהל</div>
+    <div class="card">
+      <input class="inp" id="s_pwd1" type="password" placeholder="סיסמה חדשה">
+      <input class="inp" id="s_pwd2" type="password" placeholder="אשר סיסמה">
+      <button class="btn" onclick="changePwd()">שנה סיסמה ושמור</button>
+    </div>
+    <div class="sec-title">📡 Repository</div>
+    <div class="card">
+      <div class="lbl">GitHub User</div>
+      <input class="inp" id="s_user" placeholder="Peres3" style="direction:ltr;margin-bottom:8px;">
+      <div class="lbl">Repo</div>
+      <input class="inp" id="s_repo" placeholder="lobby" style="direction:ltr;margin-bottom:8px;">
+      <button class="btn" onclick="saveToGitHub()">💾 שמור הכל</button>
+      <div id="saveStatus" style="margin-top:8px;"></div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div id="modal" onclick="if(event.target===this)closeModal()">
+  <div class="modal-box" id="modalBox"></div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+'use strict';
+
+// ═══════════════════════════════════════
+// CONFIG
+// ═══════════════════════════════════════
+const CFG_FILE = 'app-config.json';
+const MASTER_PWD_DEFAULT = 'admin123';
+
+// This is our data - loaded from GitHub on login
+let DATA = {
+  masterPassword: MASTER_PWD_DEFAULT,
+  ghUser: 'Peres3',
+  ghRepo: 'lobby',
+  users: [
+    { id: 1, name: 'מנהל', username: 'admin', password: '1234', role: 'admin' }
+  ],
+  tabs: [
+    { id: 1, name: 'לובי', icon: '📺', url: 'https://Peres3.github.io/lobby/' },
+    { id: 2, name: 'ניהול', icon: '⚙️', url: 'https://Peres3.github.io/lobby/admin.html' },
+    { id: 3, name: 'Debug', icon: '🔧', url: '' }
+  ]
+};
+
+// Token stored ONLY in localStorage - never in GitHub
+function getToken() {
+  return localStorage.getItem('sp3_app_token') || '';
+}
+function saveToken(tok) {
+  if (tok) {
+    localStorage.setItem('sp3_app_token', tok);
+    localStorage.setItem('sp3_token', tok); // also for lobby admin
+  }
+}
+
+// ═══════════════════════════════════════
+// GITHUB API
+// ═══════════════════════════════════════
+function ghApiUrl(path) {
+  const u = (document.getElementById('s_user') && document.getElementById('s_user').value.trim()) || DATA.ghUser;
+  const r = (document.getElementById('s_repo') && document.getElementById('s_repo').value.trim()) || DATA.ghRepo;
+  return `https://api.github.com/repos/${u}/${r}/contents/${path}`;
+}
+
+async function ghLoad(path) {
+  const url = ghApiUrl(path);
+  const tok = getToken();
+  const res = await fetch(url, {
+    cache: 'no-store',
+    headers: {
+      'Accept': 'application/vnd.github.v3+json',
+      ...(tok ? { 'Authorization': 'token ' + tok } : {})
+    }
+  });
+  return res;
+}
+
+async function ghSave(path, content) {
+  const url = ghApiUrl(path);
+  const tok = getToken();
+  if (!tok) throw new Error('אין token — הכנס token בהגדרות');
+
+  // Get current SHA
+  let sha = null;
+  const getRes = await fetch(url, {
+    cache: 'no-store',
+    headers: { 'Authorization': 'token ' + tok, 'Accept': 'application/vnd.github.v3+json' }
+  });
+  if (getRes.ok) {
+    const meta = await getRes.json();
+    sha = meta.sha;
+  } else if (getRes.status !== 404) {
+    throw new Error('שגיאה בקריאת SHA: ' + getRes.status);
+  }
+
+  // Encode content
+  const bytes = new TextEncoder().encode(content);
+  let bin = '';
+  bytes.forEach(b => bin += String.fromCharCode(b));
+  const b64 = btoa(bin);
+
+  // PUT
+  const body = { message: 'update ' + path + ' ' + new Date().toISOString(), content: b64 };
+  if (sha) body.sha = sha;
+
+  const putRes = await fetch(url, {
+    method: 'PUT',
+    headers: {
+      'Authorization': 'token ' + tok,
+      'Content-Type': 'application/json',
+      'Accept': 'application/vnd.github.v3+json'
+    },
+    body: JSON.stringify(body)
+  });
+
+  if (!putRes.ok) {
+    const err = await putRes.json().catch(() => ({}));
+    throw new Error((err.message || putRes.status) + '');
+  }
+  return putRes;
+}
+
+async function loadFromGitHub() {
+  const res = await ghLoad(CFG_FILE);
+  if (res.ok) {
+    const meta = await res.json();
+    const dec = atob(meta.content.replace(/\n/g, ''));
+    const bytes = new Uint8Array(dec.length);
+    for (let i = 0; i < dec.length; i++) bytes[i] = dec.charCodeAt(i);
+    const loaded = JSON.parse(new TextDecoder('utf-8').decode(bytes));
+    // Merge into DATA (keep token out)
+    DATA.masterPassword = loaded.masterPassword || DATA.masterPassword;
+    DATA.ghUser = loaded.ghUser || DATA.ghUser;
+    DATA.ghRepo = loaded.ghRepo || DATA.ghRepo;
+    DATA.users = loaded.users || DATA.users;
+    DATA.tabs = loaded.tabs || DATA.tabs;
+    console.log('✅ Loaded from GitHub: users=' + DATA.users.length + ' tabs=' + DATA.tabs.length);
+    return true;
+  }
+  console.log('ℹ️ No config on GitHub yet (status ' + res.status + ')');
+  return false;
+}
+
+// ═══════════════════════════════════════
+// LOGIN
+// ═══════════════════════════════════════
+async function login() {
+  const pwd = document.getElementById('masterPwd').value;
+  const err = document.getElementById('loginErr');
+  err.textContent = '⏳ מתחבר...';
+
+  // Restore token
+  const tok = getToken();
+  if (tok) {
+    const su = document.getElementById('s_user');
+    const sr = document.getElementById('s_repo');
+    // will be set after mainWrap shown
+  }
+
+  // Load from GitHub
+  await loadFromGitHub();
+
+  if (pwd === DATA.masterPassword || pwd === MASTER_PWD_DEFAULT) {
+    document.getElementById('loginWrap').classList.remove('show');
+    document.getElementById('mainWrap').classList.add('show');
+    loadUI();
+  } else {
+    err.textContent = '❌ סיסמה שגויה';
+    document.getElementById('masterPwd').value = '';
+    document.querySelector('.lg-card').style.animation = 'shake .3s ease';
+    setTimeout(() => { document.querySelector('.lg-card').style.animation = ''; err.textContent = ''; }, 3000);
+  }
+}
+
+// ═══════════════════════════════════════
+// UI
+// ═══════════════════════════════════════
+function loadUI() {
+  renderUsers();
+  renderTabs();
+  const tok = getToken();
+  document.getElementById('s_token').value = tok;
+  document.getElementById('s_user').value = DATA.ghUser;
+  document.getElementById('s_repo').value = DATA.ghRepo;
+  document.getElementById('topSub').textContent = DATA.ghUser + '/' + DATA.ghRepo;
+}
+
+function showPage(name, btn) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  if (btn) btn.classList.add('active');
+}
+
+// ═══════════════════════════════════════
+// USERS
+// ═══════════════════════════════════════
+function renderUsers() {
+  const el = document.getElementById('usersList');
+  if (!DATA.users.length) {
+    el.innerHTML = '<div style="color:var(--tx3);text-align:center;padding:12px;font-size:.8rem;">אין משתמשים</div>';
+    return;
+  }
+  el.innerHTML = DATA.users.map(u => `
+    <div class="list-item">
+      <div class="avatar">${(u.name || u.username || '?')[0]}</div>
+      <div class="item-info">
+        <div class="item-name">${u.name || u.username}</div>
+        <div class="item-sub">@${u.username} · ${u.role === 'admin' ? 'מנהל' : 'משתמש'}</div>
+      </div>
+      <div class="item-actions">
+        <button class="icon-btn" onclick="editUser(${u.id})">✏️</button>
+        <button class="icon-btn red" onclick="deleteUser(${u.id})">🗑️</button>
+      </div>
+    </div>`).join('');
+}
+
+async function addUser() {
+  const name = document.getElementById('nu_name').value.trim();
+  const username = document.getElementById('nu_user').value.trim();
+  const password = document.getElementById('nu_pwd').value;
+  const role = document.getElementById('nu_role').value;
+  if (!name || !username || !password) { toast('❌ מלא את כל השדות', 'err'); return; }
+  if (DATA.users.find(u => u.username === username)) { toast('❌ שם משתמש כבר קיים', 'err'); return; }
+  DATA.users.push({ id: Date.now(), name, username, password, role });
+  renderUsers();
+  document.getElementById('nu_name').value = '';
+  document.getElementById('nu_user').value = '';
+  document.getElementById('nu_pwd').value = '';
+  await saveToGitHub();
+}
+
+function deleteUser(id) {
+  if (!confirm('למחוק משתמש?')) return;
+  DATA.users = DATA.users.filter(u => u.id !== id);
+  renderUsers();
+  saveToGitHub();
+}
+
+function editUser(id) {
+  const u = DATA.users.find(x => x.id === id);
+  if (!u) return;
+  openModal(`
+    <div class="modal-head">
+      <div class="modal-title">✏️ עריכת משתמש</div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="lbl">שם תצוגה</div>
+    <input class="inp" id="eu_name" value="${u.name || ''}" style="direction:rtl;">
+    <div class="lbl">שם משתמש</div>
+    <input class="inp" id="eu_user" value="${u.username || ''}" style="direction:rtl;">
+    <div class="lbl">סיסמה חדשה (ריק = לא שנה)</div>
+    <input class="inp" id="eu_pwd" type="password" placeholder="סיסמה חדשה">
+    <div class="lbl">תפקיד</div>
+    <select class="inp" id="eu_role" style="direction:rtl;">
+      <option value="user"${u.role === 'user' ? ' selected' : ''}>משתמש</option>
+      <option value="admin"${u.role === 'admin' ? ' selected' : ''}>מנהל</option>
+    </select>
+    <button class="btn" onclick="saveEditUser(${id})" style="margin-top:4px;">💾 שמור</button>
+  `);
+}
+
+async function saveEditUser(id) {
+  const u = DATA.users.find(x => x.id === id);
+  if (!u) return;
+  u.name = document.getElementById('eu_name').value.trim() || u.name;
+  u.username = document.getElementById('eu_user').value.trim() || u.username;
+  const pwd = document.getElementById('eu_pwd').value;
+  if (pwd) u.password = pwd;
+  u.role = document.getElementById('eu_role').value;
+  closeModal();
+  renderUsers();
+  await saveToGitHub();
+}
+
+// ═══════════════════════════════════════
+// TABS
+// ═══════════════════════════════════════
+function renderTabs() {
+  const el = document.getElementById('tabsList');
+  if (!DATA.tabs.length) {
+    el.innerHTML = '<div style="color:var(--tx3);text-align:center;padding:12px;font-size:.8rem;">אין כרטיסיות</div>';
+    return;
+  }
+  el.innerHTML = DATA.tabs.map(t => `
+    <div class="list-item">
+      <div class="avatar blue">${t.icon || '📄'}</div>
+      <div class="item-info">
+        <div class="item-name">${t.name}</div>
+        <div class="item-sub">${t.url || '(Debug)'}</div>
+      </div>
+      <div class="item-actions">
+        <button class="icon-btn" onclick="editTab(${t.id})">✏️</button>
+        <button class="icon-btn red" onclick="deleteTab(${t.id})">🗑️</button>
+      </div>
+    </div>`).join('');
+}
+
+async function addTab() {
+  const icon = document.getElementById('nt_icon').value.trim() || '📄';
+  const name = document.getElementById('nt_name').value.trim();
+  const url = document.getElementById('nt_url').value.trim();
+  if (!name) { toast('❌ הכנס שם כרטיסייה', 'err'); return; }
+  DATA.tabs.push({ id: Date.now(), name, icon, url });
+  renderTabs();
+  document.getElementById('nt_icon').value = '';
+  document.getElementById('nt_name').value = '';
+  document.getElementById('nt_url').value = '';
+  await saveToGitHub();
+}
+
+function deleteTab(id) {
+  if (!confirm('למחוק כרטיסייה?')) return;
+  DATA.tabs = DATA.tabs.filter(t => t.id !== id);
+  renderTabs();
+  saveToGitHub();
+}
+
+function editTab(id) {
+  const t = DATA.tabs.find(x => x.id === id);
+  if (!t) return;
+  openModal(`
+    <div class="modal-head">
+      <div class="modal-title">✏️ עריכת כרטיסייה</div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="lbl">אייקון</div>
+    <input class="inp" id="et_icon" value="${t.icon || ''}" style="text-align:center;font-size:1.2rem;">
+    <div class="lbl">שם</div>
+    <input class="inp" id="et_name" value="${t.name}" style="direction:rtl;">
+    <div class="lbl">URL</div>
+    <input class="inp" id="et_url" value="${t.url || ''}" style="direction:ltr;" placeholder="https://...">
+    <button class="btn" onclick="saveEditTab(${id})" style="margin-top:4px;">💾 שמור</button>
+  `);
+}
+
+async function saveEditTab(id) {
+  const t = DATA.tabs.find(x => x.id === id);
+  if (!t) return;
+  t.icon = document.getElementById('et_icon').value.trim() || t.icon;
+  t.name = document.getElementById('et_name').value.trim() || t.name;
+  t.url = document.getElementById('et_url').value.trim();
+  closeModal();
+  renderTabs();
+  await saveToGitHub();
+}
+
+// ═══════════════════════════════════════
+// SETTINGS
+// ═══════════════════════════════════════
+async function testToken() {
+  const tok = document.getElementById('s_token').value.trim();
+  if (!tok) { toast('הכנס token', 'err'); return; }
+  saveToken(tok);
+  const u = document.getElementById('s_user').value.trim() || DATA.ghUser;
+  const r = document.getElementById('s_repo').value.trim() || DATA.ghRepo;
+  const res = await fetch(`https://api.github.com/repos/${u}/${r}`, {
+    headers: { Authorization: 'token ' + tok }
+  });
+  const el = document.getElementById('tokenStatus');
+  if (res.ok) {
+    el.innerHTML = '<div class="status-bar ok">✅ Token תקין — יש גישה ל-repo</div>';
+    toast('✅ Token תקין!', 'ok');
+  } else {
+    el.innerHTML = '<div class="status-bar err">❌ Token לא תקין (' + res.status + ')</div>';
+    toast('❌ Token שגוי (' + res.status + ')', 'err');
+  }
+}
+
+async function changePwd() {
+  const p1 = document.getElementById('s_pwd1').value;
+  const p2 = document.getElementById('s_pwd2').value;
+  if (!p1) { toast('הכנס סיסמה', 'err'); return; }
+  if (p1 !== p2) { toast('❌ סיסמאות לא תואמות', 'err'); return; }
+  DATA.masterPassword = p1;
+  document.getElementById('s_pwd1').value = '';
+  document.getElementById('s_pwd2').value = '';
+  await saveToGitHub();
+  toast('✅ סיסמה שונתה', 'ok');
+}
+
+// ═══════════════════════════════════════
+// SAVE TO GITHUB
+// ═══════════════════════════════════════
+let _saving = false;
+
+async function saveToGitHub() {
+  if (_saving) { toast('⏳ שומר...'); return; }
+  _saving = true;
+
+  // Save token from input
+  const tokInput = document.getElementById('s_token') && document.getElementById('s_token').value.trim();
+  if (tokInput) saveToken(tokInput);
+
+  // Update repo settings
+  const uInput = document.getElementById('s_user') && document.getElementById('s_user').value.trim();
+  const rInput = document.getElementById('s_repo') && document.getElementById('s_repo').value.trim();
+  if (uInput) DATA.ghUser = uInput;
+  if (rInput) DATA.ghRepo = rInput;
+
+  const btn = document.getElementById('saveBtn');
+  btn.textContent = '⏳ שומר...';
+  btn.disabled = true;
+
+  // Build data to save — WITHOUT token
+  const toSave = {
+    masterPassword: DATA.masterPassword,
+    ghUser: DATA.ghUser,
+    ghRepo: DATA.ghRepo,
+    ghToken: '', // NEVER save token to GitHub
+    users: JSON.parse(JSON.stringify(DATA.users)),
+    tabs: JSON.parse(JSON.stringify(DATA.tabs))
+  };
+
+  console.log('Saving to GitHub:', JSON.stringify(toSave).substring(0, 200));
+  console.log('Users count:', toSave.users.length, 'Tabs count:', toSave.tabs.length);
+
+  try {
+    await ghSave(CFG_FILE, JSON.stringify(toSave, null, 2));
+    btn.textContent = '✅ נשמר';
+    toast('✅ נשמר בהצלחה!', 'ok');
+    const el = document.getElementById('saveStatus');
+    if (el) el.innerHTML = '<div class="status-bar ok">✅ נשמר ב-GitHub בהצלחה</div>';
+    setTimeout(() => { btn.textContent = '💾 שמור'; btn.disabled = false; }, 2000);
+  } catch (e) {
+    console.error('Save failed:', e);
+    btn.textContent = '❌ שגיאה';
+    btn.disabled = false;
+    toast('❌ ' + e.message, 'err');
+    const el = document.getElementById('saveStatus');
+    if (el) el.innerHTML = '<div class="status-bar err">❌ ' + e.message + '</div>';
+  }
+  _saving = false;
+}
+
+// ═══════════════════════════════════════
+// MODAL
+// ═══════════════════════════════════════
+function openModal(html) {
+  document.getElementById('modalBox').innerHTML = html;
+  document.getElementById('modal').classList.add('open');
+}
+function closeModal() {
+  document.getElementById('modal').classList.remove('open');
+}
+
+// ═══════════════════════════════════════
+// TOAST
+// ═══════════════════════════════════════
+let _tTm = null;
+function toast(msg, type = '') {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className = 'show ' + type;
+  if (_tTm) clearTimeout(_tTm);
+  _tTm = setTimeout(() => el.className = '', 2500);
+}
+
+// ═══════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════
+document.getElementById('masterPwd').focus();
+</script>
+</body>
+</html>
