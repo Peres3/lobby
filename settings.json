@@ -8,7 +8,7 @@
       "dateTo": "2026-03-26",
       "timeFrom": "",
       "timeTo": "",
-      "active": true
+      "active": false
     }
   ],
   "settings": {
@@ -56,5 +56,5 @@
   },
   "quotes": [],
   "homefront": [],
-  "_updated": "2026-03-24T05:40:45.205Z"
+  "_updated": "2026-03-24T05:44:46.999Z"
 }
