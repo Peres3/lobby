@@ -172,9 +172,23 @@ async function init(){
   log('🚀 v'+APP_VER);
   updateConn(navigator.onLine);
   try{
-    const r=await fetch(RAW_BASE+CFG_FILE+'?t='+Date.now());
-    if(r.ok){appCfg=await r.json();log('✅ config נטען');if(appCfg.ghToken)localStorage.setItem('sp3_token',appCfg.ghToken);}
-    else{log('⚠️ config חסר ('+r.status+')');appCfg=defCfg();}
+    // Use GitHub API for fresh data (no cache)
+    const tok2=localStorage.getItem('sp3_app_token')||'';
+    const apiUrl=`https://api.github.com/repos/${GH_USER}/${GH_REPO}/contents/${CFG_FILE}`;
+    const apiHeaders={Accept:'application/vnd.github.v3+json'};
+    if(tok2)apiHeaders.Authorization='token '+tok2;
+    const r=await fetch(apiUrl,{headers:apiHeaders,cache:'no-store'});
+    if(r.ok){
+      const meta=await r.json();
+      const decoded=atob(meta.content.replace(/\n/g,''));
+      const bytes=new Uint8Array(decoded.length);
+      for(let i=0;i<decoded.length;i++)bytes[i]=decoded.charCodeAt(i);
+      appCfg=JSON.parse(new TextDecoder('utf-8').decode(bytes));
+      log('✅ config נטען, משתמשים: '+appCfg.users.length);
+      if(appCfg.ghToken)localStorage.setItem('sp3_token',appCfg.ghToken);
+    } else {
+      log('⚠️ config חסר ('+r.status+')');appCfg=defCfg();
+    }
   }catch(e){log('⚠️ '+e.message);appCfg=defCfg();}
   setTimeout(()=>{
     document.getElementById('splash').classList.add('hide');
