@@ -720,8 +720,8 @@ async function handleGalFiles(files){
   for(const file of files){
     if(!file.type.startsWith('image/'))continue;
     let b64;
-    if(file.size>1.5*1024*1024){b64=await compressImg(file,1400,.85);}
-    else b64=await fileToB64(file);
+    b64=await compressImg(file,800,.72); // Always compress for GitHub
+    // b64 already set above
     gallery.push(b64);done++;
     bar.style.width=Math.round(done/files.length*100)+'%';
     if(txt)txt.textContent=`${done}/${files.length}`;
