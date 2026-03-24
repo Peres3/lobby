@@ -603,9 +603,16 @@ async function saveAll(){
   btn.textContent='⏳ שומר...';btn.classList.add('saving');
   const statusDiv=document.getElementById('saveStatusDiv');
   try{
-    // Save cfg WITHOUT token
-    const cfgToSave={...cfg,ghToken:''};
-    await ghPut(CFG_FILE,JSON.stringify(cfgToSave,null,2));
+    // Save cfg WITHOUT token - strip any token from all fields
+    const cfgToSave={...cfg,ghToken:'',masterPassword:cfg.masterPassword};
+    const jsonToSave=JSON.stringify(cfgToSave,null,2);
+    console.log('Saving JSON (first 200):', jsonToSave.substring(0,200));
+    // Check for token pattern
+    if(/ghp_[A-Za-z0-9]{36}/.test(jsonToSave)){
+      console.error('TOKEN FOUND IN JSON - stripping');
+      throw new Error('Token detected in save data - check fields');
+    }
+    await ghPut(CFG_FILE,jsonToSave);
     btn.textContent='✅ נשמר';
     statusDiv.innerHTML='<div class="save-status ok">✅ app-config.json נשמר בהצלחה</div>';
     _dirty=false;
