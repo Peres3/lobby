@@ -345,7 +345,7 @@ let _loggedIn=false,_saving=false;
 // ── GITHUB ──
 function getUser(){return (document.getElementById('cfgUser')&&document.getElementById('cfgUser').value.trim())||cfg.ghUser||_ghUser||'Peres3';}
 function getRepo(){return (document.getElementById('cfgRepo')&&document.getElementById('cfgRepo').value.trim())||cfg.ghRepo||_ghRepo||'lobby';}
-function getTok(){return (document.getElementById('ghToken')&&document.getElementById('ghToken').value.trim())||_ghToken||cfg.ghToken||'';}
+function getTok(){return (document.getElementById('ghToken')&&document.getElementById('ghToken').value.trim())||_ghToken||localStorage.getItem('sp3_app_token')||cfg.ghToken||'';}
 
 async function ghFetch2(path,opts={}){
   const tok=getTok();
@@ -414,7 +414,10 @@ async function doMasterLogin(){
 // ── UI ──
 function loadUI(){
   renderUsers();renderTabs();
-  document.getElementById('ghToken').value=cfg.ghToken||'';
+  // Load token from localStorage (not from GitHub file)
+  const savedTok=localStorage.getItem('sp3_app_token')||cfg.ghToken||'';
+  document.getElementById('ghToken').value=savedTok;
+  if(savedTok)_ghToken=savedTok;
   document.getElementById('cfgUser').value=cfg.ghUser||_ghUser;
   document.getElementById('cfgRepo').value=cfg.ghRepo||_ghRepo;
 }
@@ -589,15 +592,20 @@ function markDirty(){_dirty=true;document.getElementById('saveBtn').textContent=
 async function saveAll(){
   if(_saving){return;}
   _saving=true;
-  cfg.ghToken=document.getElementById('ghToken').value.trim();
+  const tok=document.getElementById('ghToken').value.trim();
   cfg.ghUser=document.getElementById('cfgUser').value.trim()||_ghUser;
   cfg.ghRepo=document.getElementById('cfgRepo').value.trim()||_ghRepo;
-  _ghToken=cfg.ghToken;
+  _ghToken=tok;
+  // Store token in localStorage only - never in GitHub file
+  if(tok){localStorage.setItem('sp3_app_token',tok);localStorage.setItem('sp3_token',tok);}
+  cfg.ghToken=''; // Never save token to GitHub
   const btn=document.getElementById('saveBtn');
   btn.textContent='⏳ שומר...';btn.classList.add('saving');
   const statusDiv=document.getElementById('saveStatusDiv');
   try{
-    await ghPut(CFG_FILE,JSON.stringify(cfg,null,2));
+    // Save cfg WITHOUT token
+    const cfgToSave={...cfg,ghToken:''};
+    await ghPut(CFG_FILE,JSON.stringify(cfgToSave,null,2));
     btn.textContent='✅ נשמר';
     statusDiv.innerHTML='<div class="save-status ok">✅ app-config.json נשמר בהצלחה</div>';
     _dirty=false;
