@@ -559,14 +559,14 @@ function setConn(t,tx){
   if(c)c.textContent=tx;
 }
 async function checkConn(){
-  if(!getToken()){const d=$('cdot');if(d)d.className='cdot';const c=$('ctxt');if(c)c.textContent='אין Token';return;}
+  if(!getToken()){setConn('','אין Token');return;}
+  setConn('','בודק...');
   try{
-    const r=await ghFetch('settings.json');
-    const d=$('cdot'),c=$('ctxt');
-    if(r.ok){if(d)d.className='cdot ok';if(c)c.textContent='מחובר';}
-    else if(r.status===401){if(d)d.className='cdot err';if(c)c.textContent='Token לא תקין';}
-    else{if(d)d.className='cdot err';if(c)c.textContent='שגיאה '+r.status;}
-  }catch(e){const d=$('cdot'),c=$('ctxt');if(d)d.className='cdot err';if(c)c.textContent='אין חיבור';}
+    const r=await ghFetch('settings.json?t='+Date.now());
+    if(r.ok)setConn('ok','מחובר');
+    else if(r.status===401)setConn('err','Token לא תקין');
+    else setConn('err','שגיאה '+r.status);
+  }catch(e){setConn('err','אין חיבור');}
 }
 
 // ═══ ANNOUNCEMENTS ═══
@@ -829,10 +829,34 @@ async function testConn(){showToast('🔗 בודק חיבור...');await checkCo
 function fileToB64(file){return new Promise((res,rej)=>{const r=new FileReader();r.onload=e=>res(e.target.result);r.onerror=rej;r.readAsDataURL(file);});}
 function compressImg(file,maxW,quality){return new Promise((res,rej)=>{const img=new Image(),url=URL.createObjectURL(file);img.onload=()=>{const canvas=document.createElement('canvas');let w=img.width,h=img.height;if(w>maxW){h=Math.round(h*maxW/w);w=maxW;}canvas.width=w;canvas.height=h;canvas.getContext('2d').drawImage(img,0,0,w,h);URL.revokeObjectURL(url);res(canvas.toDataURL('image/jpeg',quality));};img.onerror=rej;img.src=url;});}
 
+// ═══ SYNC FROM GITHUB ═══
+async function syncFromGitHub(){
+  if(!getToken())return;
+  try{
+    const r=await ghFetch('settings.json?t='+Date.now());
+    if(!r.ok){if(r.status!==404)showToast('שגיאה בסנכרון: '+r.status,'error');return;}
+    const data=await r.json();
+    const content=JSON.parse(b64dec(data.content.replace(/\n/g,'')));
+    if(content.announcements!=null)ss(K.a,content.announcements);
+    if(content.settings!=null)ss(K.s,content.settings);
+    if(content.sleep!=null)ss(K.sl,content.sleep);
+    if(content.emergency!=null)ss(K.e,content.emergency);
+    if(content.design!=null)ss(K.d,content.design);
+    if(content.gallery!=null)ss(K.g,content.gallery);
+    if(content.widgets!=null)ss(K.w,content.widgets);
+    if(content.quotes!=null)ss(K.q,content.quotes);
+    if(content.homefront!=null)ss(K.hf,content.homefront);
+    loadAnnsUI();loadGalUI();loadYTUI();loadEmergUI();loadSleepUI();loadDesignUI();loadSettingsUI();
+    markClean();
+    showToast('✅ סונכרן מ-GitHub');
+  }catch(e){showToast('שגיאה בסנכרון: '+e.message,'error');}
+}
+
 // ═══ INIT ═══
 function init(){
   loadAnnsUI();loadGalUI();loadYTUI();loadEmergUI();loadSleepUI();loadDesignUI();loadSettingsUI();loadTokenInfo();
   checkConn();
+  if(getToken())syncFromGitHub();
 }
 init();
 </script>
