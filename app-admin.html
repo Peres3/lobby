@@ -626,8 +626,11 @@ async function saveAll(){
   try{
     // Save cfg WITHOUT token - strip any token from all fields
     const cfgToSave={...cfg,ghToken:'',masterPassword:cfg.masterPassword};
+    // Deep copy users and tabs to avoid reference issues
+    cfgToSave.users=JSON.parse(JSON.stringify(cfg.users));
+    cfgToSave.tabs=JSON.parse(JSON.stringify(cfg.tabs));
     const jsonToSave=JSON.stringify(cfgToSave,null,2);
-    console.log('Saving JSON (first 200):', jsonToSave.substring(0,200));
+    console.log('Saving: users='+cfgToSave.users.length+' tabs='+cfgToSave.tabs.length);
     // Check for token pattern
     if(/ghp_[A-Za-z0-9]{36}/.test(jsonToSave)){
       console.error('TOKEN FOUND IN JSON - stripping');
