@@ -1,14 +1,14 @@
 {
   "announcements": [
     {
-      "title": "חדש",
-      "body": "מעודכן 24/3/26 7:40",
+      "title": "×××©",
+      "body": "××¢×××× 24/3/26 7:40",
       "img": "",
       "dateFrom": "2026-03-23",
       "dateTo": "2026-03-26",
       "timeFrom": "",
       "timeTo": "",
-      "active": false
+      "active": true
     }
   ],
   "settings": {
@@ -56,5 +56,5 @@
   },
   "quotes": [],
   "homefront": [],
-  "_updated": "2026-03-24T05:53:04.012Z"
+  "_updated": "2026-03-24T05:56:41.034Z"
 }
