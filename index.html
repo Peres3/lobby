@@ -377,9 +377,17 @@ async function sync(){
     const tx=await r.text();if(tx===_lh)return;_lh=tx;
     const c=JSON.parse(tx);
     [[K.a,c.announcements],[K.s,c.settings],[K.m,c.music],[K.sl,c.sleep],
-     [K.e,c.emergency],[K.d,c.design],[K.g,c.gallery],[K.w,c.widgets],
+     [K.e,c.emergency],[K.d,c.design],[K.w,c.widgets],
      [K.q,c.quotes],[K.hf,c.homefront]
     ].forEach(([k,v])=>{if(v!==undefined)ss(k,v);});
+    // Gallery stored in gallery.json separately
+    if(c.gallery==='_gallery.json'){
+      try{
+        const GH_BASE='https://raw.githubusercontent.com/'+CFG.user+'/'+CFG.repo+'/main/';
+        const gr=await fetch(GH_BASE+'gallery.json?t='+Date.now());
+        if(gr.ok){const gal=await gr.json();ss(K.g,gal);}
+      }catch(ge){}
+    } else if(Array.isArray(c.gallery)){ss(K.g,c.gallery);}
     doAll();
   }catch(e){}
 }
@@ -397,9 +405,7 @@ setTimeout(applyS,100);setInterval(applyS,15000);
 
 // ANNOUNCEMENTS
 // ANNOUNCEMENTS_START
-const ANNOUNCEMENTS=[
-  {"title":"חדש","body":"ישן\nהיום","img":"","dateFrom":"2026-03-23","dateTo":"2026-03-26","timeFrom":"","timeTo":"","active":false}
-];
+const ANNOUNCEMENTS=[];
 // ANNOUNCEMENTS_END
 let _aI=[],_aX=0,_aTm=null;
 function pd(s){if(!s)return null;if(s.includes('-')){const[y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d);}const p=s.split('/');if(p.length<3)return null;const yr=p[2].length===2?2000+parseInt(p[2]):parseInt(p[2]);return new Date(yr,parseInt(p[1])-1,parseInt(p[0]));}
