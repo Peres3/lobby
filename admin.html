@@ -717,18 +717,44 @@ function handleGalDrop(e){e.preventDefault();$('galUplArea').style.borderColor='
 async function handleGalFiles(files){
   const prog=$('galProg'),bar=$('galProgBar'),txt=$('galProgTxt');
   prog.style.display='block';let done=0;
+  const token=getToken();
   for(const file of files){
     if(!file.type.startsWith('image/'))continue;
-    let b64;
-    b64=await compressImg(file,800,.72); // Always compress for GitHub
-    // b64 already set above
-    gallery.push(b64);done++;
+    try{
+      // Compress image
+      const b64full=await compressImg(file,800,.72);
+      // b64full is "data:image/jpeg;base64,XXXX"
+      const b64data=b64full.split(',')[1];
+      // Upload to GitHub as file
+      const ts=Date.now();
+      const fname=`gallery/img_${ts}.jpg`;
+      // Check if file exists (get SHA)
+      let sha=undefined;
+      try{
+        const chk=await ghFetch(fname);
+        if(chk.ok){const d=await chk.json();sha=d.sha;}
+      }catch(e){}
+      const body={message:`Add gallery image ${ts}`,content:b64data};
+      if(sha)body.sha=sha;
+      const r=await ghFetch(fname,{method:'PUT',body:JSON.stringify(body)});
+      if(r.ok){
+        const d=await r.json();
+        const url=d.content.download_url;
+        gallery.push(url);done++;
+      } else {
+        // Fallback: store as base64 if upload fails
+        gallery.push(b64full);done++;
+        showToast('⚠️ העלאה ל-GitHub נכשלה, שומר כbase64','error');
+      }
+    }catch(e){
+      showToast('❌ שגיאה: '+e.message,'error');
+    }
     bar.style.width=Math.round(done/files.length*100)+'%';
     if(txt)txt.textContent=`${done}/${files.length}`;
   }
   ss(K.g,gallery);renderGalGrid();setTimeout(publishAll,100);
   setTimeout(()=>{prog.style.display='none';bar.style.width='0%';},800);
-  showToast(`✅ ${done} תמונות נוספו`);$('galFile').value='';
+  if(done>0)showToast(`✅ ${done} תמונות נוספו`);$('galFile').value='';
 }
 const _galUpl=$('galUplArea');if(_galUpl)_galUpl.addEventListener('click',()=>$('galFile').click());
 
