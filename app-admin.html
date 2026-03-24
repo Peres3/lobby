@@ -391,12 +391,26 @@ async function ghPut(path,content){
 async function doMasterLogin(){
   const pwd=document.getElementById('masterPwd').value;
   const err=document.getElementById('loginErr');
-  err.textContent='⏳ מתחבר...';
-  // Try to load config from GitHub
+  err.textContent='⏳ טוען הגדרות...';
+  // Always load fresh config from GitHub
+  const tok=localStorage.getItem('sp3_app_token')||'';
+  if(tok)_ghToken=tok;
   try{
-    const r=await fetch(`https://raw.githubusercontent.com/${_ghUser}/${_ghRepo}/main/${CFG_FILE}?t=`+Date.now());
-    if(r.ok){const data=await r.json();Object.assign(cfg,data);_ghToken=cfg.ghToken||'';}
-  }catch(e){}
+    const url=`https://raw.githubusercontent.com/${_ghUser}/${_ghRepo}/main/${CFG_FILE}?t=`+Date.now();
+    console.log('Loading config from:', url);
+    const r=await fetch(url,{cache:'no-store'});
+    console.log('Config load status:', r.status);
+    if(r.ok){
+      const data=await r.json();
+      Object.assign(cfg,data);
+      // Always restore token from localStorage
+      if(tok)cfg.ghToken=tok;
+      _ghToken=tok||cfg.ghToken||'';
+      console.log('Config loaded, users:', cfg.users.length);
+    } else {
+      console.warn('Config not found ('+r.status+'), using defaults');
+    }
+  }catch(e){console.warn('Config load error:',e.message);}
   if(pwd===cfg.masterPassword||pwd===DEFAULT_MASTER){
     _loggedIn=true;
     document.getElementById('loginWrap').style.display='none';
