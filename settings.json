@@ -1,16 +1,5 @@
 {
-  "announcements": [
-    {
-      "title": "חדש",
-      "body": "ישן\nהיום",
-      "img": "",
-      "dateFrom": "2026-03-23",
-      "dateTo": "2026-03-26",
-      "timeFrom": "",
-      "timeTo": "",
-      "active": false
-    }
-  ],
+  "announcements": [],
   "settings": {
     "maintenance": false,
     "maintMsg": "שווה לכם לחכות 10 דקות לשדרוג המערכת..",
@@ -51,9 +40,7 @@
     "bg": "#ffffff",
     "text": "#ff0000"
   },
-  "gallery": [
-    "https://raw.githubusercontent.com/Peres3/lobby/main/gallery/img_1774344861622.jpg"
-  ],
+  "gallery": "_gallery.json",
   "widgets": {
     "ytShow": true,
     "ytUrl": "https://www.youtube.com/live/vkBaTewZ2ik?si=ArZW1ur6uACT-vtG",
@@ -62,5 +49,5 @@
   },
   "quotes": [],
   "homefront": [],
-  "_updated": "2026-03-24T09:44:32.564Z"
+  "_updated": "2026-03-24T11:42:07.314Z"
 }
