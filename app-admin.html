@@ -396,14 +396,21 @@ async function doMasterLogin(){
   const tok=localStorage.getItem('sp3_app_token')||'';
   if(tok)_ghToken=tok;
   try{
-    const url=`https://raw.githubusercontent.com/${_ghUser}/${_ghRepo}/main/${CFG_FILE}?t=`+Date.now();
-    console.log('Loading config from:', url);
-    const r=await fetch(url,{cache:'no-store'});
+    // Use GitHub API for fresh data (no cache)
+    const apiUrl=`https://api.github.com/repos/${_ghUser}/${_ghRepo}/contents/${CFG_FILE}`;
+    console.log('Loading config via API');
+    const headers={Accept:'application/vnd.github.v3+json'};
+    if(tok)headers.Authorization='token '+tok;
+    const r=await fetch(apiUrl,{headers,cache:'no-store'});
     console.log('Config load status:', r.status);
     if(r.ok){
-      const data=await r.json();
+      const meta=await r.json();
+      // Decode base64 content
+      const decoded=atob(meta.content.replace(/\n/g,''));
+      const bytes=new Uint8Array(decoded.length);
+      for(let i=0;i<decoded.length;i++)bytes[i]=decoded.charCodeAt(i);
+      const data=JSON.parse(new TextDecoder('utf-8').decode(bytes));
       Object.assign(cfg,data);
-      // Always restore token from localStorage
       if(tok)cfg.ghToken=tok;
       _ghToken=tok||cfg.ghToken||'';
       console.log('Config loaded, users:', cfg.users.length);
