@@ -24,6 +24,20 @@
       "username": "מני",
       "password": "2460",
       "role": "user"
+    },
+    {
+      "id": 1774369750804,
+      "name": "ראובן",
+      "username": "ראובן",
+      "password": "7530",
+      "role": "user"
+    },
+    {
+      "id": 1774369780153,
+      "name": "יהושע",
+      "username": "יהושע",
+      "password": "2480",
+      "role": "user"
     }
   ],
   "tabs": [
