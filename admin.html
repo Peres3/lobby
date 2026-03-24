@@ -506,7 +506,7 @@ function b64dec(s){
   }catch(e){return s;}
 }
 
-const CFG={user:'peres3',repo:'lobby'};
+const CFG={user:'Peres3',repo:'lobby'};
 const K={a:'sp3_announcements',s:'sp3_settings',sl:'sp3_sleep',
   e:'sp3_emergency',d:'sp3_design',g:'sp3_gallery',w:'sp3_widgets',
   q:'sp3_quotes',hf:'sp3_homefront'};
@@ -940,7 +940,7 @@ function fileToB64(file){return new Promise((res,rej)=>{const r=new FileReader()
 function compressImg(file,maxW,quality){return new Promise((res,rej)=>{const img=new Image(),url=URL.createObjectURL(file);img.onload=()=>{const canvas=document.createElement('canvas');let w=img.width,h=img.height;if(w>maxW){h=Math.round(h*maxW/w);w=maxW;}canvas.width=w;canvas.height=h;canvas.getContext('2d').drawImage(img,0,0,w,h);URL.revokeObjectURL(url);res(canvas.toDataURL('image/jpeg',quality));};img.onerror=rej;img.src=url;});}
 
 // ═══ INIT ═══
-const GH_RAW='https://raw.githubusercontent.com/peres3/lobby/main/settings.json';
+const GH_RAW='https://raw.githubusercontent.com/Peres3/lobby/main/settings.json';
 
 async function syncFromGitHub(){
   try{
