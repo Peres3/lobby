@@ -312,6 +312,24 @@ textarea.fi{resize:vertical;min-height:50px;}
       <div id="galProg" style="display:none;"><div class="prog-wrap"><div class="prog-bar" id="galProgBar"></div></div><div style="font-size:.6rem;color:var(--tx3);text-align:center;margin-top:.2vh;" id="galProgTxt"></div></div>
     </div>
   </div>
+  <div class="sec">
+    <div class="sec-title">⚙️ הגדרות גלריה</div>
+    <div class="card">
+      <div class="flbl">זמן בין תמונות (שניות)</div>
+      <div style="display:flex;gap:.5vw;align-items:center;margin-bottom:.8vh;">
+        <input type="range" id="galIntervalRange" min="3" max="60" value="5" style="flex:1;" oninput="$('galIntervalVal').textContent=this.value;saveGalSettings();">
+        <span id="galIntervalVal" style="min-width:2em;text-align:center;font-weight:700;color:var(--B);">5</span>
+        <span style="font-size:.7rem;color:var(--tx3);">שנ'</span>
+      </div>
+      <div class="flbl">סגנון מעבר</div>
+      <select id="galTransSel" class="fi" style="margin-bottom:.4vh;" onchange="saveGalSettings();">
+        <option value="fade">🌅 Fade — דהייה</option>
+        <option value="slide-right">➡️ Slide Right — החלקה ימינה</option>
+        <option value="slide-left">⬅️ Slide Left — החלקה שמאלה</option>
+        <option value="zoom">🔍 Zoom — הגדלה</option>
+      </select>
+    </div>
+  </div>
 </div>
 
 <!-- ═══ YOUTUBE ═══ -->
@@ -703,7 +721,21 @@ if(_annUpl){
 let gallery=[];
 function loadGalUI(){
   gallery=sg(K.g)||[];renderGalGrid();
-  const w=sg(K.w)||{};const ge=$('galEnabled');if(ge)ge.checked=w.galEnabled!==false;
+  const w=sg(K.w)||{};
+  const ge=$('galEnabled');if(ge)ge.checked=w.galEnabled!==false;
+  // Gallery settings
+  const ri=$('galIntervalRange'),rv=$('galIntervalVal'),ts=$('galTransSel');
+  const iv=w.galInterval||5;
+  if(ri){ri.value=iv;}
+  if(rv){rv.textContent=iv;}
+  if(ts){ts.value=w.galTrans||'fade';}
+}
+function saveGalSettings(){
+  const w=sg(K.w)||{};
+  const ri=$('galIntervalRange'),ts=$('galTransSel');
+  if(ri)w.galInterval=parseInt(ri.value)||5;
+  if(ts)w.galTrans=ts.value||'fade';
+  ss(K.w,w);setTimeout(publishAll,100);
 }
 function renderGalGrid(){
   const el=$('galGrid');if(!el)return;
