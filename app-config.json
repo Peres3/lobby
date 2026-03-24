@@ -1,1 +1,35 @@
-{}
+{
+  "masterPassword": "admin123",
+  "ghUser": "Peres3",
+  "ghRepo": "lobby",
+  "ghToken": "",
+  "users": [
+    {
+      "id": 1,
+      "name": "מנהל",
+      "username": "admin",
+      "password": "1234",
+      "role": "admin"
+    }
+  ],
+  "tabs": [
+    {
+      "id": 1,
+      "name": "לובי",
+      "icon": "📺",
+      "url": "https://peres3.github.io/lobby/"
+    },
+    {
+      "id": 2,
+      "name": "ניהול",
+      "icon": "⚙️",
+      "url": "https://peres3.github.io/lobby/admin.html"
+    },
+    {
+      "id": 3,
+      "name": "Debug",
+      "icon": "🔧",
+      "url": ""
+    }
+  ]
+}
