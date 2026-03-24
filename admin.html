@@ -554,9 +554,7 @@ async function publishAll(){
       _updated:new Date().toISOString()
     };
     const annCount=(all.announcements||[]).length;
-    const firstAnn=all.announcements&&all.announcements[0];
-    const debugMsg=firstAnn?'📤 שולח: "'+firstAnn.title+'" active='+firstAnn.active:'📤 שולח '+annCount+' הודעות';
-    showToast(debugMsg);
+
     const json=JSON.stringify(all,null,2);
     await putSettingsWithRetry(json);
     showToast('✅ settings.json נשמר!');
@@ -712,8 +710,8 @@ function renderGalGrid(){
   el.innerHTML=gallery.map((src,i)=>`<div class="gal-item"><img src="${src}" onerror="this.style.opacity='.3'"><div class="gal-lbl">${src.startsWith('data:')?' 📁':' 🔗'}</div><button class="gal-del" onclick="delGal(${i})">✕</button></div>`).join('');
   el.innerHTML+=`<div class="gal-add" onclick="$('galFile').click()"><div class="gal-add-ico">📷</div><div class="gal-add-txt">הוסף</div></div>`;
 }
-function delGal(i){gallery.splice(i,1);ss(K.g,gallery);renderGalGrid();markDirty();showToast('🗑️ נמחקה');}
-function addGalUrl(){const u=$('galUrl').value.trim();if(!u){showToast('הכנס קישור','error');return;}gallery.push(u);ss(K.g,gallery);$('galUrl').value='';renderGalGrid();markDirty();showToast('✅ נוספה');}
+function delGal(i){gallery.splice(i,1);ss(K.g,gallery);renderGalGrid();setTimeout(publishAll,100);showToast('🗑️ נמחקה');}
+function addGalUrl(){const u=$('galUrl').value.trim();if(!u){showToast('הכנס קישור','error');return;}gallery.push(u);ss(K.g,gallery);$('galUrl').value='';renderGalGrid();setTimeout(publishAll,100);showToast('✅ נוספה');}
 function saveGalSetting(){const w=sg(K.w)||{};w.galEnabled=$('galEnabled').checked;ss(K.w,w);markDirty();}
 function handleGalDrop(e){e.preventDefault();$('galUplArea').style.borderColor='';const f=e.dataTransfer?.files;if(f&&f.length)handleGalFiles(f);}
 async function handleGalFiles(files){
@@ -728,7 +726,7 @@ async function handleGalFiles(files){
     bar.style.width=Math.round(done/files.length*100)+'%';
     if(txt)txt.textContent=`${done}/${files.length}`;
   }
-  ss(K.g,gallery);renderGalGrid();markDirty();
+  ss(K.g,gallery);renderGalGrid();setTimeout(publishAll,100);
   setTimeout(()=>{prog.style.display='none';bar.style.width='0%';},800);
   showToast(`✅ ${done} תמונות נוספו`);$('galFile').value='';
 }
@@ -763,7 +761,7 @@ const _hfUpl=$('hfUplArea');if(_hfUpl)_hfUpl.addEventListener('click',()=>$('hfF
 
 // ═══ EMERGENCY ═══
 function loadEmergUI(){const c=sg(K.e)||{};$('emergActive').checked=!!c.active;$('emergTitle').value=c.title||'';$('emergBody').value=c.body||'';}
-function saveEmerg(){const c={active:$('emergActive').checked,title:$('emergTitle').value.trim(),body:$('emergBody').value.trim()};ss(K.e,c);markDirty();}
+function saveEmerg(){const c={active:$('emergActive').checked,title:$('emergTitle').value.trim(),body:$('emergBody').value.trim()};ss(K.e,c);setTimeout(publishAll,100);}
 
 // ═══ SLEEP ═══
 function loadSleepUI(){
@@ -782,14 +780,14 @@ function saveSleep(){
   const days=[...document.querySelectorAll('#sleepDays .day-btn.sel')].map(b=>+b.dataset.d);
   const sm=$('sleepManual');const se=$('sleepEnabled');const sf=$('sleepFrom');const st=$('sleepTo');
   const c={manualOff:sm?sm.checked:false,enabled:se?se.checked:false,days,from:sf?sf.value:'23:00',to:st?st.value:'07:00'};
-  ss(K.sl,c);markDirty();
+  ss(K.sl,c);setTimeout(publishAll,100);
 }
 
 // ═══ YOUTUBE ═══
 let ytMode='video';
 function loadYTUI(){const w=sg(K.w)||{};const ye=$('ytEnabled');if(ye)ye.checked=!!w.ytShow;const yu=$('ytUrl');if(yu)yu.value=w.ytUrl||'';ytMode=w.ytMode||'video';setYTMode(ytMode,false);}
 function setYTMode(mode,save=true){ytMode=mode;$('ytModeVideo').classList.toggle('sel',mode==='video');$('ytModeMusic').classList.toggle('sel',mode==='music');if(save)saveYT();}
-function saveYT(){const w=sg(K.w)||{};w.ytShow=$('ytEnabled').checked;w.ytUrl=$('ytUrl').value.trim();w.ytMode=ytMode;ss(K.w,w);markDirty();}
+function saveYT(){const w=sg(K.w)||{};w.ytShow=$('ytEnabled').checked;w.ytUrl=$('ytUrl').value.trim();w.ytMode=ytMode;ss(K.w,w);setTimeout(publishAll,100);}
 
 // ═══ QUOTES ═══
 const DEF_Q=[{t:'אֵיזֶהוּ חָכָם? הַלּוֹמֵד מִכָּל אָדָם',s:'אבות ד׳, א׳'},{t:'אֵיזֶהוּ עָשִׁיר? הַשָּׂמֵחַ בְּחֶלְקוֹ',s:'אבות ד׳, א׳'},{t:'אֵיזֶהוּ גִבּוֹר? הַכּוֹבֵשׁ אֶת יִצְרוֹ',s:'אבות ד׳, א׳'},{t:'וְאָהַבְתָּ לְרֵעֲךָ כָּמוֹךָ',s:'ויקרא י"ט'},{t:'כָּל יִשְׂרָאֵל עֲרֵבִים זֶה לָזֶה',s:'שבועות לט'},{t:'בְּמָקוֹם שֶׁאֵין אֲנָשִׁים, הִשְׁתַּדֵּל לִהְיוֹת אִישׁ',s:'אבות ב׳, ה׳'},{t:'שְׁלוֹם בַּיִת — גָּדוֹל הוּא',s:'גיטין נט'},{t:'יְהִי בֵיתְךָ פָּתוּחַ לִרְוָחָה',s:'אבות א׳, ה׳'},{t:'טוֹב שֵׁם מִשֶּׁמֶן טוֹב',s:'קהלת ז׳'},{t:'לֹא עָלֶיךָ הַמְּלָאכָה לִגְמֹר',s:'אבות ב׳, ט"ז'}];
@@ -829,7 +827,7 @@ s.weatherCity=$('weatherCity').value.trim();
   s.maintenance=$('maintMode').checked;
   s.maintMsg=$('maintMsg').value.trim();
   s.qrUrl=$('qrUrl').value.trim();
-  ss(K.s,s);markDirty();
+  ss(K.s,s);setTimeout(publishAll,100);
 }
 async function handleMaintToggle(){
   const isOn=$('maintMode').checked;
@@ -846,7 +844,7 @@ function updateQRPreview(){
 // ═══ DESIGN ═══
 function loadDesignUI(){const d=sg(K.d)||{};if(d.main)$('colorMain').value=d.main;if(d.bg)$('colorBg').value=d.bg;if(d.hdr)$('colorHdr').value=d.hdr;previewColors();}
 function previewColors(){$('prevMain').style.background=$('colorMain').value;$('prevBg').style.background=$('colorBg').value;$('prevHdr').style.background=$('colorHdr').value;}
-function saveDesign(){const d={main:$('colorMain').value,bg:$('colorBg').value,hdr:$('colorHdr').value};ss(K.d,d);markDirty();showToast('✅ עיצוב נשמר');}
+function saveDesign(){const d={main:$('colorMain').value,bg:$('colorBg').value,hdr:$('colorHdr').value};ss(K.d,d);setTimeout(publishAll,100);showToast('✅ עיצוב נשמר');}
 function resetDesign(){$('colorMain').value='#1565C0';$('colorBg').value='#EEF3FA';$('colorHdr').value='#1565C0';previewColors();saveDesign();}
 
 // ═══ TOKEN ═══
