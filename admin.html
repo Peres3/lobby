@@ -564,10 +564,16 @@ async function publishAll(){
   const btn=$('pubBtn');if(btn){btn.disabled=true;btn.textContent='⏳ מפרסם...';}
   showToast('⏳ שומר...','success');
   try{
-    // 1. Build settings.json
+    // 1. Save gallery.json separately (can be large with base64)
+    const galData=sg(K.g)||[];
+    try{
+      const galJson=JSON.stringify(galData);
+      await putFileWithRetry('gallery.json',galJson);
+    }catch(ge){console.warn('gallery.json save failed:',ge);}
+    // 2. Build settings.json (gallery excluded - stored separately)
     const all={
       announcements:announcements.length>0?announcements:(sg(K.a)||[]),settings:sg(K.s)||{},sleep:sg(K.sl)||{},
-      emergency:sg(K.e)||{},design:sg(K.d)||{},gallery:sg(K.g)||[],
+      emergency:sg(K.e)||{},design:sg(K.d)||{},gallery:'_gallery.json',
       widgets:sg(K.w)||{},quotes:sg(K.q)||[],homefront:sg(K.hf)||[],
       _updated:new Date().toISOString()
     };
@@ -773,10 +779,14 @@ async function handleGalFiles(files){
         const d=await r.json();
         const url=d.content.download_url;
         gallery.push(url);done++;
+      } else if(r.status===401){
+        showToast('❌ SHA 401 — Token ללא הרשאת כתיבה. צור token חדש עם הרשאת repo/Contents write','error');
+        break;
+      } else if(r.status===403){
+        showToast('❌ 403 — אין גישה ל-repository. בדוק הרשאות token','error');
+        break;
       } else {
-        // Fallback: store as base64 if upload fails
-        gallery.push(b64full);done++;
-        showToast('⚠️ העלאה ל-GitHub נכשלה, שומר כbase64','error');
+        showToast('❌ שגיאה '+r.status+' בהעלאת תמונה','error');
       }
     }catch(e){
       showToast('❌ שגיאה: '+e.message,'error');
@@ -954,7 +964,16 @@ async function syncFromGitHub(){
     if(cfg.sleep!==undefined)ss(K.sl,cfg.sleep);
     if(cfg.emergency!==undefined)ss(K.e,cfg.emergency);
     if(cfg.design!==undefined)ss(K.d,cfg.design);
-    if(cfg.gallery!==undefined)ss(K.g,cfg.gallery);
+    if(cfg.gallery==='_gallery.json'||cfg.gallery===undefined){
+      // Load gallery from separate file
+      try{
+        const gr=await ghFetch('gallery.json');
+        if(gr.ok){const gd=await gr.json();const raw=gd.content.replace(/[\s\n\r]/g,'');
+          const bytes=Uint8Array.from(atob(raw),c=>c.charCodeAt(0));
+          const gal=JSON.parse(new TextDecoder('utf-8').decode(bytes));
+          ss(K.g,gal);gallery=gal||[];}
+      }catch(ge){console.warn('gallery.json load failed');}
+    } else if(Array.isArray(cfg.gallery)){ss(K.g,cfg.gallery);}
     if(cfg.widgets!==undefined)ss(K.w,cfg.widgets);
     if(cfg.quotes!==undefined)ss(K.q,cfg.quotes);
     if(cfg.homefront!==undefined)ss('sp3_homefront',cfg.homefront);
