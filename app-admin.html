@@ -331,7 +331,7 @@ const DEFAULT_MASTER='admin123';
 
 let cfg={
   masterPassword:DEFAULT_MASTER,
-  ghUser:'peres3',ghRepo:'lobby',ghToken:'',
+  ghUser:'Peres3',ghRepo:'lobby',ghToken:'',
   users:[{id:1,name:'מנהל',username:'admin',password:'1234',role:'admin'}],
   tabs:[
     {id:1,name:'לובי',icon:'📺',url:'https://peres3.github.io/lobby/'},
@@ -339,11 +339,11 @@ let cfg={
     {id:3,name:'Debug',icon:'🔧',url:''}
   ]
 };
-let _ghUser='peres3',_ghRepo='lobby',_ghToken='';
+let _ghUser='Peres3',_ghRepo='lobby',_ghToken='';
 let _loggedIn=false,_saving=false;
 
 // ── GITHUB ──
-function getUser(){return (document.getElementById('cfgUser')&&document.getElementById('cfgUser').value.trim())||cfg.ghUser||_ghUser||'peres3';}
+function getUser(){return (document.getElementById('cfgUser')&&document.getElementById('cfgUser').value.trim())||cfg.ghUser||_ghUser||'Peres3';}
 function getRepo(){return (document.getElementById('cfgRepo')&&document.getElementById('cfgRepo').value.trim())||cfg.ghRepo||_ghRepo||'lobby';}
 function getTok(){return (document.getElementById('ghToken')&&document.getElementById('ghToken').value.trim())||_ghToken||cfg.ghToken||'';}
 
