@@ -363,8 +363,10 @@ async function ghPut(path,content,retries=3){
     let sha=undefined;
     try{
       const rGet=await fetch(url,{headers:{Authorization:'token '+tok}});
-      if(rGet.ok){const d=await rGet.json();sha=d.sha;}
-    }catch(e){}
+      console.log('ghPut GET status:',rGet.status,'url:',url);
+      if(rGet.ok){const d=await rGet.json();sha=d.sha;console.log('ghPut SHA:',sha);}
+      else console.log('ghPut GET failed:',rGet.status);
+    }catch(e){console.log('ghPut GET error:',e.message);}
     const bytes=new TextEncoder().encode(content);
     let b='';for(let j=0;j<bytes.length;j++)b+=String.fromCharCode(bytes[j]);
     const b64=btoa(b);
@@ -595,11 +597,15 @@ let _dirty=false;
 function markDirty(){_dirty=true;document.getElementById('saveBtn').textContent='💾 שמור הכל *';}
 
 async function saveAll(){
-  // Collect settings values
-  cfg.ghToken=document.getElementById('ghToken').value.trim();
-  cfg.ghUser=document.getElementById('cfgUser').value.trim()||_ghUser;
-  cfg.ghRepo=document.getElementById('cfgRepo').value.trim()||_ghRepo;
-  _ghToken=cfg.ghToken;
+  // Collect settings values FIRST
+  const tokVal=document.getElementById('ghToken').value.trim();
+  const userVal=document.getElementById('cfgUser').value.trim()||_ghUser;
+  const repoVal=document.getElementById('cfgRepo').value.trim()||_ghRepo;
+  cfg.ghToken=tokVal;
+  cfg.ghUser=userVal;
+  cfg.ghRepo=repoVal;
+  _ghToken=tokVal;
+  console.log('saveAll: token=',tokVal?tokVal.substring(0,8)+'...':'EMPTY','user=',userVal,'repo=',repoVal);
 
   const btn=document.getElementById('saveBtn');
   btn.textContent='⏳ שומר...';btn.classList.add('saving');
