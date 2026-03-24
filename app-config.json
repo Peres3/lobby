@@ -17,6 +17,13 @@
       "username": "אבי",
       "password": "1234",
       "role": "user"
+    },
+    {
+      "id": 1774369671251,
+      "name": "מני",
+      "username": "מני",
+      "password": "2460",
+      "role": "user"
     }
   ],
   "tabs": [
