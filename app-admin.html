@@ -353,15 +353,28 @@ function ghUrl(path){return `https://api.github.com/repos/${cfg.ghUser||_ghUser}
 async function ghGet(path){
   return fetch(ghUrl(path),{headers:{Authorization:'token '+(_ghToken||cfg.ghToken),'Content-Type':'application/json'}});
 }
-async function ghPut(path,content){
-  const r=await ghGet(path);
-  let sha;if(r.ok){const d=await r.json();sha=d.sha;}
-  const bytes=new TextEncoder().encode(content);
-  let b='';for(let i=0;i<bytes.length;i++)b+=String.fromCharCode(bytes[i]);
-  const b64=btoa(b);
-  const body={message:`Update ${path}`,content:b64};
-  if(sha)body.sha=sha;
-  return fetch(ghUrl(path),{method:'PUT',headers:{Authorization:'token '+(_ghToken||cfg.ghToken),'Content-Type':'application/json'},body:JSON.stringify(body)});
+async function ghPut(path,content,retries=3){
+  const tok=_ghToken||cfg.ghToken||document.getElementById('ghToken').value.trim();
+  const user=document.getElementById('cfgUser').value.trim()||cfg.ghUser||'peres3';
+  const repo=document.getElementById('cfgRepo').value.trim()||cfg.ghRepo||'lobby';
+  const url=`https://api.github.com/repos/${user}/${repo}/contents/${path}`;
+  for(let i=0;i<retries;i++){
+    // Always get fresh SHA
+    let sha=undefined;
+    try{
+      const rGet=await fetch(url,{headers:{Authorization:'token '+tok}});
+      if(rGet.ok){const d=await rGet.json();sha=d.sha;}
+    }catch(e){}
+    const bytes=new TextEncoder().encode(content);
+    let b='';for(let j=0;j<bytes.length;j++)b+=String.fromCharCode(bytes[j]);
+    const b64=btoa(b);
+    const body={message:`Update ${path}`,content:b64};
+    if(sha)body.sha=sha;
+    const r=await fetch(url,{method:'PUT',headers:{Authorization:'token '+tok,'Content-Type':'application/json'},body:JSON.stringify(body)});
+    if(r.ok)return r;
+    if(r.status===409&&i<retries-1){await new Promise(x=>setTimeout(x,400));continue;}
+    return r;
+  };
 }
 
 // ── LOGIN ──
