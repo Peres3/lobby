@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0D47A1">
+<title>שמעון פרס 3</title>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+:root{
+  --B:#1565C0;--B2:#1976D2;--B3:#0D47A1;
+  --bg:#EEF3FA;--tx:#1a2540;--tx2:#4a5568;--tx3:#8898aa;
+  --r:14px;--sh:0 4px 20px rgba(21,101,192,.13);
+  --safe-top:env(safe-area-inset-top,0px);
+  --safe-bot:env(safe-area-inset-bottom,0px);
+}
+html,body{height:100%;overflow:hidden;background:var(--bg);font-family:'Heebo',sans-serif;color:var(--tx);}
+
+/* SPLASH */
+#splash{position:fixed;inset:0;z-index:9999;background:linear-gradient(145deg,#0D47A1,#1565C0);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;transition:opacity .5s;}
+#splash.hide{opacity:0;pointer-events:none;}
+.splash-logo{width:90px;height:90px;border-radius:24px;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-size:2.8rem;box-shadow:0 8px 32px rgba(0,0,0,.3);animation:popIn .5s cubic-bezier(.34,1.56,.64,1);}
+@keyframes popIn{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
+.splash-title{font-size:1.5rem;font-weight:900;color:#fff;}
+.splash-sub{font-size:.8rem;color:rgba(255,255,255,.6);}
+.splash-spin{width:32px;height:32px;border:3px solid rgba(255,255,255,.2);border-top-color:#fff;border-radius:50%;animation:spin .8s linear infinite;margin-top:8px;}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+/* LOGIN */
+#loginScreen{position:fixed;inset:0;z-index:500;display:none;flex-direction:column;align-items:center;justify-content:center;padding:24px;background:linear-gradient(145deg,#EEF3FA,#dce8f8);}
+.login-logo{width:76px;height:76px;border-radius:22px;margin-bottom:16px;background:linear-gradient(135deg,var(--B),var(--B3));display:flex;align-items:center;justify-content:center;font-size:2.2rem;box-shadow:0 8px 30px rgba(21,101,192,.35);}
+.login-title{font-size:1.35rem;font-weight:800;color:var(--B3);margin-bottom:4px;}
+.login-sub{font-size:.78rem;color:var(--tx3);margin-bottom:28px;}
+.login-card{width:100%;max-width:360px;background:#fff;border-radius:20px;padding:26px 22px;box-shadow:var(--sh);}
+.flbl{font-size:.73rem;color:var(--tx2);font-weight:600;margin-bottom:5px;}
+.fi{width:100%;padding:12px 14px;border:2px solid #e2e8f0;border-radius:10px;font-size:.95rem;font-family:'Heebo',sans-serif;outline:none;background:#f8fafc;transition:border-color .2s;}
+.fi:focus{border-color:var(--B);background:#fff;}
+.btn-login{width:100%;margin-top:16px;padding:13px;border:none;border-radius:10px;background:linear-gradient(135deg,var(--B),var(--B3));color:#fff;font-size:.95rem;font-weight:700;font-family:'Heebo',sans-serif;cursor:pointer;transition:opacity .2s,transform .15s;}
+.btn-login:active{opacity:.85;transform:scale(.97);}
+.login-err{color:#c62828;font-size:.73rem;text-align:center;margin-top:8px;min-height:16px;}
+
+/* CHROME */
+#statusBar{position:fixed;top:0;left:0;right:0;height:calc(44px + var(--safe-top));padding-top:var(--safe-top);background:var(--B3);display:flex;align-items:center;justify-content:space-between;padding-left:16px;padding-right:16px;z-index:200;box-shadow:0 2px 10px rgba(0,0,0,.3);}
+.app-title{font-size:1rem;font-weight:800;color:#fff;display:flex;align-items:center;gap:8px;}
+#connDot{width:8px;height:8px;border-radius:50%;background:#FFC107;transition:background .3s;}
+#connDot.ok{background:#4CAF50;box-shadow:0 0 6px #4CAF50;}
+#connDot.err{background:#f44336;}
+#statusTxt{font-size:.63rem;color:rgba(255,255,255,.65);}
+#appBody{position:fixed;top:calc(44px + var(--safe-top));bottom:calc(56px + var(--safe-bot));left:0;right:0;overflow:hidden;}
+.screen{position:absolute;inset:0;display:none;background:#fff;}
+.screen.active{display:block;}
+.app-frame{width:100%;height:100%;border:none;}
+.frame-loading{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#0a1628;color:#fff;gap:10px;pointer-events:none;transition:opacity .3s;}
+.frame-loading.hide{opacity:0;}
+.fr-spin{width:36px;height:36px;border:3px solid rgba(255,255,255,.2);border-top-color:#fff;border-radius:50%;animation:spin .8s linear infinite;}
+
+/* DEBUG */
+#debugScreen{padding:16px;overflow-y:auto;background:var(--bg);}
+.sec-h{padding:4px 2px 8px;font-size:.72rem;font-weight:700;color:var(--tx3);text-transform:uppercase;letter-spacing:.08em;}
+.dbg-card{background:#fff;border-radius:12px;padding:14px 16px;margin-bottom:10px;box-shadow:0 2px 8px rgba(21,101,192,.08);}
+.dbg-row{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid #f0f4f8;font-size:.77rem;}
+.dbg-row:last-child{border:none;}
+.dbg-key{color:var(--tx3);font-weight:500;}
+.dbg-val{color:var(--tx);font-weight:600;direction:ltr;text-align:left;max-width:58%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.dbg-val.ok{color:#2e7d32;}.dbg-val.err{color:#c62828;}.dbg-val.warn{color:#e65100;}
+.dbg-btn{width:100%;padding:10px;border:none;border-radius:8px;background:linear-gradient(135deg,var(--B),var(--B3));color:#fff;font-size:.82rem;font-weight:700;font-family:'Heebo',sans-serif;cursor:pointer;margin-top:6px;}
+.dbg-btn.red{background:linear-gradient(135deg,#c62828,#b71c1c);}
+.dbg-btn.green{background:linear-gradient(135deg,#2e7d32,#1b5e20);}
+#dbgLog{background:#0a1628;color:#4CAF50;border-radius:10px;padding:10px;font-family:monospace;font-size:.66rem;max-height:160px;overflow-y:auto;white-space:pre-wrap;margin-top:8px;}
+
+/* BOTTOM NAV */
+#bottomNav{position:fixed;bottom:0;left:0;right:0;height:calc(56px + var(--safe-bot));padding-bottom:var(--safe-bot);background:#fff;display:flex;border-top:1px solid rgba(21,101,192,.12);box-shadow:0 -4px 20px rgba(21,101,192,.08);z-index:200;}
+.nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;border:none;background:none;cursor:pointer;color:var(--tx3);font-size:.56rem;font-weight:500;transition:color .2s,transform .15s;padding-bottom:2px;overflow:hidden;}
+.nav-btn .nav-ico{font-size:1.3rem;line-height:1;transition:transform .2s;}
+.nav-btn .nav-lbl{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;width:100%;text-align:center;padding:0 4px;}
+.nav-btn.active{color:var(--B);}
+.nav-btn.active .nav-ico{transform:scale(1.15);}
+.nav-btn:active{transform:scale(.92);}
+
+/* TOAST */
+#toast{position:fixed;bottom:calc(68px + var(--safe-bot));left:50%;transform:translateX(-50%) translateY(20px);background:#323232;color:#fff;padding:9px 18px;border-radius:20px;font-size:.78rem;font-weight:600;z-index:9999;opacity:0;transition:opacity .3s,transform .3s;pointer-events:none;white-space:nowrap;}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+#toast.ok{background:#2e7d32;}#toast.err{background:#c62828;}
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-8px)}40%{transform:translateX(8px)}60%{transform:translateX(-5px)}80%{transform:translateX(5px)}}
+</style>
+</head>
+<body>
+
+<!-- SPLASH -->
+<div id="splash">
+  <div class="splash-logo">🏢</div>
+  <div class="splash-title">שמעון פרס 3</div>
+  <div class="splash-sub">מערכת לובי חכמה</div>
+  <div class="splash-spin"></div>
+</div>
+
+<!-- LOGIN -->
+<div id="loginScreen">
+  <div class="login-logo">🏢</div>
+  <div class="login-title">שמעון פרס 3</div>
+  <div class="login-sub">כניסה למערכת</div>
+  <div class="login-card">
+    <div class="flbl">שם משתמש</div>
+    <input class="fi" id="loginUser" placeholder="שם משתמש" style="direction:rtl;margin-bottom:10px;" onkeydown="if(event.key==='Enter')document.getElementById('loginPwd').focus()">
+    <div class="flbl">סיסמה</div>
+    <input class="fi" id="loginPwd" type="password" placeholder="סיסמה" onkeydown="if(event.key==='Enter')doLogin()">
+    <button class="btn-login" onclick="doLogin()">כניסה למערכת</button>
+    <div class="login-err" id="loginErr"></div>
+  </div>
+</div>
+
+<!-- STATUS BAR -->
+<div id="statusBar" style="display:none;">
+  <div class="app-title"><span id="appTitleTxt">🏢 שמעון פרס 3</span></div>
+  <div style="display:flex;align-items:center;gap:8px;">
+    <span id="statusTxt">מתחבר...</span>
+    <div id="connDot"></div>
+  </div>
+</div>
+
+<!-- APP BODY -->
+<div id="appBody" style="display:none;">
+  <div class="screen" id="screen-debug">
+    <div id="debugScreen">
+      <div class="sec-h">🔧 מידע מערכת</div>
+      <div class="dbg-card">
+        <div class="dbg-row"><span class="dbg-key">גרסה</span><span class="dbg-val" id="dVer">1.0.0</span></div>
+        <div class="dbg-row"><span class="dbg-key">משתמש מחובר</span><span class="dbg-val" id="dUser">—</span></div>
+        <div class="dbg-row"><span class="dbg-key">GitHub Repo</span><span class="dbg-val" id="dRepo">—</span></div>
+        <div class="dbg-row"><span class="dbg-key">Token</span><span class="dbg-val" id="dToken">—</span></div>
+        <div class="dbg-row"><span class="dbg-key">GitHub API</span><span class="dbg-val" id="dGH">—</span></div>
+        <div class="dbg-row"><span class="dbg-key">settings.json</span><span class="dbg-val" id="dSettings">—</span></div>
+        <div class="dbg-row"><span class="dbg-key">אינטרנט</span><span class="dbg-val" id="dNet">—</span></div>
+        <div class="dbg-row"><span class="dbg-key">כרטיסיות</span><span class="dbg-val" id="dTabs">—</span></div>
+      </div>
+      <div class="sec-h">פעולות</div>
+      <div class="dbg-card">
+        <button class="dbg-btn green" onclick="runDbgCheck()">🔄 בדוק חיבורים</button>
+        <button class="dbg-btn" onclick="reloadCurrentTab()" style="margin-top:6px;">🔃 רענן כרטיסייה</button>
+        <button class="dbg-btn red" onclick="doLogout()" style="margin-top:6px;">🚪 התנתק</button>
+      </div>
+      <div class="sec-h">לוג</div>
+      <div class="dbg-card" style="padding:0;overflow:hidden;">
+        <div id="dbgLog">// לוג\n</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BOTTOM NAV -->
+<div id="bottomNav" style="display:none;"></div>
+<div id="toast"></div>
+
+<script>
+'use strict';
+const APP_VER='1.0.0';
+const GH_USER='peres3',GH_REPO='lobby',CFG_FILE='app-config.json';
+const RAW_BASE='https://raw.githubusercontent.com/'+GH_USER+'/'+GH_REPO+'/main/';
+let appCfg=null,currentUser=null,currentTab=null,loadedTabs={};
+
+function log(msg){
+  const el=document.getElementById('dbgLog');if(!el)return;
+  const t=new Date(),ts=String(t.getHours()).padStart(2,'0')+':'+String(t.getMinutes()).padStart(2,'0')+':'+String(t.getSeconds()).padStart(2,'0');
+  el.textContent+='['+ts+'] '+msg+'\n';el.scrollTop=el.scrollHeight;
+}
+
+async function init(){
+  log('🚀 v'+APP_VER);
+  updateConn(navigator.onLine);
+  try{
+    const r=await fetch(RAW_BASE+CFG_FILE+'?t='+Date.now());
+    if(r.ok){appCfg=await r.json();log('✅ config נטען');if(appCfg.ghToken)localStorage.setItem('sp3_token',appCfg.ghToken);}
+    else{log('⚠️ config חסר ('+r.status+')');appCfg=defCfg();}
+  }catch(e){log('⚠️ '+e.message);appCfg=defCfg();}
+  setTimeout(()=>{
+    document.getElementById('splash').classList.add('hide');
+    setTimeout(()=>{document.getElementById('splash').style.display='none';showLogin();},500);
+  },1200);
+}
+
+function defCfg(){return{users:[{id:1,name:'מנהל',username:'admin',password:'1234',role:'admin'}],tabs:[{id:1,name:'לובי',icon:'📺',url:'https://peres3.github.io/lobby/'},{id:2,name:'ניהול',icon:'⚙️',url:'https://peres3.github.io/lobby/admin.html'},{id:3,name:'Debug',icon:'🔧',url:''}],ghToken:'',ghUser:GH_USER,ghRepo:GH_REPO};}
+
+function showLogin(){document.getElementById('loginScreen').style.display='flex';setTimeout(()=>document.getElementById('loginUser').focus(),200);}
+
+function doLogin(){
+  const u=document.getElementById('loginUser').value.trim();
+  const p=document.getElementById('loginPwd').value;
+  const err=document.getElementById('loginErr');
+  const user=(appCfg.users||[]).find(x=>x.username===u&&x.password===p);
+  if(user){
+    currentUser=user;document.getElementById('loginScreen').style.display='none';
+    launchApp();log('✅ כניסה: '+user.name);
+  } else {
+    err.textContent='❌ שם משתמש או סיסמה שגויים';
+    document.getElementById('loginPwd').value='';
+    const c=document.querySelector('.login-card');c.style.animation='shake .4s ease';
+    setTimeout(()=>{c.style.animation='';err.textContent='';},3000);
+  }
+}
+
+function doLogout(){
+  currentUser=null;currentTab=null;loadedTabs={};
+  document.querySelectorAll('.app-frame').forEach(f=>f.src='about:blank');
+  document.getElementById('appBody').style.display='none';
+  document.getElementById('bottomNav').style.display='none';
+  document.getElementById('statusBar').style.display='none';
+  document.getElementById('loginUser').value='';document.getElementById('loginPwd').value='';
+  showLogin();showToast('👋 התנתקת');log('🚪 התנתקות');
+}
+
+function launchApp(){
+  buildUI();
+  document.getElementById('statusBar').style.display='flex';
+  document.getElementById('appBody').style.display='block';
+  document.getElementById('bottomNav').style.display='flex';
+  const tabs=appCfg.tabs||[];
+  const first=tabs.find(t=>t.url&&t.url!=='')||tabs[0];
+  if(first)showTab(first.id);
+}
+
+function buildUI(){
+  const tabs=appCfg.tabs||[];
+  const body=document.getElementById('appBody');
+  const nav=document.getElementById('bottomNav');
+  body.querySelectorAll('.screen:not(#screen-debug)').forEach(s=>s.remove());
+  tabs.forEach(tab=>{
+    if(!tab.url){return;} // debug-type
+    const div=document.createElement('div');
+    div.className='screen';div.id='screen-'+tab.id;div.style.background='#000';
+    div.innerHTML='<div class="frame-loading" id="loading-'+tab.id+'"><div class="fr-spin"></div><span style="font-size:.8rem;color:rgba(255,255,255,.7);">טוען '+tab.name+'...</span></div><iframe class="app-frame" id="frame-'+tab.id+'" src="about:blank" onload="onFrameLoad('+tab.id+')"></iframe>';
+    body.appendChild(div);
+  });
+  nav.innerHTML='';
+  tabs.forEach(tab=>{
+    const btn=document.createElement('button');btn.className='nav-btn';btn.id='nav-'+tab.id;
+    btn.innerHTML='<span class="nav-ico">'+(tab.icon||'📄')+'</span><span class="nav-lbl">'+tab.name+'</span>';
+    btn.onclick=()=>showTab(tab.id);
+    nav.appendChild(btn);
+  });
+}
+
+function showTab(tabId){
+  currentTab=tabId;
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  const tab=(appCfg.tabs||[]).find(t=>t.id===tabId);
+  if(!tab||!tab.url){
+    document.getElementById('screen-debug').classList.add('active');
+    const nb=document.getElementById('nav-'+tabId);if(nb)nb.classList.add('active');
+    runDbgCheck();return;
+  }
+  const screen=document.getElementById('screen-'+tabId);
+  const navBtn=document.getElementById('nav-'+tabId);
+  if(screen)screen.classList.add('active');
+  if(navBtn)navBtn.classList.add('active');
+  if(!loadedTabs[tabId]){
+    const frame=document.getElementById('frame-'+tabId);
+    if(frame){frame.src=tab.url;loadedTabs[tabId]=true;log('🔃 '+tab.name);}
+  }
+}
+
+function onFrameLoad(tabId){
+  const l=document.getElementById('loading-'+tabId);if(l)l.classList.add('hide');
+}
+
+function reloadCurrentTab(){
+  const tab=(appCfg.tabs||[]).find(t=>t.id===currentTab);
+  if(!tab||!tab.url){runDbgCheck();return;}
+  const frame=document.getElementById('frame-'+currentTab);
+  const loading=document.getElementById('loading-'+currentTab);
+  if(frame){if(loading)loading.classList.remove('hide');loadedTabs[currentTab]=false;frame.src=tab.url+'?t='+Date.now();showToast('🔃 מרענן...');}
+}
+
+async function runDbgCheck(){
+  const set=(id,val,cls)=>{const el=document.getElementById(id);if(el){el.textContent=val;el.className='dbg-val '+(cls||'');}};
+  set('dVer',APP_VER);
+  set('dUser',currentUser?currentUser.name+' ('+currentUser.role+')':'לא מחובר',currentUser?'ok':'err');
+  set('dRepo',(appCfg&&appCfg.ghUser||GH_USER)+'/'+(appCfg&&appCfg.ghRepo||GH_REPO));
+  set('dNet',navigator.onLine?'מחובר':'לא מחובר',navigator.onLine?'ok':'err');
+  set('dTabs',(appCfg&&appCfg.tabs&&appCfg.tabs.length||0)+' כרטיסיות');
+  const token=appCfg&&appCfg.ghToken||localStorage.getItem('sp3_token');
+  set('dToken',token?'✅ ('+token.length+' תווים)':'❌ חסר',token?'ok':'err');
+  set('dGH','בודק...','warn');
+  try{
+    const r=await fetch('https://api.github.com/repos/'+(appCfg&&appCfg.ghUser||GH_USER)+'/'+(appCfg&&appCfg.ghRepo||GH_REPO),{headers:token?{Authorization:'token '+token}:{}});
+    set('dGH',r.ok?'✅ '+r.status:'❌ '+r.status,r.ok?'ok':'err');
+  }catch(e){set('dGH','❌ '+e.message,'err');}
+  set('dSettings','בודק...','warn');
+  try{
+    const r2=await fetch(RAW_BASE+'settings.json?t='+Date.now());
+    if(r2.ok){const t2=await r2.text();const kb=Math.round(t2.length/1024);set('dSettings','✅ '+kb+'KB',kb>800?'warn':'ok');}
+    else set('dSettings','❌ '+r2.status,'err');
+  }catch(e){set('dSettings','❌ '+e.message,'err');}
+  updateConn(navigator.onLine);
+}
+
+function updateConn(ok){
+  const dot=document.getElementById('connDot');const txt=document.getElementById('statusTxt');
+  if(dot){dot.className=ok?'ok':'err';}
+  if(txt)txt.textContent=ok?'מחובר':'אין חיבור';
+}
+window.addEventListener('online',()=>{updateConn(true);log('📶 חיבור חזר');});
+window.addEventListener('offline',()=>{updateConn(false);log('📵 אין חיבור');});
+
+let _tTm=null;
+function showToast(msg,type=''){const t=document.getElementById('toast');t.textContent=msg;t.className='show '+(type||'');if(_tTm)clearTimeout(_tTm);_tTm=setTimeout(()=>t.className='',2500);}
+
+init();
+</script>
+</body>
+</html>
