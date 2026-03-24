@@ -349,38 +349,38 @@ let _ghUser='peres3',_ghRepo='lobby',_ghToken='';
 let _loggedIn=false;
 
 // ── GITHUB HELPERS ──
-function ghUrl(path){return `https://api.github.com/repos/${cfg.ghUser||_ghUser}/${cfg.ghRepo||_ghRepo}/contents/${path}`;}
+function getUser(){return document.getElementById('cfgUser')&&document.getElementById('cfgUser').value.trim()||cfg.ghUser||_ghUser||'peres3';}
+function getRepo(){return document.getElementById('cfgRepo')&&document.getElementById('cfgRepo').value.trim()||cfg.ghRepo||_ghRepo||'lobby';}
+function getTok(){return document.getElementById('ghToken')&&document.getElementById('ghToken').value.trim()||_ghToken||cfg.ghToken||'';}
+function ghUrl(path,branch){return `https://api.github.com/repos/${getUser()}/${getRepo()}/contents/${path}`+(branch?`?ref=${branch}`:'')}
 async function ghGet(path){
   return fetch(ghUrl(path),{headers:{Authorization:'token '+(_ghToken||cfg.ghToken),'Content-Type':'application/json'}});
 }
-async function ghPut(path,content,retries=3){
-  const tok=_ghToken||cfg.ghToken||document.getElementById('ghToken').value.trim();
-  const user=document.getElementById('cfgUser').value.trim()||cfg.ghUser||'peres3';
-  const repo=document.getElementById('cfgRepo').value.trim()||cfg.ghRepo||'lobby';
-  const url=`https://api.github.com/repos/${user}/${repo}/contents/${path}`;
-  for(let i=0;i<retries;i++){
-    // Always get fresh SHA
-    let sha=undefined;
-    try{
-      const rGet=await fetch(url,{headers:{Authorization:'token '+tok}});
-      console.log('ghPut GET status:',rGet.status);
-      if(rGet.status===200){const d=await rGet.json();sha=d.sha;console.log('ghPut SHA:',sha);}
-      else if(rGet.status===404){sha=undefined;console.log('ghPut: file does not exist, will create');}
-      else{console.log('ghPut GET unexpected:',rGet.status);sha=undefined;}
-    }catch(e){console.log('ghPut GET error:',e.message);sha=undefined;}
-    const bytes=new TextEncoder().encode(content);
-    let b='';for(let j=0;j<bytes.length;j++)b+=String.fromCharCode(bytes[j]);
-    const b64=btoa(b);
-    const body={message:`Update ${path}`,content:b64};
-    if(sha)body.sha=sha;
-    const r=await fetch(url,{method:'PUT',headers:{Authorization:'token '+tok,'Content-Type':'application/json'},body:JSON.stringify(body)});
-    if(r.ok)return r;
-    if(r.status===409&&i<retries-1){await new Promise(x=>setTimeout(x,400));continue;}
-    return r;
-  };
+async function ghPut(path,content){
+  const tok=getTok();
+  const url=`https://api.github.com/repos/${getUser()}/${getRepo()}/contents/${path}`;
+  // Step 1: get current SHA if file exists
+  let sha=undefined;
+  try{
+    const rGet=await fetch(url,{headers:{Authorization:'token '+tok,'Accept':'application/vnd.github.v3+json'}});
+    console.log('ghPut GET:',rGet.status,path);
+    if(rGet.ok){const d=await rGet.json();sha=d.sha;console.log('SHA found:',sha);}
+  }catch(e){console.log('ghPut GET err:',e);}
+  // Step 2: encode content
+  const bytes=new TextEncoder().encode(content);
+  let b='';for(let j=0;j<bytes.length;j++)b+=String.fromCharCode(bytes[j]);
+  const b64=btoa(b);
+  // Step 3: PUT
+  const body={message:'Update '+path,content:b64,branch:'main'};
+  if(sha)body.sha=sha;
+  console.log('ghPut PUT sha=',sha||'(new file)','branch:main');
+  const r=await fetch(url,{method:'PUT',
+    headers:{Authorization:'token '+tok,'Content-Type':'application/json','Accept':'application/vnd.github.v3+json'},
+    body:JSON.stringify(body)});
+  console.log('ghPut PUT result:',r.status);
+  return r;
 }
 
-// ── LOGIN ──
 async function doMasterLogin(){
   const pwd=document.getElementById('masterPwd').value;
   const err=document.getElementById('loginErr');
