@@ -1,16 +1,5 @@
 {
-  "announcements": [
-    {
-      "title": "גכע",
-      "body": "זגי",
-      "img": "",
-      "dateFrom": "2026-03-23",
-      "dateTo": "",
-      "timeFrom": "",
-      "timeTo": "",
-      "active": true
-    }
-  ],
+  "announcements": [],
   "settings": {
     "maintenance": false,
     "maintMsg": "שווה לכם לחכות 10 דקות לשדרוג המערכת..",
@@ -56,5 +45,5 @@
   },
   "quotes": [],
   "homefront": [],
-  "_updated": "2026-03-23T20:37:02.622Z"
+  "_updated": "2026-03-24T05:34:12.442Z"
 }
