@@ -715,7 +715,7 @@ async function handleHFFiles(files){
   setTimeout(()=>{prog.style.display='none';bar.style.width='0%';},800);
   showToast(`✅ ${done} תמונות`);$('hfFile').value='';
 }
-$('hfUplArea').addEventListener('click',()=>$('hfFile').click());
+const _hfUpl=$('hfUplArea');if(_hfUpl)_hfUpl.addEventListener('click',()=>$('hfFile').click());
 
 // ═══ EMERGENCY ═══
 function loadEmergUI(){const c=sg(K.e)||{};$('emergActive').checked=!!c.active;$('emergTitle').value=c.title||'';$('emergBody').value=c.body||'';}
@@ -815,8 +815,8 @@ function loadTokenInfo(){
   }
   const inp=$('ghToken');
   if(inp){
-    inp.placeholder=t?'ghp_xxxxxxxx (קיים — '+t.length+' תווים)':'ghp_xxxxxxxxxxxx';
-    if(t) inp.value=''; // Clear to show placeholder with existing token info
+    inp.placeholder='ghp_xxxxxxxxxxxx';
+    inp.value=t||'';
   }
   // Also update connection status
   if(t){const d=$('cdot'),c=$('ctxt');if(d&&!d.classList.contains('ok')){if(c)c.textContent='יש Token';}}
