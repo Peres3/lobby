@@ -58,6 +58,12 @@
       "name": "Debug",
       "icon": "🔧",
       "url": ""
+    },
+    {
+      "id": 1774370295448,
+      "name": "מנהל",
+      "icon": "📄",
+      "url": "https://peres3.github.io/lobby/app-admin.html"
     }
   ]
 }
