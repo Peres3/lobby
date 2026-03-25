@@ -60,12 +60,12 @@
   },
   "gallery": "_gallery.json",
   "widgets": {
-    "ytShow": true,
+    "ytShow": false,
     "ytUrl": "https://youtu.be/4k8uGCPxRZw?si=9iPbhbhqcLOKysbp",
     "ytMode": "video",
     "galEnabled": false
   },
   "quotes": [],
   "homefront": [],
-  "_updated": "2026-03-25T08:50:25.709Z"
+  "_updated": "2026-03-25T08:54:26.572Z"
 }
