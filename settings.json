@@ -54,8 +54,8 @@
     "fontFamily": "Heebo",
     "fontSize": 16,
     "bgOverlay": 80,
-    "glassBlur": 4,
-    "cardOpacity": 10
+    "glassBlur": 8,
+    "cardOpacity": 80
   },
   "gallery": "_gallery.json",
   "widgets": {
@@ -66,5 +66,5 @@
   },
   "quotes": [],
   "homefront": [],
-  "_updated": "2026-03-25T10:36:36.799Z"
+  "_updated": "2026-03-25T10:36:50.727Z"
 }
