@@ -1,16 +1,5 @@
 {
-  "announcements": [
-    {
-      "title": "מחר",
-      "body": "בשעה 10 היכונו",
-      "img": "",
-      "dateFrom": "2026-03-25",
-      "dateTo": "",
-      "timeFrom": "",
-      "timeTo": "",
-      "active": true
-    }
-  ],
+  "announcements": [],
   "settings": {
     "maintenance": false,
     "maintMsg": "שווה לכם לחכות 10 דקות לשדרוג המערכת..",
@@ -60,5 +49,5 @@
   },
   "quotes": [],
   "homefront": [],
-  "_updated": "2026-03-25T07:22:12.687Z"
+  "_updated": "2026-03-25T08:07:26.376Z"
 }
