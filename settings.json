@@ -53,7 +53,6 @@
     "txt": "#1a2540",
     "fontFamily": "Heebo",
     "fontSize": 16,
-    "bgImage": "_bg-image.jpg",
     "bgOverlay": 10,
     "glassBlur": 4,
     "cardOpacity": 20
@@ -67,5 +66,5 @@
   },
   "quotes": [],
   "homefront": [],
-  "_updated": "2026-03-25T10:03:32.374Z"
+  "_updated": "2026-03-25T10:32:58.583Z"
 }
