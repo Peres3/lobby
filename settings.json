@@ -53,8 +53,8 @@
     "txt": "#1a2540",
     "fontFamily": "Heebo",
     "fontSize": 16,
-    "bgOverlay": 20,
-    "glassBlur": 8,
+    "bgOverlay": 10,
+    "glassBlur": 4,
     "cardOpacity": 80
   },
   "gallery": "_gallery.json",
@@ -66,5 +66,5 @@
   },
   "quotes": [],
   "homefront": [],
-  "_updated": "2026-03-25T10:37:38.279Z"
+  "_updated": "2026-03-25T10:38:17.586Z"
 }
