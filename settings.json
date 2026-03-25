@@ -1,16 +1,5 @@
 {
-  "announcements": [
-    {
-      "title": "חדש",
-      "body": "נראה אם עובד",
-      "img": "",
-      "dateFrom": "2026-03-25",
-      "dateTo": "2026-03-26",
-      "timeFrom": "10:00",
-      "timeTo": "12:00",
-      "active": true
-    }
-  ],
+  "announcements": [],
   "settings": {
     "maintenance": false,
     "maintMsg": "שווה לכם לחכות 10 דקות לשדרוג המערכת..",
@@ -67,5 +56,5 @@
   },
   "quotes": [],
   "homefront": [],
-  "_updated": "2026-03-25T08:39:39.485Z"
+  "_updated": "2026-03-25T08:39:58.364Z"
 }
