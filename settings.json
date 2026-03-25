@@ -5,9 +5,9 @@
       "body": "הכל עובד! ב\"ה",
       "img": "",
       "dateFrom": "2026-03-25",
-      "dateTo": "2026-03-26",
-      "timeFrom": "10:00",
-      "timeTo": "13:00",
+      "dateTo": "",
+      "timeFrom": "",
+      "timeTo": "",
       "active": true
     }
   ],
@@ -55,7 +55,7 @@
     "fontSize": 16,
     "bgOverlay": 10,
     "glassBlur": 4,
-    "cardOpacity": 57
+    "cardOpacity": 20
   },
   "gallery": "_gallery.json",
   "widgets": {
@@ -66,5 +66,5 @@
   },
   "quotes": [],
   "homefront": [],
-  "_updated": "2026-03-25T11:49:46.252Z"
+  "_updated": "2026-03-25T11:50:12.730Z"
 }
