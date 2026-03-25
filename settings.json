@@ -43,7 +43,7 @@
   },
   "emergency": {
     "active": true,
-    "title": "",
+    "title": "הפסקת חשמ",
     "body": ""
   },
   "design": {
@@ -67,5 +67,5 @@
   },
   "quotes": [],
   "homefront": [],
-  "_updated": "2026-03-25T08:41:23.805Z"
+  "_updated": "2026-03-25T08:41:25.580Z"
 }
