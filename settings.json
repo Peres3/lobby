@@ -55,7 +55,7 @@
     "fontSize": 16,
     "bgOverlay": 10,
     "glassBlur": 4,
-    "cardOpacity": 40
+    "cardOpacity": 75
   },
   "gallery": "_gallery.json",
   "widgets": {
@@ -66,5 +66,5 @@
   },
   "quotes": [],
   "homefront": [],
-  "_updated": "2026-03-25T10:35:02.534Z"
+  "_updated": "2026-03-25T10:35:24.915Z"
 }
