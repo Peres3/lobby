@@ -43,8 +43,8 @@
   },
   "emergency": {
     "active": true,
-    "title": "הפסקת חשמ",
-    "body": ""
+    "title": "הפסקת חשמל",
+    "body": "בודקים"
   },
   "design": {
     "main": "#1565c0",
@@ -67,5 +67,5 @@
   },
   "quotes": [],
   "homefront": [],
-  "_updated": "2026-03-25T08:41:25.580Z"
+  "_updated": "2026-03-25T08:41:30.388Z"
 }
