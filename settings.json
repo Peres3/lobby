@@ -30,7 +30,7 @@
   },
   "sleep": {
     "manualOff": false,
-    "enabled": true,
+    "enabled": false,
     "days": [
       0,
       1,
@@ -67,5 +67,5 @@
   },
   "quotes": [],
   "homefront": [],
-  "_updated": "2026-03-25T08:41:00.448Z"
+  "_updated": "2026-03-25T08:41:20.603Z"
 }
