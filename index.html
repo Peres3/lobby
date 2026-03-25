@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>לובי | שמעון פרס 3</title>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --B:#1565C0;--B2:#1976D2;--B3:#0D47A1;--B4:#42A5F5;--B5:#E3F2FD;--B6:#BBDEFB;
+  --T:#00838F;--T2:#00BCD4;--T5:#E0F7FA;
+  --P:#6A1B9A;--P5:#F3E5F5;
+  --O:#E65100;--O2:#FF8F00;--O5:#FFF3E0;
+  --bg:#EEF3FA;--W:#FFF;
+  --tx:#1A2B45;--tx2:#3D5475;--tx3:#8AA0BC;
+  --r:12px;--r2:8px;
+  --sh:0 2px 10px rgba(21,101,192,.1);
+  --sh2:0 3px 16px rgba(21,101,192,.16);
+}
+html,body{width:100vw;height:100vh;overflow:hidden;background:var(--bg);font-family:'Heebo',sans-serif;color:var(--tx);}
+
+/* ─── HEADER ─────────────────────────────────────────── */
+.hdr{
+  height:11vh;
+  background:linear-gradient(120deg,#005B8E 0%,#0277BD 40%,#0288D1 70%,#039BE5 100%);
+  display:flex;flex-direction:row;
+  align-items:center;padding:0 1.4vw;gap:0;
+  box-shadow:0 3px 16px rgba(1,87,155,.4);position:relative;
+}
+.hdr::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,transparent,var(--T2),var(--B4),var(--T2),transparent);}
+
+.h-bldg{display:flex;flex-direction:column;align-items:flex-end;width:20vw;flex-shrink:0;}
+.h-name{font-size:clamp(1.2rem,2.2vw,2.8rem);font-weight:900;color:#fff;letter-spacing:.03em;text-shadow:0 1px 6px rgba(0,0,0,.3);}
+.h-addr{font-size:clamp(.55rem,.75vw,.85rem);color:rgba(255,255,255,.55);margin-top:1px;}
+.h-addr::before{content:'📍 ';}
+
+.h-clock{text-align:center;flex:1;}
+.clk{font-size:clamp(2.2rem,4.8vw,5.5rem);font-weight:900;color:#fff;
+  font-variant-numeric:tabular-nums;line-height:1;letter-spacing:.06em;
+  text-shadow:0 2px 24px rgba(0,0,0,.18);}
+.colon{animation:blink 1s step-end infinite;color:var(--T2);}
+@keyframes blink{50%{opacity:.12;}}
+.h-dates{display:flex;justify-content:center;gap:1vw;margin-top:.25vh;}
+.h-d{font-size:clamp(.52rem,.68vw,.78rem);color:rgba(255,255,255,.75);}
+.h-heb{font-size:clamp(.52rem,.68vw,.78rem);color:var(--B4);font-weight:600;}
+.h-sep{color:rgba(255,255,255,.3);}
+
+.h-left{display:flex;align-items:center;justify-content:flex-end;gap:.6vw;width:20vw;flex-shrink:0;}
+.conn-p{display:flex;align-items:center;gap:.35vw;background:rgba(255,255,255,.13);
+  border:1px solid rgba(255,255,255,.2);border-radius:20px;padding:.2vh .55vw;}
+.cdot{width:7px;height:7px;border-radius:50%;background:#69F0AE;
+  box-shadow:0 0 6px #69F0AE;animation:pu 2s ease-in-out infinite;}
+@keyframes pu{0%,100%{opacity:1;}50%{opacity:.2;}}
+.ctxt{font-size:clamp(.48rem,.62vw,.7rem);color:rgba(255,255,255,.88);}
+
+/* ─── LAYOUT ──────────────────────────────────────────── */
+.screen{height:calc(100vh - 11vh - 3vh);display:grid;
+  grid-template-columns:22vw 1fr 30vw;
+  gap:.65vw;padding:.65vw .65vw 0;direction:ltr;
+  align-items:stretch;}
+
+/* ─── CARD ─────────────────────────────────────────────── */
+.card{background:var(--W);border-radius:var(--r);box-shadow:var(--sh);
+  overflow:hidden;display:flex;flex-direction:column;direction:rtl;}
+.ch{display:flex;align-items:center;gap:.45vw;padding:.42vh .75vw;flex-shrink:0;}
+.ch.b{background:linear-gradient(120deg,var(--B3),var(--B2));}
+.ch.t{background:linear-gradient(120deg,var(--T),var(--T2));}
+.ch.p{background:linear-gradient(120deg,var(--P),#AB47BC);}
+.ch.o{background:linear-gradient(120deg,var(--O),var(--O2));}
+.ch.r{background:linear-gradient(120deg,#B71C1C,#E53935);}
+.ci{font-size:clamp(.85rem,1.05vw,1.2rem);}
+.ct{font-size:clamp(.58rem,.75vw,.85rem);font-weight:700;color:#fff;letter-spacing:.07em;}
+.cb{padding:.45vh .65vw;flex:1;overflow:hidden;min-height:0;display:flex;flex-direction:column;}
+
+/* ─── LEFT: info ─────────────────────────────────────── */
+.lcol{display:flex;flex-direction:column;gap:.55vh;direction:rtl;height:100%;}
+.lcol .card{flex-shrink:0;}
+.lcol .card.grow{flex:1 !important;min-height:0;flex-shrink:1 !important;}
+.lcol .card:last-child{flex:1;min-height:0;}
+
+/* Weather */
+.w-top{display:flex;align-items:center;gap:.5vw;margin-bottom:.25vh;}
+.w-i{font-size:clamp(1.7rem,2.6vw,3.2rem);}
+.w-temp{font-size:clamp(1.7rem,2.6vw,3.2rem);font-weight:900;color:var(--B);line-height:1;}
+.w-temp sup{font-size:38%;color:var(--B2);}
+.w-d{font-size:clamp(.52rem,.67vw,.75rem);color:var(--tx2);font-weight:600;margin-top:1px;}
+.w-tags{display:flex;gap:.25vw;flex-wrap:wrap;margin-bottom:.25vh;}
+.wt{font-size:clamp(.44rem,.55vw,.62rem);background:var(--B5);color:var(--B3);border-radius:20px;padding:1px .4vw;font-weight:600;}
+.cw{width:100%;height:26px;margin-bottom:.2vh;}
+.fc{display:flex;gap:.25vw;}
+.fc-d{flex:1;background:var(--bg);border-radius:var(--r2);text-align:center;padding:.28vh .18vw;border:1px solid rgba(21,101,192,.08);}
+.fcd{font-size:clamp(.4rem,.5vw,.56rem);color:var(--tx3);margin-bottom:1px;}
+.fci{font-size:.82rem;}
+.fch{font-size:clamp(.5rem,.62vw,.7rem);font-weight:700;color:var(--B);}
+.fcl{font-size:clamp(.42rem,.52vw,.58rem);color:var(--tx3);}
+
+/* Zmanim */
+.tg{display:grid;gap:2px;width:100%;}
+.tg.c5{grid-template-columns:1fr 1fr 1fr;}
+.tg.c6{grid-template-columns:1fr 1fr 1fr;}
+.tg.c7{grid-template-columns:1fr 1fr 1fr 1fr;}
+.ti{background:var(--T5);border-radius:var(--r2);padding:.28vh .22vw;text-align:center;border:1px solid rgba(0,131,143,.1);}
+.tl{font-size:clamp(.35rem,.43vw,.48rem);color:var(--T);margin-bottom:1px;white-space:nowrap;}
+.tv{font-size:clamp(.66rem,.92vw,1.02rem);font-weight:700;color:var(--T);font-variant-numeric:tabular-nums;}
+
+/* Parasha */
+.p-n{font-size:clamp(1rem,1.7vw,2.1rem);font-weight:900;color:var(--P);line-height:1;margin-bottom:.15vh;}
+.p-sp{font-size:clamp(.56rem,.72vw,.82rem);color:var(--tx2);font-weight:600;margin-bottom:.28vh;}
+.shab-r{display:flex;align-items:center;gap:.35vw;margin-bottom:.15vh;}
+.si{font-size:clamp(.85rem,1.1vw,1.3rem);animation:fl 1.8s ease-in-out infinite alternate;}
+@keyframes fl{0%{filter:drop-shadow(0 0 2px #fa0);}100%{filter:drop-shadow(0 0 7px #f70);}}
+.sl{font-size:clamp(.56rem,.72vw,.82rem);font-weight:700;color:var(--P);}
+.sd{font-size:clamp(.46rem,.58vw,.65rem);color:var(--tx3);margin-bottom:.28vh;}
+.sh3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:2px;}
+.shb{background:linear-gradient(135deg,var(--P),#AB47BC);border-radius:var(--r2);text-align:center;padding:.28vh .22vw;}
+.sbl{font-size:clamp(.32rem,.42vw,.47rem);color:rgba(255,255,255,.7);margin-bottom:1px;}
+.sbv{font-size:clamp(.64rem,.9vw,1rem);font-weight:700;color:#fff;font-variant-numeric:tabular-nums;}
+
+/* Hagim */
+.hn{font-size:clamp(.66rem,.85vw,.96rem);font-weight:700;color:var(--O);margin-bottom:.1vh;}
+.hw{font-size:clamp(.48rem,.6vw,.68rem);color:var(--tx3);margin-bottom:.22vh;}
+.hag3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:2px;}
+.hgb{background:linear-gradient(135deg,var(--O),var(--O2));border-radius:var(--r2);text-align:center;padding:.28vh .22vw;}
+.hgl{font-size:clamp(.32rem,.41vw,.46rem);color:rgba(255,255,255,.7);margin-bottom:1px;}
+.hgv{font-size:clamp(.62rem,.88vw,1rem);font-weight:700;color:#fff;font-variant-numeric:tabular-nums;}
+
+/* ─── MID: gallery ───────────────────────────────────── */
+.mcol{display:flex;flex-direction:column;gap:.55vh;direction:rtl;}
+
+.gal-card{flex:1;min-height:0;}
+.gal-frame{flex:1;min-height:0;position:relative;background:transparent;overflow:hidden;}
+.gal-frame img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#111;
+  transition:opacity .9s ease,transform 7s ease;}
+.gal-frame img.on{opacity:1;transform:scale(1.04);}
+.gal-frame img.off{opacity:0;transform:scale(1);}
+.gal-frame img.slide-in-left{opacity:1;animation:slideInL .8s ease forwards;}
+.gal-frame img.slide-out-right{opacity:0;animation:slideOutR .8s ease forwards;}
+.gal-frame img.slide-in-right{opacity:1;animation:slideInR .8s ease forwards;}
+.gal-frame img.slide-out-left{opacity:0;animation:slideOutL .8s ease forwards;}
+.gal-frame img.zoom-in{opacity:1;animation:zoomIn .8s ease forwards;}
+.gal-frame img.zoom-out{opacity:0;animation:zoomOut .8s ease forwards;}
+@keyframes slideInL{from{transform:translateX(-100%)}to{transform:translateX(0)}}
+@keyframes slideOutR{from{transform:translateX(0)}to{transform:translateX(100%)}}
+@keyframes slideInR{from{transform:translateX(100%)}to{transform:translateX(0)}}
+@keyframes slideOutL{from{transform:translateX(0)}to{transform:translateX(-100%)}}
+@keyframes zoomIn{from{transform:scale(0.5);opacity:0}to{transform:scale(1);opacity:1}}
+@keyframes zoomOut{from{transform:scale(1);opacity:1}to{transform:scale(1.5);opacity:0}}
+.gal-ov{position:absolute;bottom:0;left:0;right:0;
+  background:linear-gradient(transparent,rgba(0,0,0,.5));padding:.45vh .65vw;}
+.gal-cap{font-size:clamp(.4rem,.52vw,.58rem);color:rgba(255,255,255,.78);}
+.gal-dots{display:flex;gap:4px;margin-top:2px;}
+.gal-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.3);transition:all .3s;}
+.gal-dot.a{background:#fff;transform:scale(1.35);}
+.no-gal{flex:1;display:flex;align-items:center;justify-content:center;background:var(--bg);border-radius:0 0 var(--r) var(--r);}
+.no-gal span{color:var(--tx3);font-size:clamp(.52rem,.68vw,.76rem);}
+
+/* QR bubble */
+.qr-bub{flex-shrink:0;display:flex;align-items:center;gap:.7vw;
+  background:linear-gradient(120deg,#E3F2FD,#DCEEFF);
+  border-radius:var(--r);padding:.52vh .85vw;
+  border:1px solid rgba(21,101,192,.13);position:relative;}
+.qr-bub::before{content:'';position:absolute;top:-7px;left:3vw;
+  width:0;height:0;border-left:7px solid transparent;border-right:7px solid transparent;
+  border-bottom:7px solid #BBDEFB;}
+.qr-w{width:clamp(42px,5.2vh,68px);height:clamp(42px,5.2vh,68px);
+  background:#fff;border-radius:8px;padding:3px;box-shadow:var(--sh);flex-shrink:0;}
+.qr-w img{width:100%;height:100%;object-fit:contain;}
+.qr-t{font-size:clamp(.52rem,.66vw,.75rem);color:var(--B3);line-height:1.5;font-weight:500;}
+.qr-t strong{font-size:clamp(.58rem,.72vw,.82rem);display:block;margin-bottom:.1vh;font-weight:700;}
+
+/* ─── RIGHT: announcements + slot ───────────────────── */
+.rcol{display:flex;flex-direction:column;gap:.55vh;direction:rtl;}
+
+.ann-card{flex:1;min-height:0;}
+.ann-wrap{flex:1;overflow:hidden;min-height:0;}
+/* Chat bubble style announcements */
+.premium-box{background:linear-gradient(135deg,#ffffff,#e8e8e8);padding:.6vh .7vw;border-radius:12px;box-shadow:0 0 15px rgba(0,0,0,.15);}
+.ann-item{padding:.6vh .7vw;margin-bottom:.5vh;
+  background:#fff;border-radius:10px;
+  border-left:4px solid #444;
+  box-shadow:0 2px 8px rgba(0,0,0,.08);position:relative;}
+.ann-card .cb{background:linear-gradient(135deg,#ffffff,#e8e8e8);border-radius:0 0 var(--r) var(--r);box-shadow:0 0 15px rgba(0,0,0,.1);}
+.ann-img{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:var(--r2);margin-bottom:.28vh;}
+.ann-ttl{font-size:clamp(.6rem,.78vw,.87rem);font-weight:700;color:var(--tx);margin-bottom:.1vh;}
+.ann-body{font-size:clamp(.5rem,.63vw,.71rem);color:var(--tx2);line-height:1.4;}
+.ann-empty{text-align:center;padding:1.5vh;color:var(--tx3);font-size:clamp(.58rem,.73vw,.81rem);}
+.adots{display:flex;justify-content:center;gap:4px;margin-top:.22vh;flex-shrink:0;}
+.adot{width:5px;height:5px;border-radius:50%;background:rgba(21,101,192,.18);transition:all .3s;}
+.adot.a{background:var(--B);}
+
+.rslot{flex-shrink:0;}
+.yt-wrap{border-radius:var(--r);overflow:hidden;box-shadow:var(--sh2);}
+.yt-h{background:linear-gradient(120deg,var(--B3),var(--B2));
+  padding:.36vh .65vw;display:flex;align-items:center;justify-content:space-between;}
+.yt-ht{font-size:clamp(.48rem,.62vw,.7rem);font-weight:700;color:#fff;}
+.yt-badge{font-size:clamp(.4rem,.5vw,.56rem);background:rgba(255,255,255,.2);color:#fff;padding:1px 6px;border-radius:8px;}
+.yt-fw{position:relative;width:100%;padding-bottom:56.25%;}
+.yt-fw iframe{position:absolute;inset:0;width:100%;height:100%;border:none;}
+.hf-wrap{border-radius:var(--r);overflow:hidden;box-shadow:var(--sh);}
+.hf-h{background:linear-gradient(120deg,#B71C1C,#E53935);padding:.36vh .65vw;display:flex;align-items:center;gap:.4vw;}
+.hf-ht{font-size:clamp(.48rem,.62vw,.7rem);font-weight:700;color:#fff;}
+.hf-img{width:100%;display:block;}
+
+/* ─── TICKER ──────────────────────────────────────────── */
+.ticker{height:3vh;min-height:20px;background:var(--B3);display:flex;align-items:center;overflow:hidden;}
+.t-lbl{flex-shrink:0;background:var(--T2);color:var(--B3);font-weight:900;
+  font-size:clamp(.56rem,.72vw,.82rem);padding:0 .75vw;height:100%;display:flex;align-items:center;white-space:nowrap;}
+.t-tr{flex:1;overflow:hidden;height:100%;display:flex;align-items:center;}
+.t-in{white-space:nowrap;font-size:clamp(.56rem,.72vw,.82rem);color:rgba(255,255,255,.88);padding:0 .5vw;}
+
+/* ─── OVERLAYS ────────────────────────────────────────── */
+#sleepOv{display:none;position:fixed;inset:0;background:#000;z-index:9000;
+  flex-direction:column;align-items:center;justify-content:center;gap:1vh;}
+#slpClk{font-size:clamp(5rem,14vw,16rem);font-weight:900;color:rgba(255,255,255,.12);font-variant-numeric:tabular-nums;}
+#slpDt{font-size:clamp(.9rem,2.2vw,2.8rem);color:rgba(255,255,255,.1);}
+#emergOv{display:none;position:fixed;inset:0;background:rgba(183,28,28,.97);z-index:9100;
+  flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:4vw;}
+.e-ico{font-size:clamp(3rem,8vw,9rem);animation:ep 1s ease-in-out infinite;}
+@keyframes ep{0%,100%{transform:scale(1);}50%{transform:scale(1.1);}}
+#etit{font-size:clamp(2rem,4.5vw,6rem);font-weight:900;color:#fff;margin-bottom:2vh;}
+#ebod{font-size:clamp(.9rem,1.8vw,2.2rem);color:rgba(255,255,255,.85);}
+#maintOv{display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:9500;
+  background:linear-gradient(135deg,var(--B3),var(--B));}
+#maintOv::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 50% at 50% 30%,rgba(255,255,255,.08) 0%,transparent 65%);}
+.mo{position:relative;z-index:1;width:100%;height:100%;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;text-align:center;gap:1.5vh;}
+.mo-ring{width:clamp(80px,9vw,130px);height:clamp(80px,9vw,130px);border-radius:50%;
+  border:2px solid rgba(255,255,255,.24);display:flex;align-items:center;justify-content:center;
+  animation:mRing 3s ease-in-out infinite;}
+@keyframes mRing{0%,100%{box-shadow:0 0 0 0 rgba(255,255,255,.18);}50%{box-shadow:0 0 0 15px rgba(255,255,255,0);}}
+.mo-ico{font-size:clamp(2rem,3.5vw,4.5rem);}
+.mo-bn{font-size:clamp(1.1rem,1.8vw,2.2rem);font-weight:900;color:#fff;}
+.mo-bs{font-size:clamp(.56rem,.78vw,.96rem);color:rgba(255,255,255,.58);}
+.mo-dv{width:65px;height:2px;background:rgba(255,255,255,.2);}
+.mo-ti{font-size:clamp(1.8rem,3.5vw,4.5rem);font-weight:900;color:#fff;}
+.mo-ms{font-size:clamp(.82rem,1.35vw,1.65rem);color:rgba(255,255,255,.76);max-width:55vw;line-height:1.5;}
+.mo-pg{width:clamp(160px,22vw,300px);height:3px;background:rgba(255,255,255,.14);border-radius:2px;overflow:hidden;}
+.mo-pb{height:100%;background:var(--T2);animation:mPb 2.5s ease-in-out infinite;}
+@keyframes mPb{0%{width:0%;margin-left:0;}50%{width:55%;margin-left:22%;}100%{width:0%;margin-left:100%;}}
+.mo-clk{font-size:clamp(1.6rem,3vw,4rem);font-weight:700;color:rgba(255,255,255,.2);font-variant-numeric:tabular-nums;}
+.mo-dts{display:flex;gap:2vw;justify-content:center;}
+.mo-dt{font-size:clamp(.52rem,.8vw,.9rem);color:rgba(255,255,255,.22);}
+.mo-el{font-size:clamp(.48rem,.72vw,.82rem);color:rgba(255,255,255,.2);}
+
+.ldmsg{display:flex;align-items:center;gap:.4vw;opacity:.5;}
+.ldmsg span{font-size:clamp(.5rem,.65vw,.73rem);color:var(--tx3);}
+.ld{width:7px;height:7px;border:1.5px solid rgba(21,101,192,.18);border-top-color:var(--B);border-radius:50%;animation:spin .7s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+</style>
+</head>
+<body>
+<div id="sleepOv"><div id="slpClk"></div><div id="slpDt"></div></div>
+<div id="emergOv"><div class="e-ico">🚨</div><div id="etit"></div><div id="ebod"></div></div>
+<div id="maintOv">
+  <div class="mo">
+    <div class="mo-ring"><div class="mo-ico">🔧</div></div>
+    <div class="mo-bn">שמעון פרס 3</div><div class="mo-bs">קריית מלאכי · לובי ראשי</div>
+    <div class="mo-dv"></div>
+    <div class="mo-ti">המסך בתחזוקה</div>
+    <div class="mo-ms" id="mntMsg">נחזור בקרוב עם עדכונים חדשים</div>
+    <div class="mo-pg"><div class="mo-pb"></div></div>
+    <div class="mo-clk" id="mntClk"></div>
+    <div class="mo-dts"><div class="mo-dt" id="mntDG"></div><div class="mo-dt" id="mntDH"></div></div>
+    <div class="mo-el" id="mntEl"></div>
+  </div>
+</div>
+
+<!-- HEADER -->
+<div class="hdr">
+  <!-- RTL: first=rightmost. bldg RIGHT, clock CENTER, status LEFT -->
+  <div class="h-bldg">
+    <div class="h-name" id="bldgN">שמעון פרס 3</div>
+    <div class="h-addr">קריית מלאכי · לובי ראשי</div>
+  </div>
+  <div class="h-clock">
+    <div class="clk" id="clk">00<span class="colon">:</span>00<span class="colon">:</span>00</div>
+    <div class="h-dates">
+      <span class="h-d" id="dayN">--</span>
+      <span class="h-sep">|</span>
+      <span class="h-d" id="dateG">--</span>
+      <span class="h-sep">|</span>
+      <span class="h-heb" id="dateH">--</span>
+    </div>
+  </div>
+  <div class="h-left">
+    <div class="conn-p"><div class="cdot" id="cdot"></div><span class="ctxt" id="ctxt">מתחבר...</span></div>
+  </div>
+</div>
+
+<!-- SCREEN: LEFT(info) | MID(gallery) | RIGHT(anns+slot) -->
+<div class="screen">
+
+  <!-- LEFT INFO COL -->
+  <div class="lcol">
+    <div class="card">
+      <div class="ch b"><span class="ci">🌤️</span><span class="ct">מזג אוויר</span></div>
+      <div class="cb" id="wC"><div class="ldmsg"><div class="ld"></div><span>טוען...</span></div></div>
+    </div>
+    <div class="card">
+      <div class="ch t"><span class="ci">🕍</span><span class="ct">זמני היום</span></div>
+      <div class="cb" id="tC"><div class="ldmsg"><div class="ld"></div><span>טוען...</span></div></div>
+    </div>
+    <div class="card grow" id="parashaCard">
+      <div class="ch p"><span class="ci">📖</span><span class="ct">פרשת השבוע</span></div>
+      <div class="cb" id="pC"><div class="ldmsg"><div class="ld"></div><span>טוען...</span></div></div>
+    </div>
+    <div class="card" id="hagCard" style="display:none;">
+      <div class="ch o"><span class="ci">✡️</span><span class="ct">חגים וזמנים</span></div>
+      <div class="cb" id="hagC"></div>
+    </div>
+  </div>
+
+  <!-- MID GALLERY COL -->
+  <div class="mcol">
+    <div class="card gal-card">
+      <div class="ch b"><span class="ci">🖼️</span><span class="ct">תמונות הבניין</span></div>
+      <div class="gal-frame" id="galF">
+        <div class="no-gal" id="noGal"><span>📷 אין תמונות</span></div>
+      </div>
+    </div>
+    <div class="qr-bub">
+      <div class="qr-w"><img id="qrImg" src="" alt="QR"></div>
+      <div class="qr-t">
+        <strong>📱 רוצה להצטרף לקבוצת הוואצאפ של הבניין?</strong>
+        סרוק את הקוד עכשיו ותישאר מעודכן בכל מה שקורה!
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT ANNS+SLOT COL -->
+  <div class="rcol">
+    <div class="card ann-card">
+      <div class="ch b"><span class="ci">📢</span><span class="ct">הודעות לדיירים</span></div>
+      <div class="cb" style="padding-bottom:.22vh;">
+        <div class="ann-wrap premium-box" id="annW"><div class="ldmsg"><div class="ld"></div><span>טוען...</span></div></div>
+        <div class="adots" id="adts"></div>
+      </div>
+    </div>
+    <div class="rslot" id="rslot"></div>
+  </div>
+
+</div>
+
+<!-- TICKER -->
+<div class="ticker" id="ticker">
+  <div class="t-lbl">📰 חדשות</div>
+  <div class="t-tr"><div class="t-in" id="tIn">טוען...</div></div>
+</div>
+<script>
+'use strict';
+const $=id=>document.getElementById(id);
+const esc=s=>String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const pad=n=>String(n).padStart(2,'0');
+const CFG={user:'Peres3',repo:'lobby'};
+const RAW='https://raw.githubusercontent.com/Peres3/lobby/main/settings.json';
+const API_URL='https://api.github.com/repos/Peres3/lobby/contents/settings.json';
+const K={a:'sp3_a',s:'sp3_s',sl:'sp3_sl',e:'sp3_e',d:'sp3_d',g:'sp3_g',w:'sp3_w',q:'sp3_q',hf:'sp3_hf'};
+const sg=k=>{try{const v=localStorage.getItem(k);return v?JSON.parse(v):null;}catch(e){return null;}};
+const ss=(k,v)=>localStorage.setItem(k,JSON.stringify(v));
+
+// ── CLOCK ──
+const MON=['ינואר','פברואר','מרץ','אפריל','מאי','יוני','יולי','אוגוסט','ספטמבר','אוקטובר','נובמבר','דצמבר'];
+function tick(){
+  const n=new Date();
+  const cl=$('clk');if(cl)cl.innerHTML=pad(n.getHours())+'<span class="colon">:</span>'+pad(n.getMinutes());
+  const dt=$('dt');if(dt)dt.textContent=n.getDate()+' '+MON[n.getMonth()]+' '+n.getFullYear();
+}
+setInterval(tick,1000);tick();
+
+// ── SYNC: GitHub is the ONLY source of truth ──
+let _lastTx='';
+async function sync(){
+  try{
+    // Use GitHub API - no cache issues
+    const apiR=await fetch(API_URL,{cache:'no-store'});
+    if(!apiR.ok)return;
+    const apiData=await apiR.json();
+    const tx=apiData.sha; // use SHA as change detector
+    if(tx===_lastTx)return;
+    _lastTx=tx;
+    // Decode base64 content
+    const raw=apiData.content.replace(/[\s\n\r]/g,'');
+    const bytes=Uint8Array.from(atob(raw),ch=>ch.charCodeAt(0));
+    const c=JSON.parse(new TextDecoder('utf-8').decode(bytes));
+    // Always overwrite localStorage - no conditions, no fallbacks
+    if(c.announcements!==undefined)ss(K.a,c.announcements);
+    if(c.settings!==undefined)ss(K.s,c.settings);
+    if(c.sleep!==undefined)ss(K.sl,c.sleep);
+    if(c.emergency!==undefined)ss(K.e,c.emergency);
+    if(c.design!==undefined)ss(K.d,c.design);
+    if(c.widgets!==undefined)ss(K.w,c.widgets);
+    if(c.quotes!==undefined)ss(K.q,c.quotes);
+    if(c.homefront!==undefined)ss(K.hf,c.homefront);
+    if(c.gallery==='_gallery.json'){
+      try{
+        const galR=await fetch('https://api.github.com/repos/Peres3/lobby/contents/gallery.json',{cache:'no-store'});
+        if(galR.ok){const galD=await galR.json();const galRaw=galD.content.replace(/[\s\n\r]/g,'');const galBytes=Uint8Array.from(atob(galRaw),ch=>ch.charCodeAt(0));const gal=JSON.parse(new TextDecoder('utf-8').decode(galBytes));ss(K.g,gal);}
+      }catch(e){}
+    } else if(Array.isArray(c.gallery)){ss(K.g,c.gallery);}
+    applyAll();
+  }catch(e){}
+}
+sync();setInterval(sync,15000);
+
+function applyAll(){applySettings();applyDesign();loadAnns();updateSlot();startGal();checkEmerg();checkSleep();checkMaint();}
+
+// ── SETTINGS ──
+function applySettings(){
+  const s=sg(K.s)||{};
+  const qi=$('qrImg');if(qi)qi.src='https://api.qrserver.com/v1/create-qr-code/?size=120x120&data='+encodeURIComponent(s.qrUrl||'https://wa.me');
+  const tk=$('ticker');if(tk)tk.style.display=s.hideNews===true?'none':'flex';
+  const bn=$('bldgN');if(bn&&s.bldgName)bn.textContent=s.bldgName;
+}
+setInterval(applySettings,15000);
+
+// ── DESIGN ──
+function applyDesign(){
+  const d=sg(K.d)||{};const r=document.documentElement;
+  if(d.main){r.style.setProperty('--B',d.main);r.style.setProperty('--B2',d.main);r.style.setProperty('--B3',d.main);}
+  if(d.bg)r.style.setProperty('--bg',d.bg);
+  if(d.txt)r.style.setProperty('--tx',d.txt);
+  if(d.fontFamily)document.body.style.fontFamily="'"+d.fontFamily+"',sans-serif";
+  if(d.fontSize)document.documentElement.style.fontSize=d.fontSize+'px';
+}
+
+// ── ANNOUNCEMENTS ──
+let _aI=[],_aX=0,_aTm=null;
+const pd2=s=>{if(!s)return null;const[y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d);};
+function loadAnns(){
+  const list=sg(K.a)||[];
+  const now=new Date(),td=new Date(now.getFullYear(),now.getMonth(),now.getDate());
+  const nm=now.getHours()*60+now.getMinutes();
+  const act=list.filter(a=>{
+    if(!a.active)return false;
+    if(a.dateFrom){const d=pd2(a.dateFrom);if(d&&td<d)return false;}
+    if(a.dateTo){const d=pd2(a.dateTo);if(d){d.setHours(23,59,59,999);if(now>d)return false;}}
+    if(a.timeFrom){const[h,m]=a.timeFrom.split(':').map(Number);if(nm<h*60+m)return false;}
+    if(a.timeTo){const[h,m]=a.timeTo.split(':').map(Number);if(nm>h*60+m)return false;}
+    return true;
+  });
+  const aw=$('annW'),ad=$('adts');if(!aw)return;
+  if(!act.length){aw.innerHTML='<div class="ann-empty">אין הודעות</div>';if(ad)ad.innerHTML='';clearInterval(_aTm);_aTm=null;return;}
+  _aI=act;_aX=0;
+  aw.style.transition='';aw.style.transform='translateY(0)';
+  aw.innerHTML=act.map(a=>`<div class="ann-item">
+    ${a.img?`<img class="ann-img" src="${esc(a.img)}" onerror="this.style.display='none'">` :''}
+    <div class="ann-ttl">${esc(a.title)}</div>
+    ${a.body?`<div class="ann-body">${esc(a.body)}</div>`:''}</div>`).join('');
+  if(ad)ad.innerHTML=act.map((_,i)=>`<div class="adot${i===0?' a':''}"></div>`).join('');
+  clearInterval(_aTm);_aTm=null;
+  if(act.length>1)_aTm=setInterval(()=>{
+    _aX=(_aX+1)%_aI.length;
+    const its=aw.querySelectorAll('.ann-item');
+    const h=its[0]?its[0].offsetHeight+7:65;
+    aw.style.transition='transform .5s ease';
+    aw.style.transform='translateY(-'+Math.min(_aX*h,aw.scrollHeight-aw.clientHeight)+'px)';
+    document.querySelectorAll('.adot').forEach((d,i)=>d.classList.toggle('a',i===_aX));
+  },5000);
+}
+
+// ── GALLERY ──
+let _gX=0,_gTm=null;
+function startGal(){
+  const imgs=sg(K.g)||[];
+  const frame=$('galF'),ng=$('noGal');if(!frame)return;
+  frame.querySelectorAll('img').forEach(e=>e.remove());
+  const ov=frame.querySelector('.gal-ov');if(ov)ov.remove();
+  clearInterval(_gTm);_gTm=null;
+  if(!imgs.length){if(ng)ng.style.display='flex';return;}
+  if(ng)ng.style.display='none';
+  _gX=0;
+  imgs.forEach((src,i)=>{
+    const img=document.createElement('img');img.src=src;img.className=i===0?'on':'off';
+    img.onerror=()=>img.style.display='none';frame.appendChild(img);
+  });
+  const w=sg(K.w)||{};
+  const interval=(w.galInterval||5)*1000;
+  const trans=w.galTrans||'fade';
+  if(imgs.length>1)_gTm=setInterval(()=>{
+    const ii=frame.querySelectorAll('img');if(!ii.length)return;
+    const cur=ii[_gX];const nxt=(_gX+1)%ii.length;
+    if(trans==='slide-right'){cur.className='slide-out-right';ii[nxt].className='slide-in-left';}
+    else if(trans==='slide-left'){cur.className='slide-out-left';ii[nxt].className='slide-in-right';}
+    else if(trans==='zoom'){cur.className='zoom-out';ii[nxt].className='zoom-in';}
+    else{cur.className='off';ii[nxt].className='on';}
+    _gX=nxt;
+  },interval);
+}
+
+// ── SLOT ──
+function updateSlot(){
+  const w=sg(K.w)||{},hfI=sg(K.hf)||[];
+  const slot=$('rslot');if(!slot)return;
+  if(w.ytShow===true&&w.ytUrl&&w.ytMode!=='music'){
+    const yt=w.ytUrl.match(/[?&]list=([^&]+)/);
+    const vid=w.ytUrl.match(/(?:v=|youtu\.be\/)([^?&]+)/);
+    const live=w.ytUrl.match(/youtube\.com\/live\/([^?&]+)/);
+    const vidId=vid?vid[1]:live?live[1]:null;
+    const src=yt?'https://www.youtube.com/embed/videoseries?list='+yt[1]+'&autoplay=1&mute=0&controls=1&rel=0&loop=1'
+      :vidId?'https://www.youtube.com/embed/'+vidId+'?autoplay=1&mute=0&controls=1&rel=0&loop=1&playlist='+vidId:w.ytUrl;
+    if(!slot.querySelector('iframe')||slot.querySelector('iframe').src!==src)
+      slot.innerHTML='<div class="yt-wrap"><div class="yt-h"><span class="yt-ht">YouTube</span></div><div class="yt-fw"><iframe src="'+src+'" allow="autoplay;encrypted-media" allowfullscreen></iframe></div></div>';
+  } else if(w.ytShow===true&&w.ytUrl&&w.ytMode==='music'){
+    startMusicBg(w.ytUrl);slot.innerHTML='';
+  } else if(w.hfEnabled!==false&&hfI.length){
+    if(!slot.querySelector('.hf-wrap'))
+      slot.innerHTML='<div class="hf-wrap"><div class="hf-h"><span>🚨</span><span class="hf-ht">הנחיות פיקוד העורף</span></div><img class="hf-img" src="'+esc(hfI[0])+'"></div>';
+  } else slot.innerHTML='';
+}
+let _mf=null;
+function startMusicBg(url){
+  if(_mf)return;
+  const yt=url.match(/[?&]list=([^&]+)/);
+  const vid=url.match(/(?:v=|youtu\.be\/)([^?&]+)/);
+  const src=yt?'https://www.youtube.com/embed/videoseries?list='+yt[1]+'&autoplay=1&mute=0&controls=0'
+    :vid?'https://www.youtube.com/embed/'+vid[1]+'?autoplay=1&mute=0&controls=0':null;
+  if(!src)return;
+  _mf=document.createElement('iframe');_mf.src=src;
+  _mf.style.cssText='position:absolute;width:1px;height:1px;opacity:0;pointer-events:none;';
+  _mf.allow='autoplay;encrypted-media';document.body.appendChild(_mf);
+}
+
+// ── EMERGENCY ──
+function checkEmerg(){
+  const c=sg(K.e)||{},ov=$('emergOv');if(!ov)return;
+  if(c.active){ov.style.display='flex';const et=$('emergT'),eb=$('emergB');if(et)et.textContent=c.title||'';if(eb)eb.textContent=c.body||'';}
+  else ov.style.display='none';
+}
+setInterval(checkEmerg,8000);
+
+// ── SLEEP ──
+let _slp=false;
+function checkSleep(){
+  const c=sg(K.sl)||{},ov=$('sleepOv');if(!ov)return;
+  if(c.manualOff){if(!_slp){_slp=true;ov.style.display='flex';}}
+  else if(c.enabled){
+    const n=new Date(),nm=n.getHours()*60+n.getMinutes();
+    const[fh,fm]=(c.from||'23:00').split(':').map(Number);
+    const[th,tm]=(c.to||'07:00').split(':').map(Number);
+    const fNm=fh*60+fm,tNm=th*60+tm;
+    const inSleep=fNm>tNm?(nm>=fNm||nm<tNm):(nm>=fNm&&nm<tNm);
+    const days=c.days||[0,1,2,3,4];
+    if(inSleep&&days.includes(n.getDay())){if(!_slp){_slp=true;ov.style.display='flex';}}
+    else if(_slp){_slp=false;ov.style.display='none';}
+  } else if(_slp){_slp=false;ov.style.display='none';}
+}
+setInterval(checkSleep,30000);
+
+// ── MAINTENANCE ──
+function checkMaint(){
+  const s=sg(K.s)||{},ov=$('maintOv');if(!ov)return;
+  if(s.maintenance){ov.style.display='flex';const mt=$('maintT');if(mt)mt.textContent=s.maintMsg||'בתחזוקה';}
+  else ov.style.display='none';
+}
+
+// ── WEATHER ──
+const WC={0:'☀️|בהיר',1:'🌤️|בהיר',2:'⛅|מעונן חלקית',3:'☁️|מעונן',45:'🌫️|ערפל',61:'🌧️|גשם קל',63:'🌧️|גשם',65:'🌧️|גשם כבד',71:'🌨️|שלג',80:'🌦️|מטר',95:'⛈️|סופה'};
+async function fetchW(){
+  try{
+    const s=sg(K.s)||{};
+    const city=s.weatherCity||'Kiryat Malachi';
+    const geo=await fetch('https://geocoding-api.open-meteo.com/v1/search?name='+encodeURIComponent(city)+'&count=1&language=he');
+    const gd=await geo.json();if(!gd.results?.length)return;
+    const{latitude:lat,longitude:lon}=gd.results[0];
+    const wr=await fetch('https://api.open-meteo.com/v1/forecast?latitude='+lat+'&longitude='+lon+'&current_weather=true&timezone=Asia/Jerusalem');
+    const wd=await wr.json();const cw=wd.current_weather;
+    const[ico,desc]=(WC[cw.weathercode]||'🌡️|').split('|');
+    const wt=$('wTemp'),wi=$('wIco'),wd2=$('wDesc');
+    if(wt)wt.textContent=Math.round(cw.temperature)+'°';
+    if(wi)wi.textContent=ico;if(wd2)wd2.textContent=desc;
+  }catch(e){}
+}
+fetchW();setInterval(fetchW,30*60*1000);
+
+// ── ZMANIM ──
+async function fetchZmanim(){
+  try{
+    const n=new Date();
+    const ds=n.getFullYear()+'-'+pad(n.getMonth()+1)+'-'+pad(n.getDate());
+    const r=await fetch('https://www.hebcal.com/zmanim?cfg=json&latitude=31.732&longitude=34.889&date='+ds+'&tzid=Asia/Jerusalem');
+    const d=await r.json();const z=d.times||{};
+    const s=sg(K.s)||{};const zc=s.zmanimConfig||{};
+    const ZK={alot:'עלות השחר',sunrise:'הנץ החמה',sofKriat:'סוף ק"ש',chatzot:'חצות',mincha:'מנחה גדולה',sunset:'שקיעה',tzeit:'צאת כוכבים'};
+    const ZM={alot:'alotHaShachar',sunrise:'sunrise',sofKriat:'sofZmanShma',chatzot:'chatzotHayom',mincha:'minchaGedola',sunset:'sunset',tzeit:'tzeis8_5'};
+    const el=$('zmList');if(!el)return;
+    el.innerHTML=Object.entries(ZK).filter(([k])=>zc[k]!==false).map(([k,lbl])=>{
+      const t=z[ZM[k]];if(!t)return'';
+      const dt=new Date(t);return'<div class="zm-row"><span class="zm-lbl">'+lbl+'</span><span class="zm-val">'+pad(dt.getHours())+':'+pad(dt.getMinutes())+'</span></div>';
+    }).filter(Boolean).join('');
+  }catch(e){}
+}
+fetchZmanim();setInterval(fetchZmanim,60*60*1000);
+
+// ── SHABBAT ──
+async function fetchHeb(){
+  try{
+    const r=await fetch('https://www.hebcal.com/shabbat?cfg=json&geonameid=293740&M=on');
+    const d=await r.json();const items=d.items||[];
+    const candle=items.find(x=>x.category==='candles');
+    const havdala=items.find(x=>x.category==='havdalah');
+    const parasha=items.find(x=>x.category==='parashat');
+    const cv=$('candleT'),hv=$('havdalaT'),pv=$('parasha');
+    if(cv&&candle){const dt=new Date(candle.date);cv.textContent=pad(dt.getHours())+':'+pad(dt.getMinutes());}
+    if(hv&&havdala){const dt=new Date(havdala.date);hv.textContent=pad(dt.getHours())+':'+pad(dt.getMinutes());}
+    if(pv&&parasha)pv.textContent=parasha.hebrew||parasha.title||'';
+  }catch(e){}
+}
+fetchHeb();setInterval(fetchHeb,60*60*1000);
+
+// ── NEWS ──
+async function fetchNews(){
+  try{
+    const r=await fetch('https://news.google.com/rss?hl=iw&gl=IL&ceid=IL:iw');
+    const txt=await r.text();
+    const items=txt.match(/<title>(.*?)<\/title>/g)||[];
+    const news=items.slice(2,12).map(t=>t.replace(/<\/?title>/g,'').replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>'));
+    const tin=$('tIn');if(tin&&news.length)tin.textContent=news.join('  •  ');
+  }catch(e){}
+}
+fetchNews();setInterval(fetchNews,20*60*1000);
+
+// ── AUTO RELOAD ──
+(()=>{const s=sg(K.s)||{};setTimeout(()=>location.reload(),(s.refreshMins||60)*60000);})();
+
+</script>
+</body>
+</html>
