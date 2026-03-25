@@ -1,5 +1,16 @@
 {
-  "announcements": [],
+  "announcements": [
+    {
+      "title": "שלום",
+      "body": "הכל עובד! ב\"ה",
+      "img": "",
+      "dateFrom": "2026-03-25",
+      "dateTo": "2026-03-26",
+      "timeFrom": "10:00",
+      "timeTo": "10:45",
+      "active": true
+    }
+  ],
   "settings": {
     "maintenance": false,
     "maintMsg": "שווה לכם לחכות 10 דקות לשדרוג המערכת..",
@@ -56,5 +67,5 @@
   },
   "quotes": [],
   "homefront": [],
-  "_updated": "2026-03-25T08:39:58.364Z"
+  "_updated": "2026-03-25T08:40:23.007Z"
 }
