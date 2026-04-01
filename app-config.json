@@ -64,6 +64,12 @@
       "name": "מנהל",
       "icon": "📄",
       "url": "https://peres3.github.io/lobby/app-admin.html"
+    },
+    {
+      "id": 1775013320663,
+      "name": "אנשי קשר",
+      "icon": "📄",
+      "url": "https://docs.google.com/spreadsheets/d/12jS3KuSP17pJPavGi4o3-MjKLz0rER9t/edit?usp=drivesdk&ouid=117908243729643697343&rtpof=true&sd=true"
     }
   ]
 }
