@@ -1,19 +1,16 @@
 {
-  "announcements": [
-    {
-      "title": "שלום",
-      "body": "הכל עובד! ב\"ה",
-      "img": "",
-      "dateFrom": "2026-03-25",
-      "dateTo": "",
-      "timeFrom": "",
-      "timeTo": "",
-      "active": true
-    }
-  ],
+  "announcements": [],
   "settings": {
+    "bldgName": "שמעון פרס 3",
+    "bldgAddr": "קריית מלאכי · לובי ראשי",
+    "weatherCity": "קריית מלאכי",
+    "weatherLat": "31.7318",
+    "weatherLon": "34.7430",
+    "qrUrl": "",
+    "adminPassword": "admin123",
     "maintenance": false,
-    "maintMsg": "שווה לכם לחכות 10 דקות לשדרוג המערכת..",
+    "maintMsg": "נחזור בקרוב עם עדכונים חדשים",
+    "hideNews": false,
     "zmanimConfig": {
       "alot": true,
       "sunrise": true,
@@ -22,49 +19,39 @@
       "mincha": false,
       "sunset": true,
       "tzeit": true
-    },
-    "hideNews": true,
-    "hideTimes": false,
-    "weatherCity": "31.7318,34.7430",
-    "qrUrl": "https://chat.whatsapp.com/CL8Qt35cOJhKkIHVXOFvVe?mode=gi_t"
+    }
   },
-  "sleep": {
-    "manualOff": false,
+  "design": {
+    "bg": "#0A0E1A",
+    "main": "#00E5FF",
+    "accent": "#FF1493",
+    "txt": "#E8F0FF",
+    "fontFamily": "Heebo",
+    "fontSize": 16,
+    "glassBlur": 14,
+    "cardOpacity": 55,
+    "bgOverlay": 55,
+    "bubbleBg": "#FFFFFF",
+    "bubbleBorder": "#00E5FF",
+    "bubbleTxt": "#0B1426"
+  },
+  "music": {
     "enabled": false,
-    "days": [
-      0,
-      1,
-      2,
-      3,
-      4
-    ],
-    "from": "23:00",
-    "to": "07:00"
+    "url": ""
+  },
+  "widgets": {
+    "galInterval": 5,
+    "galTrans": "fade"
   },
   "emergency": {
     "active": false,
-    "title": "הפסקת חשמל",
-    "body": "בודקים את הנושא"
+    "title": "",
+    "body": ""
   },
-  "design": {
-    "main": "#1565c0",
-    "bg": "#ffffff",
-    "hdr": "#1565c0",
-    "txt": "#1a2540",
-    "fontFamily": "Assistant",
-    "fontSize": 16,
-    "bgOverlay": 10,
-    "glassBlur": 4,
-    "cardOpacity": 20
+  "sleep": {
+    "manualOff": false
   },
   "gallery": "_gallery.json",
-  "widgets": {
-    "ytShow": false,
-    "ytUrl": "https://youtu.be/4k8uGCPxRZw?si=9iPbhbhqcLOKysbp",
-    "ytMode": "video",
-    "galEnabled": false
-  },
-  "quotes": [],
   "homefront": [],
-  "_updated": "2026-03-25T12:00:55.770Z"
+  "_updated": "2026-05-18T00:00:00.000Z"
 }

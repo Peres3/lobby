@@ -8,36 +8,17 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
 <style>
-/* ============================================================
-   פאנל ניהול — תואם לתצוגת הלובי (Midnight / Cyan-Magenta)
-   ============================================================ */
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 :root{
-  --bg-0:#05070d;
-  --bg-1:#0a0e1a;
-  --bg-2:#101627;
-  --bg-3:#161e33;
-
-  --tx:#E8F0FF;
-  --tx2:#A7B5D4;
-  --tx3:#6B7A9E;
-
-  --cy:#00E5FF;
-  --cy2:#22D3EE;
-  --mg:#FF1493;
-  --mg2:#FF4FA3;
-  --gr:#22E0A1;
-  --or:#FFB347;
-  --rd:#FF4D6D;
+  --bg-0:#05070d; --bg-1:#0a0e1a; --bg-2:#101627; --bg-3:#161e33;
+  --tx:#E8F0FF;  --tx2:#A7B5D4;  --tx3:#6B7A9E;
+  --cy:#00E5FF;  --cy2:#22D3EE;
+  --mg:#FF1493;  --mg2:#FF4FA3;
   --pu:#A855F7;
-
+  --gr:#22E0A1;  --or:#FFB347;  --rd:#FF4D6D;
   --glass:rgba(20,30,50,.55);
   --bd:rgba(0,229,255,.18);
-
-  --r:14px;
-  --r2:10px;
-  --r3:6px;
-
+  --r:14px; --r2:10px;
   --sh:0 4px 20px rgba(0,0,0,.5);
 }
 html,body{
@@ -49,9 +30,29 @@ html,body{
   background-attachment:fixed;-webkit-font-smoothing:antialiased;
 }
 
-/* ============================================================
-   HEADER
-   ============================================================ */
+/* LOCK SCREEN */
+#lock{
+  position:fixed;inset:0;z-index:9999;
+  display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,var(--bg-0),var(--bg-1) 50%,var(--bg-2));
+}
+.lock-card{
+  width:min(92vw,420px);padding:3vh 2vw;text-align:center;
+  background:var(--glass);border:1px solid var(--bd);border-radius:18px;
+  box-shadow:0 8px 40px rgba(0,0,0,.5);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+}
+.lock-ico{font-size:2.6rem;margin-bottom:1vh;}
+.lock-ttl{
+  font-size:1.2rem;font-weight:900;margin-bottom:.4vh;
+  background:linear-gradient(120deg,#fff,var(--cy),var(--mg));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.lock-sub{font-size:.78rem;color:var(--tx3);margin-bottom:2vh;}
+.lock-card .fi{margin-bottom:1vh;direction:ltr;text-align:center;letter-spacing:.15em;}
+.lock-err{font-size:.7rem;color:var(--rd);min-height:1em;margin-top:.4vh;}
+
+/* HEADER */
 .hdr{
   position:sticky;top:0;z-index:100;
   display:flex;align-items:center;justify-content:space-between;gap:.6vw;
@@ -60,140 +61,74 @@ html,body{
   border-bottom:1px solid var(--bd);
   backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
 }
-.hdr::after{
-  content:'';position:absolute;bottom:0;left:0;right:0;height:1px;
-  background:linear-gradient(90deg,transparent,var(--cy) 30%,var(--mg) 70%,transparent);
-  opacity:.7;
-}
-.brand{
-  font-size:clamp(1rem,1.4vw,1.4rem);font-weight:900;letter-spacing:.04em;
+.hdr::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--cy) 30%,var(--mg) 70%,transparent);opacity:.7;}
+.brand{font-size:clamp(1rem,1.4vw,1.4rem);font-weight:900;letter-spacing:.04em;white-space:nowrap;
   background:linear-gradient(120deg,#fff,var(--cy),var(--mg));
-  -webkit-background-clip:text;background-clip:text;color:transparent;
-  white-space:nowrap;
-}
+  -webkit-background-clip:text;background-clip:text;color:transparent;}
 .hdr-btns{display:flex;align-items:center;gap:.6vw;}
-.conn-pill{
-  display:flex;align-items:center;gap:.4vw;
-  background:rgba(255,255,255,.04);border:1px solid var(--bd);
-  border-radius:24px;padding:.35vh .8vw;
-}
+.conn-pill{display:flex;align-items:center;gap:.4vw;
+  background:rgba(255,255,255,.04);border:1px solid var(--bd);border-radius:24px;padding:.35vh .8vw;}
 .cdot{width:8px;height:8px;border-radius:50%;background:var(--or);transition:.25s;}
 .cdot.ok{background:var(--gr);box-shadow:0 0 10px var(--gr);}
 .cdot.err{background:var(--rd);box-shadow:0 0 10px var(--rd);}
 .ctxt{font-size:clamp(.55rem,.7vw,.78rem);color:var(--tx2);}
-.pub-btn{
-  display:flex;align-items:center;gap:.4vw;
+.pub-btn{display:flex;align-items:center;gap:.4vw;
   background:linear-gradient(135deg,var(--cy) 0%,var(--mg) 100%);
   color:#06101e;border:none;border-radius:24px;
   padding:.55vh 1.3vw;font-family:inherit;
-  font-size:clamp(.7rem,.9vw,1rem);font-weight:800;
-  cursor:pointer;transition:.2s;
-  box-shadow:0 0 16px rgba(0,229,255,.35),0 0 28px rgba(255,20,147,.22);
-}
+  font-size:clamp(.7rem,.9vw,1rem);font-weight:800;cursor:pointer;transition:.2s;
+  box-shadow:0 0 16px rgba(0,229,255,.35),0 0 28px rgba(255,20,147,.22);}
 .pub-btn:hover{transform:translateY(-1px);box-shadow:0 0 24px rgba(0,229,255,.55),0 0 36px rgba(255,20,147,.35);}
 .pub-btn:disabled{opacity:.6;cursor:not-allowed;transform:none;}
-.pending-dot{
-  width:9px;height:9px;border-radius:50%;background:var(--or);
-  display:none;animation:pdot .8s ease-in-out infinite alternate;
-  box-shadow:0 0 8px var(--or);
-}
+.pending-dot{width:9px;height:9px;border-radius:50%;background:var(--or);display:none;
+  animation:pdot .8s ease-in-out infinite alternate;box-shadow:0 0 8px var(--or);}
 .pending-dot.show{display:block;}
 @keyframes pdot{0%{opacity:.4;}100%{opacity:1;}}
 
-/* ============================================================
-   TABS
-   ============================================================ */
-.tabs{
-  position:sticky;top:6.5vh;z-index:99;
-  display:flex;gap:.25vw;padding:0 3vw;
-  overflow-x:auto;scrollbar-width:none;
-  background:rgba(10,14,26,.85);
-  border-bottom:1px solid var(--bd);
-  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
-}
+/* TABS */
+.tabs{position:sticky;top:6.5vh;z-index:99;
+  display:flex;gap:.25vw;padding:0 3vw;overflow-x:auto;scrollbar-width:none;
+  background:rgba(10,14,26,.85);border-bottom:1px solid var(--bd);
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);}
 .tabs::-webkit-scrollbar{display:none;}
-.tab{
-  flex-shrink:0;padding:.7vh 1.2vw;
-  border:none;background:transparent;
-  font-family:inherit;font-size:clamp(.6rem,.78vw,.88rem);
-  font-weight:600;color:var(--tx3);
-  cursor:pointer;transition:.2s;white-space:nowrap;
-  border-bottom:2px solid transparent;margin-bottom:-1px;
-}
+.tab{flex-shrink:0;padding:.7vh 1.2vw;border:none;background:transparent;
+  font-family:inherit;font-size:clamp(.6rem,.78vw,.88rem);font-weight:600;
+  color:var(--tx3);cursor:pointer;transition:.2s;white-space:nowrap;
+  border-bottom:2px solid transparent;margin-bottom:-1px;}
 .tab:hover{color:var(--cy);}
-.tab.act{
-  color:var(--cy);
-  border-bottom-color:var(--cy);
-  text-shadow:0 0 12px rgba(0,229,255,.5);
-}
+.tab.act{color:var(--cy);border-bottom-color:var(--cy);text-shadow:0 0 12px rgba(0,229,255,.5);}
 
-/* ============================================================
-   PAGES
-   ============================================================ */
 .page{display:none;padding:2vh 3vw;max-width:760px;margin:0 auto;}
 .page.act{display:block;}
 
 .sec{margin-bottom:1.8vh;}
-.sec-title{
-  display:flex;align-items:center;gap:.4vw;
-  font-size:clamp(.72rem,.9vw,1rem);font-weight:700;
-  color:var(--tx2);margin-bottom:.7vh;padding-bottom:.4vh;
-  border-bottom:1px solid var(--bd);
-}
+.sec-title{display:flex;align-items:center;gap:.4vw;
+  font-size:clamp(.72rem,.9vw,1rem);font-weight:700;color:var(--tx2);
+  margin-bottom:.7vh;padding-bottom:.4vh;border-bottom:1px solid var(--bd);}
 
-.card{
-  background:var(--glass);
-  border:1px solid var(--bd);
-  border-radius:var(--r);
-  padding:1.4vh 1.4vw;margin-bottom:1vh;
-  box-shadow:var(--sh);
-  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
-  position:relative;
-}
-.card::before{
-  content:'';position:absolute;top:0;left:0;right:0;height:1px;
-  background:linear-gradient(90deg,transparent,rgba(0,229,255,.4),transparent);
-  pointer-events:none;
-}
+.card{background:var(--glass);border:1px solid var(--bd);border-radius:var(--r);
+  padding:1.4vh 1.4vw;margin-bottom:1vh;box-shadow:var(--sh);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);position:relative;}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(0,229,255,.4),transparent);pointer-events:none;}
 
-/* ============================================================
-   FORM
-   ============================================================ */
 .fld{margin-bottom:1vh;}
-.flbl{
-  display:block;margin-bottom:.3vh;
-  font-size:clamp(.6rem,.74vw,.82rem);font-weight:600;color:var(--tx2);
-}
-.fi{
-  width:100%;padding:.7vh .8vw;
-  background:rgba(0,0,0,.35);
-  border:1.5px solid var(--bd);border-radius:var(--r2);
-  color:var(--tx);font-family:inherit;
-  font-size:clamp(.65rem,.82vw,.92rem);
-  outline:none;transition:.2s;
-}
-.fi:focus{
-  border-color:var(--cy);
-  box-shadow:0 0 0 3px rgba(0,229,255,.15);
-  background:rgba(0,0,0,.45);
-}
+.flbl{display:block;margin-bottom:.3vh;
+  font-size:clamp(.6rem,.74vw,.82rem);font-weight:600;color:var(--tx2);}
+.fi{width:100%;padding:.7vh .8vw;background:rgba(0,0,0,.35);
+  border:1.5px solid var(--bd);border-radius:var(--r2);color:var(--tx);
+  font-family:inherit;font-size:clamp(.65rem,.82vw,.92rem);outline:none;transition:.2s;}
+.fi:focus{border-color:var(--cy);box-shadow:0 0 0 3px rgba(0,229,255,.15);background:rgba(0,0,0,.45);}
 .fi::placeholder{color:var(--tx3);}
 textarea.fi{resize:vertical;min-height:60px;}
 select.fi{cursor:pointer;}
 
 .two{display:grid;grid-template-columns:1fr 1fr;gap:.7vw;}
-.three{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.7vw;}
-@media(max-width:540px){
-  .two,.three{grid-template-columns:1fr;}
-}
+@media(max-width:540px){.two{grid-template-columns:1fr;}}
 
-/* ============================================================
-   TOGGLE
-   ============================================================ */
-.tog-row{
-  display:flex;align-items:center;justify-content:space-between;gap:.6vw;
-  padding:.6vh 0;border-bottom:1px solid rgba(0,229,255,.08);
-}
+.tog-row{display:flex;align-items:center;justify-content:space-between;gap:.6vw;
+  padding:.6vh 0;border-bottom:1px solid rgba(0,229,255,.08);}
 .tog-row:last-child{border-bottom:none;}
 .tog-info{flex:1;min-width:0;}
 .tog-lbl{font-size:clamp(.65rem,.82vw,.92rem);font-weight:600;color:var(--tx);}
@@ -201,269 +136,116 @@ select.fi{cursor:pointer;}
 
 .toggle{position:relative;width:42px;height:22px;flex-shrink:0;display:inline-block;}
 .toggle input{opacity:0;width:0;height:0;position:absolute;}
-.ttrack{
-  position:absolute;inset:0;
-  background:rgba(255,255,255,.1);border:1px solid var(--bd);
-  border-radius:24px;cursor:pointer;transition:.2s;
-}
-.tthumb{
-  position:absolute;top:2px;right:2px;width:16px;height:16px;
+.ttrack{position:absolute;inset:0;background:rgba(255,255,255,.1);border:1px solid var(--bd);
+  border-radius:24px;cursor:pointer;transition:.2s;}
+.tthumb{position:absolute;top:2px;right:2px;width:16px;height:16px;
   background:#fff;border-radius:50%;cursor:pointer;transition:.2s;
-  box-shadow:0 1px 4px rgba(0,0,0,.4);
-}
-.toggle input:checked + .ttrack{
-  background:linear-gradient(135deg,var(--cy),var(--mg));
-  border-color:transparent;
-  box-shadow:0 0 12px rgba(0,229,255,.4);
-}
+  box-shadow:0 1px 4px rgba(0,0,0,.4);}
+.toggle input:checked + .ttrack{background:linear-gradient(135deg,var(--cy),var(--mg));
+  border-color:transparent;box-shadow:0 0 12px rgba(0,229,255,.4);}
 .toggle input:checked ~ .tthumb{transform:translateX(-20px);}
 
-/* ============================================================
-   BUTTONS
-   ============================================================ */
-.btn{
-  border:none;border-radius:var(--r2);
+.btn{border:none;border-radius:var(--r2);
   padding:.65vh 1.1vw;font-family:inherit;
-  font-size:clamp(.62rem,.78vw,.88rem);font-weight:700;
-  cursor:pointer;transition:.2s;color:#06101e;
-}
+  font-size:clamp(.62rem,.78vw,.88rem);font-weight:700;cursor:pointer;transition:.2s;color:#06101e;}
 .btn-cy{background:linear-gradient(135deg,var(--cy),var(--cy2));box-shadow:0 0 14px rgba(0,229,255,.3);}
 .btn-mg{background:linear-gradient(135deg,var(--mg),var(--mg2));box-shadow:0 0 14px rgba(255,20,147,.3);color:#fff;}
-.btn-pu{background:linear-gradient(135deg,var(--pu),#C879FF);color:#fff;box-shadow:0 0 14px rgba(168,85,247,.3);}
 .btn-rd{background:linear-gradient(135deg,var(--rd),#FF6B85);color:#fff;}
-.btn-outline{
-  background:rgba(255,255,255,.04);
-  border:1.5px solid var(--bd);color:var(--tx2);
-}
+.btn-outline{background:rgba(255,255,255,.04);border:1.5px solid var(--bd);color:var(--tx2);}
 .btn-outline:hover{border-color:var(--cy);color:var(--cy);}
 .btn:hover{transform:translateY(-1px);}
 .btn-row{display:flex;gap:.5vw;flex-wrap:wrap;margin-top:.7vh;}
 .btn-full{width:100%;padding:.85vh;}
 
-/* ============================================================
-   ANNOUNCEMENT LIST
-   ============================================================ */
-.ann-list-item{
-  display:flex;gap:.6vw;align-items:flex-start;
+/* ANN LIST */
+.ann-list-item{display:flex;gap:.6vw;align-items:flex-start;
   background:rgba(0,0,0,.3);border:1px solid var(--bd);border-radius:var(--r2);
-  padding:.8vh 1vw;margin-bottom:.6vh;
-}
-.ann-list-img{
-  width:54px;height:40px;flex-shrink:0;object-fit:cover;
-  border-radius:6px;border:1px solid var(--bd);
-}
+  padding:.8vh 1vw;margin-bottom:.6vh;}
+.ann-list-img{width:54px;height:40px;flex-shrink:0;object-fit:cover;
+  border-radius:6px;border:1px solid var(--bd);}
 .ann-list-main{flex:1;min-width:0;}
 .ann-list-ttl{font-size:clamp(.66rem,.82vw,.92rem);font-weight:700;color:var(--tx);margin-bottom:.15vh;}
-.ann-list-body{
-  font-size:clamp(.54rem,.66vw,.74rem);color:var(--tx2);line-height:1.4;
-  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
-}
+.ann-list-body{font-size:clamp(.54rem,.66vw,.74rem);color:var(--tx2);line-height:1.4;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
 .ann-list-meta{font-size:clamp(.48rem,.6vw,.66rem);color:var(--tx3);margin-top:.2vh;}
 .ann-list-acts{display:flex;gap:.3vw;align-items:center;flex-shrink:0;}
-.icon-btn{
-  background:transparent;border:none;cursor:pointer;
-  font-size:1rem;padding:3px 6px;border-radius:6px;color:var(--tx2);
-  transition:.2s;
-}
+.icon-btn{background:transparent;border:none;cursor:pointer;
+  font-size:1rem;padding:3px 6px;border-radius:6px;color:var(--tx2);transition:.2s;}
 .icon-btn:hover{background:rgba(0,229,255,.1);color:var(--cy);}
-.badge{
-  font-size:clamp(.46rem,.56vw,.62rem);font-weight:700;
-  padding:2px 7px;border-radius:10px;
-}
+.badge{font-size:clamp(.46rem,.56vw,.62rem);font-weight:700;padding:2px 7px;border-radius:10px;}
 .badge-on{background:rgba(34,224,161,.15);color:var(--gr);border:1px solid rgba(34,224,161,.4);}
 .badge-off{background:rgba(107,122,158,.15);color:var(--tx3);border:1px solid rgba(107,122,158,.3);}
+.list-empty{text-align:center;padding:2.5vh;color:var(--tx3);font-size:clamp(.66rem,.82vw,.92rem);}
 
-.list-empty{
-  text-align:center;padding:2.5vh;
-  color:var(--tx3);font-size:clamp(.66rem,.82vw,.92rem);
-}
-
-/* ============================================================
-   GALLERY GRID
-   ============================================================ */
-.gal-grid{
-  display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));
-  gap:.5vw;margin-bottom:.7vh;
-}
-.gal-item{
-  aspect-ratio:1;position:relative;
-  border-radius:var(--r2);overflow:hidden;
-  background:rgba(0,0,0,.4);border:1px solid var(--bd);
-}
+/* GALLERY */
+.gal-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:.5vw;margin-bottom:.7vh;}
+.gal-item{aspect-ratio:1;position:relative;border-radius:var(--r2);overflow:hidden;
+  background:rgba(0,0,0,.4);border:1px solid var(--bd);}
 .gal-item img{width:100%;height:100%;object-fit:cover;}
-.gal-del{
-  position:absolute;top:4px;left:4px;
-  width:22px;height:22px;
+.gal-del{position:absolute;top:4px;left:4px;width:22px;height:22px;
   background:rgba(255,77,109,.92);color:#fff;border:none;border-radius:6px;
   font-size:.7rem;cursor:pointer;display:flex;align-items:center;justify-content:center;
-  box-shadow:0 2px 8px rgba(0,0,0,.5);
-}
-.gal-add{
-  aspect-ratio:1;cursor:pointer;
+  box-shadow:0 2px 8px rgba(0,0,0,.5);}
+.gal-add{aspect-ratio:1;cursor:pointer;
   display:flex;flex-direction:column;align-items:center;justify-content:center;
   background:rgba(0,229,255,.06);border:1.5px dashed rgba(0,229,255,.35);
-  border-radius:var(--r2);transition:.2s;color:var(--cy);
-}
+  border-radius:var(--r2);transition:.2s;color:var(--cy);}
 .gal-add:hover{background:rgba(0,229,255,.12);border-color:var(--cy);}
 .gal-add-ico{font-size:1.6rem;}
 .gal-add-txt{font-size:.6rem;font-weight:700;margin-top:3px;}
 
-/* ============================================================
-   UPLOAD AREA
-   ============================================================ */
-.upl-area{
-  border:1.5px dashed rgba(0,229,255,.35);
-  border-radius:var(--r2);padding:1.4vh 1vw;
-  text-align:center;cursor:pointer;transition:.2s;
-  background:rgba(0,229,255,.04);
-}
+/* UPLOAD */
+.upl-area{border:1.5px dashed rgba(0,229,255,.35);border-radius:var(--r2);
+  padding:1.4vh 1vw;text-align:center;cursor:pointer;transition:.2s;
+  background:rgba(0,229,255,.04);}
 .upl-area:hover{border-color:var(--cy);background:rgba(0,229,255,.10);}
 .upl-ico{display:block;font-size:1.6rem;margin-bottom:.3vh;}
 .upl-txt{font-size:clamp(.62rem,.76vw,.86rem);color:var(--cy);font-weight:700;}
 .upl-sub{font-size:clamp(.5rem,.62vw,.7rem);color:var(--tx3);margin-top:2px;}
+.prog-wrap{height:6px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden;margin-top:.5vh;}
+.prog-bar{height:100%;width:0%;border-radius:3px;
+  background:linear-gradient(90deg,var(--cy),var(--mg));transition:width .3s;}
 
-.prog-wrap{
-  height:6px;background:rgba(255,255,255,.06);
-  border-radius:3px;overflow:hidden;margin-top:.5vh;
-}
-.prog-bar{
-  height:100%;width:0%;border-radius:3px;
-  background:linear-gradient(90deg,var(--cy),var(--mg));
-  transition:width .3s;
-}
-
-/* ============================================================
-   IMG PREVIEW
-   ============================================================ */
 .img-prev{position:relative;margin-bottom:.6vh;display:none;}
-.img-prev img{
-  width:100%;aspect-ratio:16/9;object-fit:cover;
-  border-radius:var(--r2);border:1px solid var(--bd);
-}
-.img-prev-clear{
-  position:absolute;top:5px;left:5px;
-  width:24px;height:24px;
-  background:rgba(255,77,109,.9);color:#fff;
-  border:none;border-radius:6px;cursor:pointer;font-size:.7rem;
-}
+.img-prev img{width:100%;aspect-ratio:16/9;object-fit:cover;
+  border-radius:var(--r2);border:1px solid var(--bd);}
+.img-prev-clear{position:absolute;top:5px;left:5px;width:24px;height:24px;
+  background:rgba(255,77,109,.9);color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:.7rem;}
 
-/* ============================================================
-   DAY BUTTONS
-   ============================================================ */
-.days-row{display:flex;gap:.35vw;flex-wrap:wrap;margin-top:.4vh;}
-.day-btn{
-  padding:.4vh .7vw;
-  background:rgba(0,0,0,.3);border:1.5px solid var(--bd);border-radius:var(--r2);
-  font-family:inherit;font-size:clamp(.55rem,.7vw,.78rem);font-weight:600;
-  color:var(--tx2);cursor:pointer;transition:.2s;
-}
-.day-btn.sel{
-  background:linear-gradient(135deg,var(--cy),var(--mg));
-  border-color:transparent;color:#06101e;
-  box-shadow:0 0 12px rgba(0,229,255,.3);
-}
-
-/* ============================================================
-   YouTube MODE PICKER
-   ============================================================ */
-.yt-modes{display:grid;grid-template-columns:1fr 1fr;gap:.6vw;}
-.yt-mode{
-  padding:1vh .8vw;cursor:pointer;text-align:center;
-  background:rgba(0,0,0,.3);border:2px solid var(--bd);border-radius:var(--r2);
-  transition:.2s;
-}
-.yt-mode:hover{border-color:var(--cy);}
-.yt-mode.sel{
-  border-color:var(--cy);
-  background:rgba(0,229,255,.08);
-  box-shadow:0 0 14px rgba(0,229,255,.18);
-}
-.yt-mode-ico{display:block;font-size:1.6rem;margin-bottom:.3vh;}
-.yt-mode-lbl{font-size:clamp(.66rem,.82vw,.92rem);font-weight:700;color:var(--tx);}
-.yt-mode-sub{font-size:clamp(.5rem,.62vw,.7rem);color:var(--tx3);margin-top:1px;}
-
-/* ============================================================
-   QR PREVIEW
-   ============================================================ */
-.qr-prev{
-  display:none;align-items:center;gap:.8vw;
-  margin-top:.6vh;padding:.7vh .9vw;
-  background:rgba(0,229,255,.07);
-  border:1px solid var(--bd);border-radius:var(--r2);
-}
-.qr-prev.show{display:flex;}
-.qr-prev img{width:64px;height:64px;background:#fff;border-radius:6px;padding:3px;}
-.qr-prev-txt{font-size:clamp(.55rem,.7vw,.78rem);color:var(--tx2);}
-
-/* ============================================================
-   COLOR PICKER
-   ============================================================ */
+/* COLOR */
 .color-row{display:flex;align-items:center;gap:.6vw;}
-.color-input{
-  width:46px;height:34px;padding:1px;cursor:pointer;
-  border:1.5px solid var(--bd);border-radius:6px;background:rgba(0,0,0,.3);
-}
-.color-preview{
-  flex:1;height:30px;border-radius:6px;
-  border:1px solid var(--bd);transition:.3s;
-}
+.color-input{width:46px;height:34px;padding:1px;cursor:pointer;
+  border:1.5px solid var(--bd);border-radius:6px;background:rgba(0,0,0,.3);}
+.color-preview{flex:1;height:30px;border-radius:6px;border:1px solid var(--bd);transition:.3s;}
 
-/* ============================================================
-   RANGE WITH VALUE
-   ============================================================ */
+/* RANGE */
 .range-row{display:flex;align-items:center;gap:.6vw;}
-.range-row input[type=range]{
-  flex:1;height:6px;-webkit-appearance:none;appearance:none;
-  background:rgba(255,255,255,.08);border-radius:3px;outline:none;
-}
-.range-row input[type=range]::-webkit-slider-thumb{
-  -webkit-appearance:none;appearance:none;
+.range-row input[type=range]{flex:1;height:6px;-webkit-appearance:none;appearance:none;
+  background:rgba(255,255,255,.08);border-radius:3px;outline:none;}
+.range-row input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
   width:18px;height:18px;border-radius:50%;cursor:pointer;
   background:linear-gradient(135deg,var(--cy),var(--mg));
-  box-shadow:0 0 10px rgba(0,229,255,.4);
-}
-.range-row input[type=range]::-moz-range-thumb{
-  width:18px;height:18px;border:none;border-radius:50%;cursor:pointer;
-  background:linear-gradient(135deg,var(--cy),var(--mg));
-}
-.range-val{
-  min-width:3.2em;text-align:center;font-weight:800;
-  color:var(--cy);font-size:clamp(.66rem,.82vw,.92rem);
-}
+  box-shadow:0 0 10px rgba(0,229,255,.4);}
+.range-row input[type=range]::-moz-range-thumb{width:18px;height:18px;border:none;border-radius:50%;cursor:pointer;
+  background:linear-gradient(135deg,var(--cy),var(--mg));}
+.range-val{min-width:3.2em;text-align:center;font-weight:800;
+  color:var(--cy);font-size:clamp(.66rem,.82vw,.92rem);}
 
-/* ============================================================
-   INFO BOX
-   ============================================================ */
-.info-box{
-  background:rgba(0,229,255,.06);
-  border:1px solid var(--bd);border-radius:var(--r2);
-  padding:.6vh .9vw;margin-bottom:.8vh;
-  font-size:clamp(.58rem,.72vw,.8rem);color:var(--tx2);line-height:1.5;
-}
+.info-box{background:rgba(0,229,255,.06);border:1px solid var(--bd);
+  border-radius:var(--r2);padding:.6vh .9vw;margin-bottom:.8vh;
+  font-size:clamp(.58rem,.72vw,.8rem);color:var(--tx2);line-height:1.5;}
 .info-box strong{color:var(--cy);}
 
-/* ============================================================
-   ZMANIM GRID
-   ============================================================ */
 .zman-grid{display:grid;grid-template-columns:1fr 1fr;gap:.4vw 1vw;}
 @media(max-width:540px){.zman-grid{grid-template-columns:1fr;}}
 
-/* ============================================================
-   TOKEN INPUT
-   ============================================================ */
-.token-status{
-  font-size:clamp(.58rem,.72vw,.8rem);color:var(--tx2);
-  margin-bottom:.6vh;padding:.5vh .8vw;
-  background:rgba(0,0,0,.3);border:1px solid var(--bd);border-radius:var(--r2);
-}
+.token-status{font-size:clamp(.58rem,.72vw,.8rem);color:var(--tx2);
+  margin-bottom:.6vh;padding:.5vh .8vw;background:rgba(0,0,0,.3);
+  border:1px solid var(--bd);border-radius:var(--r2);}
 .token-status.ok{color:var(--gr);border-color:rgba(34,224,161,.3);}
 .token-status.err{color:var(--rd);border-color:rgba(255,77,109,.3);}
 
-/* ============================================================
-   TOAST
-   ============================================================ */
-.toast{
-  position:fixed;bottom:3vh;left:50%;
+.toast{position:fixed;bottom:3vh;left:50%;
   transform:translateX(-50%) translateY(80px);
   background:linear-gradient(135deg,var(--bg-3),var(--bg-2));
   color:var(--tx);border:1px solid var(--bd);
@@ -471,18 +253,37 @@ select.fi{cursor:pointer;}
   font-size:clamp(.62rem,.78vw,.88rem);font-weight:600;
   box-shadow:0 8px 30px rgba(0,0,0,.5);
   z-index:9999;opacity:0;pointer-events:none;
-  transition:transform .3s ease,opacity .3s;
-}
+  transition:transform .3s ease,opacity .3s;}
 .toast.show{transform:translateX(-50%) translateY(0);opacity:1;}
 .toast.success{border-color:rgba(34,224,161,.5);box-shadow:0 0 20px rgba(34,224,161,.25);}
 .toast.error{border-color:rgba(255,77,109,.55);box-shadow:0 0 20px rgba(255,77,109,.28);}
+
+/* BUBBLE PREVIEW (in design tab) */
+.bub-preview{
+  padding:.8vh 1vw;border-radius:12px;
+  background:#fff;color:#0B1426;
+  border-right:4px solid var(--cy);
+  box-shadow:0 4px 18px rgba(0,0,0,.32);
+  font-size:.78rem;margin-top:.5vh;
+}
+.bub-preview b{display:block;font-weight:800;margin-bottom:2px;}
 </style>
 </head>
 <body>
 
-<!-- ============================================================
-     HEADER
-     ============================================================ -->
+<!-- LOCK SCREEN -->
+<div id="lock">
+  <div class="lock-card">
+    <div class="lock-ico">🔐</div>
+    <div class="lock-ttl">פאנל ניהול לובי</div>
+    <div class="lock-sub">שמעון פרס 3 · קריית מלאכי</div>
+    <input class="fi" type="password" id="lockPwd" placeholder="סיסמה" autofocus>
+    <button class="btn btn-cy btn-full" onclick="tryUnlock()">היכנס</button>
+    <div class="lock-err" id="lockErr"></div>
+  </div>
+</div>
+
+<!-- HEADER -->
 <div class="hdr">
   <div class="brand">ניהול לובי · שמעון פרס 3</div>
   <div class="hdr-btns">
@@ -492,38 +293,28 @@ select.fi{cursor:pointer;}
   </div>
 </div>
 
-<!-- ============================================================
-     TABS
-     ============================================================ -->
+<!-- TABS -->
 <div class="tabs" id="tabs">
   <button class="tab act" data-page="anns">📢 הודעות</button>
   <button class="tab"     data-page="gallery">🖼️ גלריה</button>
-  <button class="tab"     data-page="youtube">▶️ YouTube</button>
-  <button class="tab"     data-page="emerg">⚠️ התראה</button>
-  <button class="tab"     data-page="sleep">🌙 שינה</button>
+  <button class="tab"     data-page="music">🎵 מוזיקה</button>
   <button class="tab"     data-page="design">🎨 עיצוב</button>
-  <button class="tab"     data-page="settings">⚙️ הגדרות</button>
+  <button class="tab"     data-page="settings">⚙️ הגדרות כלליות</button>
   <button class="tab"     data-page="token">🔑 טוקן</button>
 </div>
 
-<!-- ============================================================
-     TAB: הודעות
-     ============================================================ -->
+<!-- ====== הודעות ====== -->
 <div class="page act" id="page-anns">
-
   <div class="sec">
     <div class="sec-title">📢 הודעה חדשה</div>
     <div class="card">
+      <div class="fld"><label class="flbl">כותרת *</label>
+        <input class="fi" id="aTitle" placeholder="כותרת ההודעה..."></div>
+      <div class="fld"><label class="flbl">תוכן</label>
+        <textarea class="fi" id="aBody" placeholder="פרטים נוספים..."></textarea></div>
+
       <div class="fld">
-        <label class="flbl">כותרת *</label>
-        <input class="fi" id="aTitle" placeholder="כותרת ההודעה...">
-      </div>
-      <div class="fld">
-        <label class="flbl">תוכן</label>
-        <textarea class="fi" id="aBody" placeholder="פרטים נוספים..."></textarea>
-      </div>
-      <div class="fld">
-        <label class="flbl">תמונה (העלאה מהמכשיר בלבד)</label>
+        <label class="flbl">תמונה (העלאה מהמכשיר)</label>
         <div class="upl-area" id="annUplArea">
           <span class="upl-ico">📷</span>
           <div class="upl-txt">העלה תמונה</div>
@@ -548,15 +339,12 @@ select.fi{cursor:pointer;}
 
       <div class="tog-row">
         <div class="tog-info"><div class="tog-lbl">פעיל</div></div>
-        <label class="toggle">
-          <input type="checkbox" id="aActive" checked>
-          <div class="ttrack"></div><div class="tthumb"></div>
-        </label>
+        <label class="toggle"><input type="checkbox" id="aActive" checked>
+          <div class="ttrack"></div><div class="tthumb"></div></label>
       </div>
 
       <div class="btn-row">
-        <button class="btn btn-cy"      onclick="addAnnouncement(false)">+ הוסף</button>
-        <button class="btn btn-mg"      onclick="addAnnouncement(true)">💾 שמור והפץ</button>
+        <button class="btn btn-cy"      onclick="addAnnouncement()">+ הוסף</button>
         <button class="btn btn-outline" onclick="clearAnnForm()">נקה</button>
       </div>
     </div>
@@ -568,11 +356,8 @@ select.fi{cursor:pointer;}
   </div>
 </div>
 
-<!-- ============================================================
-     TAB: גלריה
-     ============================================================ -->
+<!-- ====== גלריה ====== -->
 <div class="page" id="page-gallery">
-
   <div class="sec">
     <div class="sec-title">🖼️ תמונות הגלריה</div>
     <div class="card">
@@ -584,7 +369,7 @@ select.fi{cursor:pointer;}
       <div class="upl-area" id="galUplArea" style="margin-top:.5vh;">
         <span class="upl-ico">📷</span>
         <div class="upl-txt">העלה תמונות</div>
-        <div class="upl-sub">לחץ או גרור — אפשר מספר תמונות בבת אחת</div>
+        <div class="upl-sub">העלאה מהמכשיר — אפשר מספר תמונות בבת אחת</div>
       </div>
       <input type="file" id="galFile" accept="image/*" multiple style="display:none">
 
@@ -598,175 +383,82 @@ select.fi{cursor:pointer;}
   <div class="sec">
     <div class="sec-title">⚙️ הגדרות גלריה</div>
     <div class="card">
-      <div class="fld">
-        <label class="flbl">זמן בין תמונות (שניות)</label>
+      <div class="fld"><label class="flbl">זמן בין תמונות (שניות)</label>
         <div class="range-row">
           <input type="range" id="galIntervalRange" min="3" max="60" value="5">
           <span class="range-val" id="galIntervalVal">5</span>
         </div>
       </div>
-      <div class="fld">
-        <label class="flbl">סגנון מעבר</label>
+      <div class="fld"><label class="flbl">סגנון מעבר</label>
         <select id="galTransSel" class="fi">
           <option value="fade">🌅 Fade — דהייה</option>
-          <option value="slide-right">➡️ Slide Right — החלקה ימינה</option>
-          <option value="slide-left">⬅️ Slide Left — החלקה שמאלה</option>
-          <option value="zoom">🔍 Zoom — הגדלה</option>
+          <option value="slide-right">➡️ Slide Right</option>
+          <option value="slide-left">⬅️ Slide Left</option>
+          <option value="zoom">🔍 Zoom</option>
         </select>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ============================================================
-     TAB: YouTube
-     ============================================================ -->
-<div class="page" id="page-youtube">
+<!-- ====== מוזיקה ====== -->
+<div class="page" id="page-music">
   <div class="sec">
-    <div class="sec-title">▶️ YouTube</div>
+    <div class="sec-title">🎵 מוזיקת רקע</div>
     <div class="card">
       <div class="info-box">
-        📍 ה-YouTube מוצג בעמודה <strong>הימנית</strong>, מתחת להודעות לדיירים.<br>
-        כשמכובה — לא מציגים כלום בסלוט הזה (אלא אם פיקוד העורף פעיל).
+        🔊 מנגן מוזיקה מ-YouTube ברקע (ללא תצוגה). שים לב — דפדפנים חוסמים autoplay עם קול, צריך לפעמים לחיצה ידנית במסך הלובי לאחר רענון.
       </div>
-
       <div class="tog-row">
-        <div class="tog-info"><div class="tog-lbl">הפעל YouTube</div></div>
-        <label class="toggle">
-          <input type="checkbox" id="ytEnabled" onchange="saveYT()">
-          <div class="ttrack"></div><div class="tthumb"></div>
-        </label>
+        <div class="tog-info"><div class="tog-lbl">הפעל מוזיקה</div></div>
+        <label class="toggle"><input type="checkbox" id="musicEnabled" onchange="saveMusic()">
+          <div class="ttrack"></div><div class="tthumb"></div></label>
       </div>
-
       <div class="fld" style="margin-top:.6vh;">
-        <label class="flbl">קישור YouTube</label>
-        <input class="fi" id="ytUrl" placeholder="https://www.youtube.com/..." style="direction:ltr;text-align:left;">
-      </div>
-
-      <div class="fld">
-        <label class="flbl">מצב הצגה</label>
-        <div class="yt-modes">
-          <div class="yt-mode sel" id="ytModeVideo" onclick="setYTMode('video')">
-            <span class="yt-mode-ico">📺</span>
-            <div class="yt-mode-lbl">סרטון</div>
-            <div class="yt-mode-sub">מוצג על המסך</div>
-          </div>
-          <div class="yt-mode" id="ytModeMusic" onclick="setYTMode('music')">
-            <span class="yt-mode-ico">🎵</span>
-            <div class="yt-mode-lbl">מוזיקת רקע</div>
-            <div class="yt-mode-sub">מנגן בלי תמונה</div>
-          </div>
-        </div>
+        <label class="flbl">קישור YouTube (סרטון או רשימת השמעה)</label>
+        <input class="fi" id="musicUrl" placeholder="https://www.youtube.com/..." style="direction:ltr;text-align:left;">
       </div>
     </div>
   </div>
 </div>
 
-<!-- ============================================================
-     TAB: התראה דחופה
-     ============================================================ -->
-<div class="page" id="page-emerg">
-  <div class="sec">
-    <div class="sec-title">⚠️ התראה דחופה</div>
-    <div class="card">
-      <div class="tog-row">
-        <div class="tog-info">
-          <div class="tog-lbl">הפעל התראה דחופה</div>
-          <div class="tog-sub">מציג מסך אדום על כל הלובי</div>
-        </div>
-        <label class="toggle">
-          <input type="checkbox" id="emergActive" onchange="saveEmerg()">
-          <div class="ttrack"></div><div class="tthumb"></div>
-        </label>
-      </div>
-      <div class="fld" style="margin-top:.6vh;">
-        <label class="flbl">כותרת</label>
-        <input class="fi" id="emergTitle" placeholder="למשל: הפסקת חשמל" oninput="saveEmerg()">
-      </div>
-      <div class="fld">
-        <label class="flbl">הודעה</label>
-        <textarea class="fi" id="emergBody" placeholder="פרטים נוספים..." oninput="saveEmerg()"></textarea>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ============================================================
-     TAB: שינה
-     ============================================================ -->
-<div class="page" id="page-sleep">
-  <div class="sec">
-    <div class="sec-title">🌙 כיבוי ידני</div>
-    <div class="card">
-      <div class="tog-row">
-        <div class="tog-info">
-          <div class="tog-lbl">כבה מסך עכשיו</div>
-          <div class="tog-sub">מיידי — לחץ שוב להדלקה</div>
-        </div>
-        <label class="toggle">
-          <input type="checkbox" id="sleepManual" onchange="saveSleep()">
-          <div class="ttrack"></div><div class="tthumb"></div>
-        </label>
-      </div>
-    </div>
-  </div>
-
-  <div class="sec">
-    <div class="sec-title">⏰ לוח זמנים אוטומטי</div>
-    <div class="card">
-      <div class="tog-row">
-        <div class="tog-info"><div class="tog-lbl">כיבוי לפי לוח זמנים</div></div>
-        <label class="toggle">
-          <input type="checkbox" id="sleepEnabled" onchange="saveSleep()">
-          <div class="ttrack"></div><div class="tthumb"></div>
-        </label>
-      </div>
-      <div class="fld" style="margin-top:.6vh;">
-        <label class="flbl">ימים פעילים</label>
-        <div class="days-row" id="sleepDays"></div>
-      </div>
-      <div class="two">
-        <div class="fld"><label class="flbl">כבה מ-</label><input type="time" class="fi" id="sleepFrom" value="23:00" onchange="saveSleep()"></div>
-        <div class="fld"><label class="flbl">הדלק עד</label><input type="time" class="fi" id="sleepTo"   value="07:00" onchange="saveSleep()"></div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ============================================================
-     TAB: עיצוב
-     ============================================================ -->
+<!-- ====== עיצוב ====== -->
 <div class="page" id="page-design">
+
   <div class="sec">
     <div class="sec-title">🎨 צבעים</div>
     <div class="card">
-      <div class="fld">
-        <label class="flbl">צבע ראשי (ציאן)</label>
-        <div class="color-row">
-          <input type="color" class="color-input" id="colorMain"   value="#00E5FF" oninput="previewColors()">
-          <div class="color-preview" id="prevMain"></div>
-        </div>
+      <div class="fld"><label class="flbl">צבע ראשי (ציאן)</label>
+        <div class="color-row"><input type="color" class="color-input" id="colorMain" value="#00E5FF" oninput="previewColors()">
+          <div class="color-preview" id="prevMain"></div></div></div>
+      <div class="fld"><label class="flbl">צבע אקסנט (מג'נטה)</label>
+        <div class="color-row"><input type="color" class="color-input" id="colorAccent" value="#FF1493" oninput="previewColors()">
+          <div class="color-preview" id="prevAccent"></div></div></div>
+      <div class="fld"><label class="flbl">צבע רקע</label>
+        <div class="color-row"><input type="color" class="color-input" id="colorBg" value="#0A0E1A" oninput="previewColors()">
+          <div class="color-preview" id="prevBg"></div></div></div>
+      <div class="fld"><label class="flbl">צבע טקסט</label>
+        <div class="color-row"><input type="color" class="color-input" id="colorTxt" value="#E8F0FF" oninput="previewColors()">
+          <div class="color-preview" id="prevTxt"></div></div></div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">💬 סגנון בועות הודעות</div>
+    <div class="card">
+      <div class="two">
+        <div class="fld"><label class="flbl">רקע הבועה</label>
+          <div class="color-row"><input type="color" class="color-input" id="bubBg" value="#FFFFFF" oninput="previewBubble()">
+            <div class="color-preview" id="prevBubBg"></div></div></div>
+        <div class="fld"><label class="flbl">צבע מסגרת</label>
+          <div class="color-row"><input type="color" class="color-input" id="bubBd" value="#00E5FF" oninput="previewBubble()">
+            <div class="color-preview" id="prevBubBd"></div></div></div>
       </div>
-      <div class="fld">
-        <label class="flbl">צבע אקסנט (מג'נטה)</label>
-        <div class="color-row">
-          <input type="color" class="color-input" id="colorAccent" value="#FF1493" oninput="previewColors()">
-          <div class="color-preview" id="prevAccent"></div>
-        </div>
-      </div>
-      <div class="fld">
-        <label class="flbl">צבע רקע בסיס</label>
-        <div class="color-row">
-          <input type="color" class="color-input" id="colorBg"     value="#0A0E1A" oninput="previewColors()">
-          <div class="color-preview" id="prevBg"></div>
-        </div>
-      </div>
-      <div class="fld">
-        <label class="flbl">צבע טקסט</label>
-        <div class="color-row">
-          <input type="color" class="color-input" id="colorTxt"    value="#E8F0FF" oninput="previewColors()">
-          <div class="color-preview" id="prevTxt"></div>
-        </div>
+      <div class="fld"><label class="flbl">צבע טקסט בתוך הבועה</label>
+        <div class="color-row"><input type="color" class="color-input" id="bubTx" value="#0B1426" oninput="previewBubble()">
+          <div class="color-preview" id="prevBubTx"></div></div></div>
+      <div class="bub-preview" id="bubPrev">
+        <b>תצוגה מקדימה</b>זה איך הבועה תיראה במסך הלובי.
       </div>
     </div>
   </div>
@@ -777,47 +469,29 @@ select.fi{cursor:pointer;}
       <div class="upl-area" id="bgUplArea">
         <span class="upl-ico">📷</span>
         <div class="upl-txt">העלה תמונת רקע מהמכשיר</div>
-        <div class="upl-sub">נשמרת בקובץ bg-image.json</div>
+        <div class="upl-sub">נשמרת בקובץ bg-image.json (נפרד מ-settings.json)</div>
       </div>
       <input type="file" id="bgImgFile" accept="image/*" style="display:none">
-
       <div class="img-prev" id="bgImgPrev" style="margin-top:.6vh;">
         <img id="bgImgThumb" src="">
         <button class="img-prev-clear" onclick="clearBgImg()">✕</button>
       </div>
-
-      <div class="fld" style="margin-top:.6vh;">
-        <label class="flbl">עמעום תמונת רקע</label>
-        <div class="range-row">
-          <input type="range" id="bgOverlay" min="0" max="90" value="55">
-          <span class="range-val" id="bgOverlayVal">55%</span>
-        </div>
-      </div>
+      <div class="fld" style="margin-top:.6vh;"><label class="flbl">עמעום תמונת רקע</label>
+        <div class="range-row"><input type="range" id="bgOverlay" min="0" max="90" value="55">
+          <span class="range-val" id="bgOverlayVal">55%</span></div></div>
     </div>
   </div>
 
   <div class="sec">
     <div class="sec-title">✨ זכוכית וטיפוגרפיה</div>
     <div class="card">
-      <div class="fld">
-        <label class="flbl">אפקט זכוכית (blur)</label>
-        <select class="fi" id="glassBlur">
-          <option value="0">ללא — שקוף לגמרי</option>
-          <option value="6">עדין</option>
-          <option value="14" selected>בינוני (ברירת מחדל)</option>
-          <option value="20">חזק</option>
-          <option value="28">חזק מאוד</option>
-        </select>
-      </div>
-      <div class="fld">
-        <label class="flbl">שקיפות כרטיסים</label>
-        <div class="range-row">
-          <input type="range" id="cardOpacity" min="0" max="90" value="55">
-          <span class="range-val" id="cardOpacityVal">55%</span>
-        </div>
-      </div>
-      <div class="fld">
-        <label class="flbl">סוג גופן</label>
+      <div class="fld"><label class="flbl">אפקט זכוכית (blur)</label>
+        <div class="range-row"><input type="range" id="glassBlur" min="0" max="30" value="14">
+          <span class="range-val" id="glassBlurVal">14</span></div></div>
+      <div class="fld"><label class="flbl">שקיפות כרטיסים</label>
+        <div class="range-row"><input type="range" id="cardOpacity" min="0" max="90" value="55">
+          <span class="range-val" id="cardOpacityVal">55%</span></div></div>
+      <div class="fld"><label class="flbl">סוג גופן</label>
         <select class="fi" id="fontFamily">
           <option value="Heebo">Heebo (ברירת מחדל)</option>
           <option value="Rubik">Rubik</option>
@@ -825,34 +499,44 @@ select.fi{cursor:pointer;}
           <option value="Secular One">Secular One</option>
           <option value="Varela Round">Varela Round</option>
           <option value="Frank Ruhl Libre">Frank Ruhl Libre</option>
+          <option value="Suez One">Suez One</option>
         </select>
       </div>
-      <div class="fld">
-        <label class="flbl">גודל גופן</label>
-        <div class="range-row">
-          <input type="range" id="fontSize" min="12" max="22" value="16">
-          <span class="range-val" id="fontSizeVal">16px</span>
-        </div>
-      </div>
+      <div class="fld"><label class="flbl">גודל גופן</label>
+        <div class="range-row"><input type="range" id="fontSize" min="12" max="22" value="16">
+          <span class="range-val" id="fontSizeVal">16px</span></div></div>
     </div>
   </div>
 
   <button class="btn btn-cy btn-full" onclick="saveDesign()">💾 שמור עיצוב</button>
-  <button class="btn btn-outline btn-full" style="margin-top:.5vh;" onclick="resetDesign()">↺ איפוס לברירת מחדל</button>
+  <button class="btn btn-outline btn-full" style="margin-top:.5vh;" onclick="resetDesign()">↺ איפוס</button>
 </div>
 
-<!-- ============================================================
-     TAB: הגדרות כלליות
-     ============================================================ -->
+<!-- ====== הגדרות כלליות ====== -->
 <div class="page" id="page-settings">
 
   <div class="sec">
     <div class="sec-title">🏢 פרטי הבניין</div>
     <div class="card">
-      <div class="fld">
-        <label class="flbl">שם הבניין</label>
-        <input class="fi" id="bldgName" placeholder="שמעון פרס 3" oninput="saveSettings()">
+      <div class="fld"><label class="flbl">שם הבניין</label>
+        <input class="fi" id="bldgName" placeholder="שמעון פרס 3" oninput="saveSettings()"></div>
+      <div class="fld"><label class="flbl">כתובת / תיאור משנה</label>
+        <input class="fi" id="bldgAddr" placeholder="קריית מלאכי · לובי ראשי" oninput="saveSettings()"></div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">🌤️ עיר לתחזית</div>
+    <div class="card">
+      <div class="fld"><label class="flbl">שם העיר (לתצוגה)</label>
+        <input class="fi" id="weatherCity" placeholder="קריית מלאכי" oninput="saveSettings()"></div>
+      <div class="two">
+        <div class="fld"><label class="flbl">קו רוחב</label>
+          <input class="fi" id="weatherLat" placeholder="31.7318" style="direction:ltr;text-align:left;" oninput="saveSettings()"></div>
+        <div class="fld"><label class="flbl">קו אורך</label>
+          <input class="fi" id="weatherLon" placeholder="34.7430" style="direction:ltr;text-align:left;" oninput="saveSettings()"></div>
       </div>
+      <div style="font-size:.62rem;color:var(--tx3);">קואורדינטות בפורמט עשרוני. דוגמאות: ת"א 32.0853,34.7818 · ירושלים 31.7683,35.2137</div>
     </div>
   </div>
 
@@ -870,34 +554,8 @@ select.fi{cursor:pointer;}
   <div class="sec">
     <div class="sec-title">📱 QR ווצאפ</div>
     <div class="card">
-      <div class="fld">
-        <label class="flbl">קישור קבוצת ווצאפ</label>
-        <input class="fi" id="qrUrl" placeholder="https://chat.whatsapp.com/..." style="direction:ltr;text-align:left;" oninput="updateQRPreview();saveSettings()">
-      </div>
-      <div class="qr-prev" id="qrPrev">
-        <img id="qrPrevImg" src="" alt="QR">
-        <div class="qr-prev-txt">תצוגה מקדימה של ה-QR</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="sec">
-    <div class="sec-title">🔧 תחזוקה</div>
-    <div class="card">
-      <div class="tog-row">
-        <div class="tog-info">
-          <div class="tog-lbl">מצב תחזוקה</div>
-          <div class="tog-sub">מציג מסך תחזוקה על כל הלובי</div>
-        </div>
-        <label class="toggle">
-          <input type="checkbox" id="maintMode" onchange="saveSettings()">
-          <div class="ttrack"></div><div class="tthumb"></div>
-        </label>
-      </div>
-      <div class="fld" style="margin-top:.6vh;">
-        <label class="flbl">הודעת תחזוקה</label>
-        <input class="fi" id="maintMsg" placeholder="נחזור בקרוב..." oninput="saveSettings()">
-      </div>
+      <div class="fld"><label class="flbl">קישור קבוצת ווצאפ</label>
+        <input class="fi" id="qrUrl" placeholder="https://chat.whatsapp.com/..." style="direction:ltr;text-align:left;" oninput="saveSettings()"></div>
     </div>
   </div>
 
@@ -907,20 +565,76 @@ select.fi{cursor:pointer;}
       <div class="tog-row">
         <div class="tog-info">
           <div class="tog-lbl">הסתר את סרגל החדשות</div>
-          <div class="tog-sub">כשמופעל — לא יוצג ticker בתחתית המסך</div>
+          <div class="tog-sub">כשמופעל — לא יוצג ticker בתחתית</div>
         </div>
-        <label class="toggle">
-          <input type="checkbox" id="hideNews" onchange="saveSettings()">
-          <div class="ttrack"></div><div class="tthumb"></div>
-        </label>
+        <label class="toggle"><input type="checkbox" id="hideNews" onchange="saveSettings()">
+          <div class="ttrack"></div><div class="tthumb"></div></label>
       </div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">🔧 מצב תחזוקה</div>
+    <div class="card">
+      <div class="tog-row">
+        <div class="tog-info">
+          <div class="tog-lbl">הפעל מצב תחזוקה</div>
+          <div class="tog-sub">מציג מסך תחזוקה על כל הלובי</div>
+        </div>
+        <label class="toggle"><input type="checkbox" id="maintMode" onchange="saveSettings()">
+          <div class="ttrack"></div><div class="tthumb"></div></label>
+      </div>
+      <div class="fld" style="margin-top:.6vh;"><label class="flbl">הודעת תחזוקה</label>
+        <input class="fi" id="maintMsg" placeholder="נחזור בקרוב..." oninput="saveSettings()"></div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">⚠️ התראת חירום</div>
+    <div class="card">
+      <div class="tog-row">
+        <div class="tog-info">
+          <div class="tog-lbl">הפעל התראת חירום</div>
+          <div class="tog-sub">מציג מסך אדום על כל הלובי</div>
+        </div>
+        <label class="toggle"><input type="checkbox" id="emergActive" onchange="saveEmerg()">
+          <div class="ttrack"></div><div class="tthumb"></div></label>
+      </div>
+      <div class="fld" style="margin-top:.6vh;"><label class="flbl">כותרת</label>
+        <input class="fi" id="emergTitle" placeholder="למשל: הפסקת חשמל" oninput="saveEmerg()"></div>
+      <div class="fld"><label class="flbl">הודעה</label>
+        <textarea class="fi" id="emergBody" placeholder="פרטים נוספים..." oninput="saveEmerg()"></textarea></div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">🌙 כיבוי מסך</div>
+    <div class="card">
+      <div class="tog-row">
+        <div class="tog-info">
+          <div class="tog-lbl">כבה מסך עכשיו</div>
+          <div class="tog-sub">מציג מסך שחור עם שעה גדולה (חוסך בליטוש)</div>
+        </div>
+        <label class="toggle"><input type="checkbox" id="sleepManual" onchange="saveSleep()">
+          <div class="ttrack"></div><div class="tthumb"></div></label>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">🔒 סיסמת מנהל</div>
+    <div class="card">
+      <div class="info-box">
+        ⚠️ הסיסמה נשמרת ב-settings.json הציבורי. <strong>אל תשים סיסמה רגישה.</strong>
+      </div>
+      <div class="fld"><label class="flbl">סיסמה חדשה</label>
+        <input class="fi" type="text" id="adminPassword" placeholder="לפחות 4 תווים"></div>
+      <button class="btn btn-cy" onclick="saveAdminPassword()">💾 שמור סיסמה</button>
     </div>
   </div>
 </div>
 
-<!-- ============================================================
-     TAB: טוקן
-     ============================================================ -->
+<!-- ====== טוקן ====== -->
 <div class="page" id="page-token">
   <div class="sec">
     <div class="sec-title">🔑 GitHub Token</div>
@@ -930,14 +644,12 @@ select.fi{cursor:pointer;}
         צריך הרשאות <strong>repo</strong> בלבד.
       </div>
       <div class="token-status" id="tokenStatus">לא הוגדר טוקן</div>
-      <div class="fld">
-        <label class="flbl">הדבק טוקן חדש</label>
-        <input class="fi" id="ghToken" placeholder="ghp_xxxxxxxxxxxx" style="direction:ltr;text-align:left;">
-      </div>
+      <div class="fld"><label class="flbl">הדבק טוקן חדש</label>
+        <input class="fi" id="ghToken" placeholder="ghp_xxxxxxxxxxxx" style="direction:ltr;text-align:left;"></div>
       <div class="btn-row">
-        <button class="btn btn-cy"      onclick="saveToken()">💾 שמור טוקן</button>
+        <button class="btn btn-cy"      onclick="saveToken()">💾 שמור</button>
         <button class="btn btn-outline" onclick="testConn()">🔗 בדוק חיבור</button>
-        <button class="btn btn-outline" onclick="clearToken()">🗑️ מחק טוקן</button>
+        <button class="btn btn-outline" onclick="clearToken()">🗑️ מחק</button>
       </div>
     </div>
   </div>
@@ -948,13 +660,11 @@ select.fi{cursor:pointer;}
 <script>
 'use strict';
 
-/* ============================================================
-   עזרים בסיסיים
-   ============================================================ */
-const $ = id => document.getElementById(id);
+/* ===== עזרים ===== */
+const $   = id => document.getElementById(id);
 const esc = s => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-const sg = k => { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : null; } catch(e){ return null; } };
-const ss = (k,v) => localStorage.setItem(k, JSON.stringify(v));
+const sg  = k => { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : null; } catch(e){ return null; } };
+const ss  = (k,v) => localStorage.setItem(k, JSON.stringify(v));
 
 function b64enc(str){
   const bytes = new TextEncoder().encode(str);
@@ -974,14 +684,11 @@ function b64dec(str){
 
 const REPO = { user:'Peres3', name:'lobby' };
 const K = {
-  a:'sp3_a',  s:'sp3_s',  sl:'sp3_sl',
-  e:'sp3_e',  d:'sp3_d',  g:'sp3_g',
-  w:'sp3_w',  q:'sp3_q',  hf:'sp3_hf'
+  a:'sp3_a', s:'sp3_s', sl:'sp3_sl', e:'sp3_e', d:'sp3_d',
+  g:'sp3_g', w:'sp3_w', m:'sp3_m', hf:'sp3_hf'
 };
 
-function getToken(){
-  return localStorage.getItem('sp3_ghToken') || '';
-}
+function getToken(){ return localStorage.getItem('sp3_ghToken') || ''; }
 
 async function ghFetch(path, opts = {}){
   const url = `https://api.github.com/repos/${REPO.user}/${REPO.name}/contents/${path}`;
@@ -995,49 +702,52 @@ async function ghFetch(path, opts = {}){
   return fetch(url, { ...opts, headers, cache:'no-store' });
 }
 
-/* ============================================================
-   טאבים
-   ============================================================ */
-document.querySelectorAll('.tab').forEach(t => {
-  t.addEventListener('click', () => {
-    document.querySelectorAll('.tab').forEach(x => x.classList.remove('act'));
-    document.querySelectorAll('.page').forEach(x => x.classList.remove('act'));
-    t.classList.add('act');
-    const p = $('page-' + t.dataset.page);
-    if(p) p.classList.add('act');
-    if(t.dataset.page === 'token') refreshTokenStatus();
-  });
-});
+/* ===== LOCK SCREEN ===== */
+const DEFAULT_PASSWORD = 'admin123';
+let _currentPassword = DEFAULT_PASSWORD;
 
-/* ============================================================
-   Toast
-   ============================================================ */
+async function loadAdminPasswordFromGitHub(){
+  try{
+    const r = await ghFetch('settings.json');
+    if(!r.ok) return;
+    const data = await r.json();
+    const cfg = JSON.parse(b64dec(data.content));
+    if(cfg && cfg.settings && typeof cfg.settings.adminPassword === 'string' && cfg.settings.adminPassword.length){
+      _currentPassword = cfg.settings.adminPassword;
+    }
+  }catch(e){}
+}
+
+function tryUnlock(){
+  const pwd = $('lockPwd').value;
+  if(pwd === _currentPassword){
+    sessionStorage.setItem('sp3_loggedIn', '1');
+    $('lock').style.display = 'none';
+    initAfterUnlock();
+  } else {
+    $('lockErr').textContent = '❌ סיסמה שגויה';
+    $('lockPwd').value = '';
+    $('lockPwd').focus();
+  }
+}
+$('lockPwd').addEventListener('keydown', e => { if(e.key === 'Enter') tryUnlock(); });
+
+/* ===== TOAST ===== */
 let _toastTm = null;
 function showToast(msg, type = 'success'){
-  const t = $('toast');
-  if(!t) return;
+  const t = $('toast'); if(!t) return;
   t.textContent = msg;
   t.className = 'toast show ' + (type || '');
   if(_toastTm) clearTimeout(_toastTm);
   _toastTm = setTimeout(() => t.className = 'toast', 3000);
 }
 
-/* ============================================================
-   Dirty flag (יש שינויים שלא פורסמו)
-   ============================================================ */
+/* ===== DIRTY FLAG ===== */
 let _dirty = false;
-function markDirty(){
-  _dirty = true;
-  const pd = $('pendBadge'); if(pd) pd.classList.add('show');
-}
-function markClean(){
-  _dirty = false;
-  const pd = $('pendBadge'); if(pd) pd.classList.remove('show');
-}
+function markDirty(){ _dirty = true; const pd = $('pendBadge'); if(pd) pd.classList.add('show'); }
+function markClean(){ _dirty = false; const pd = $('pendBadge'); if(pd) pd.classList.remove('show'); }
 
-/* ============================================================
-   חיבור (נורית סטטוס בכותרת)
-   ============================================================ */
+/* ===== CONN STATUS ===== */
 async function checkConn(){
   const d = $('cdot'), c = $('ctxt');
   if(!getToken()){
@@ -1047,43 +757,29 @@ async function checkConn(){
   }
   try{
     const r = await ghFetch('settings.json');
-    if(r.ok){
-      if(d) d.className = 'cdot ok';
-      if(c) c.textContent = 'מחובר';
-      return true;
-    }
-    if(d) d.className = 'cdot err';
-    if(c) c.textContent = 'שגיאה ' + r.status;
+    if(r.ok){ if(d) d.className = 'cdot ok'; if(c) c.textContent = 'מחובר'; return true; }
+    if(d) d.className = 'cdot err'; if(c) c.textContent = 'שגיאה ' + r.status;
     return false;
   }catch(e){
-    if(d) d.className = 'cdot err';
-    if(c) c.textContent = 'אין חיבור';
+    if(d) d.className = 'cdot err'; if(c) c.textContent = 'אין חיבור';
     return false;
   }
 }
 
-/* ============================================================
-   PUT קובץ ל-GitHub (עם retry על קונפליקט SHA)
-   ============================================================ */
+/* ===== PUT עם retry ===== */
 async function putFile(path, content, message, maxRetry = 3){
   for(let attempt = 0; attempt < maxRetry; attempt++){
     let sha = null;
     const rGet = await ghFetch(path);
-    if(rGet.ok){
-      const d = await rGet.json();
-      sha = d.sha;
-    } else if(rGet.status !== 404){
-      throw new Error('GET ' + rGet.status + ' (' + path + ')');
-    }
+    if(rGet.ok){ const d = await rGet.json(); sha = d.sha; }
+    else if(rGet.status !== 404){ throw new Error('GET ' + rGet.status + ' (' + path + ')'); }
     const body = {
       message: message || ('update ' + path + ' ' + new Date().toISOString()),
       content: b64enc(content)
     };
     if(sha) body.sha = sha;
-
     const rPut = await ghFetch(path, { method:'PUT', body:JSON.stringify(body) });
     if(rPut.ok) return rPut;
-
     if(rPut.status === 409 && attempt < maxRetry - 1){
       await new Promise(r => setTimeout(r, 400 + attempt*200));
       continue;
@@ -1093,15 +789,11 @@ async function putFile(path, content, message, maxRetry = 3){
   }
 }
 
-/* ============================================================
-   תור פרסום — מונע שמירות מקבילות / קונפליקטים
-   ============================================================ */
+/* ===== תור פרסום ===== */
 let _publishQueue = Promise.resolve();
 function queuePublish(){
   markDirty();
-  _publishQueue = _publishQueue
-    .then(() => publishAll())
-    .catch(e => console.warn('publish error:', e));
+  _publishQueue = _publishQueue.then(() => publishAll()).catch(e => console.warn('publish error:', e));
 }
 
 async function publishAll(){
@@ -1114,29 +806,27 @@ async function publishAll(){
   showToast('⏳ מפרסם...');
 
   try{
-    /* gallery.json — קובץ נפרד */
-    try{
-      await putFile('gallery.json', JSON.stringify(sg(K.g) || []), 'update gallery.json');
-    }catch(e){ console.warn('gallery.json failed:', e); }
+    /* gallery.json */
+    try{ await putFile('gallery.json', JSON.stringify(sg(K.g) || []), 'update gallery.json'); }
+    catch(e){ console.warn('gallery.json:', e); }
 
-    /* bg-image.json — קובץ נפרד (תמונה ב-base64 גדולה) */
+    /* bg-image.json (נפרד מ-settings) */
     const designData = { ...(sg(K.d) || {}) };
     const bgImg = designData.bgImage || '';
-    delete designData.bgImage;  /* לא נשמרת בתוך settings.json */
-    try{
-      await putFile('bg-image.json', JSON.stringify({ img:bgImg }), 'update bg-image.json');
-    }catch(e){ console.warn('bg-image.json failed:', e); }
+    delete designData.bgImage;
+    try{ await putFile('bg-image.json', JSON.stringify({ img:bgImg }), 'update bg-image.json'); }
+    catch(e){ console.warn('bg-image.json:', e); }
 
-    /* settings.json — כל השאר */
+    /* settings.json */
     const payload = {
       announcements: announcements,
       settings:      sg(K.s)  || {},
       sleep:         sg(K.sl) || {},
       emergency:     sg(K.e)  || {},
       design:        designData,
-      gallery:       '_gallery.json',
+      music:         sg(K.m)  || {},
       widgets:       sg(K.w)  || {},
-      quotes:        sg(K.q)  || [],
+      gallery:       '_gallery.json',
       homefront:     sg(K.hf) || [],
       _updated:      new Date().toISOString()
     };
@@ -1150,55 +840,45 @@ async function publishAll(){
   if(btn){ btn.disabled = false; btn.textContent = '🚀 פרסם'; }
 }
 
-/* ============================================================
-   סנכרון ראשוני מ-GitHub
-   ============================================================ */
+/* ===== SYNC ===== */
 async function syncFromGitHub(){
   try{
     const r = await ghFetch('settings.json');
-    if(!r.ok){
-      showToast('⚠️ סנכרון נכשל: ' + r.status, 'error');
-      return;
-    }
+    if(!r.ok){ showToast('⚠️ סנכרון נכשל: ' + r.status, 'error'); return; }
     const meta = await r.json();
     const cfg = JSON.parse(b64dec(meta.content));
 
-    /* תמיד דורסים את ה-localStorage עם ה-GitHub */
     if(cfg.announcements !== undefined){ ss(K.a, cfg.announcements); announcements = [...cfg.announcements]; }
-    if(cfg.settings      !== undefined)  ss(K.s,  cfg.settings);
-    if(cfg.sleep         !== undefined)  ss(K.sl, cfg.sleep);
-    if(cfg.emergency     !== undefined)  ss(K.e,  cfg.emergency);
-    if(cfg.design        !== undefined)  ss(K.d,  cfg.design);
-    if(cfg.widgets       !== undefined)  ss(K.w,  cfg.widgets);
-    if(cfg.quotes        !== undefined)  ss(K.q,  cfg.quotes);
-    if(cfg.homefront     !== undefined)  ss(K.hf, cfg.homefront);
+    if(cfg.settings      !== undefined) ss(K.s,  cfg.settings);
+    if(cfg.sleep         !== undefined) ss(K.sl, cfg.sleep);
+    if(cfg.emergency     !== undefined) ss(K.e,  cfg.emergency);
+    if(cfg.design        !== undefined) ss(K.d,  cfg.design);
+    if(cfg.music         !== undefined) ss(K.m,  cfg.music);
+    if(cfg.widgets       !== undefined) ss(K.w,  cfg.widgets);
+    if(cfg.homefront     !== undefined) ss(K.hf, cfg.homefront);
 
-    /* gallery.json */
     if(cfg.gallery === '_gallery.json' || cfg.gallery === undefined){
       try{
         const gr = await ghFetch('gallery.json');
-        if(gr.ok){
-          const gd = await gr.json();
-          const gal = JSON.parse(b64dec(gd.content));
-          if(Array.isArray(gal)){ ss(K.g, gal); gallery = [...gal]; }
-        }
+        if(gr.ok){ const gd = await gr.json(); const gal = JSON.parse(b64dec(gd.content));
+          if(Array.isArray(gal)){ ss(K.g, gal); gallery = [...gal]; } }
       }catch(e){}
-    } else if(Array.isArray(cfg.gallery)){
-      ss(K.g, cfg.gallery);
-      gallery = [...cfg.gallery];
-    }
+    } else if(Array.isArray(cfg.gallery)){ ss(K.g, cfg.gallery); gallery = [...cfg.gallery]; }
 
-    /* bg-image.json — מאוחה אל design */
     try{
       const bgR = await ghFetch('bg-image.json');
       if(bgR.ok){
         const bgD = await bgR.json();
-        const bgContent = JSON.parse(b64dec(bgD.content));
+        const o = JSON.parse(b64dec(bgD.content));
         const d = sg(K.d) || {};
-        d.bgImage = bgContent.img || '';
+        d.bgImage = o.img || '';
         ss(K.d, d);
       }
     }catch(e){}
+
+    /* רענון סיסמה מה-settings */
+    const s = sg(K.s) || {};
+    if(typeof s.adminPassword === 'string' && s.adminPassword.length) _currentPassword = s.adminPassword;
 
     loadAllUI();
     showToast('✅ נסנכרן מ-GitHub');
@@ -1207,19 +887,28 @@ async function syncFromGitHub(){
   }
 }
 
-/* ============================================================
-   טעינת כל מסכי ה-UI מה-localStorage
-   ============================================================ */
 function loadAllUI(){
   loadAnnsUI();
   loadGalUI();
-  loadYTUI();
-  loadEmergUI();
-  loadSleepUI();
+  loadMusicUI();
   loadDesignUI();
   loadSettingsUI();
+  loadEmergUI();
+  loadSleepUI();
   refreshTokenStatus();
 }
+
+/* ===== TABS ===== */
+document.querySelectorAll('.tab').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(x => x.classList.remove('act'));
+    document.querySelectorAll('.page').forEach(x => x.classList.remove('act'));
+    t.classList.add('act');
+    const p = $('page-' + t.dataset.page);
+    if(p) p.classList.add('act');
+    if(t.dataset.page === 'token') refreshTokenStatus();
+  });
+});
 
 /* ============================================================
    ANNOUNCEMENTS
@@ -1230,14 +919,9 @@ function loadAnnsUI(){
   announcements = sg(K.a) || [];
   renderAnnList();
 }
-
 function renderAnnList(){
-  const el = $('annList');
-  if(!el) return;
-  if(!announcements.length){
-    el.innerHTML = '<div class="list-empty">אין הודעות</div>';
-    return;
-  }
+  const el = $('annList'); if(!el) return;
+  if(!announcements.length){ el.innerHTML = '<div class="list-empty">אין הודעות</div>'; return; }
   el.innerHTML = announcements.map((a,i) => `
     <div class="ann-list-item">
       ${a.img ? `<img class="ann-list-img" src="${esc(a.img)}" onerror="this.style.display='none'">` : ''}
@@ -1256,15 +940,12 @@ function renderAnnList(){
         <button class="icon-btn" onclick="editAnn(${i})"   title="ערוך">✏️</button>
         <button class="icon-btn" onclick="deleteAnn(${i})" title="מחק">🗑️</button>
       </div>
-    </div>
-  `).join('');
+    </div>`).join('');
 }
-
 function addAnnouncement(){
   const title = $('aTitle').value.trim();
   if(!title){ showToast('הזן כותרת', 'error'); return; }
-  const imgEl = $('aImg');
-  const img = imgEl ? (imgEl.dataset.b64 || '') : '';
+  const img = $('aImg').dataset.b64 || '';
   announcements.push({
     title,
     body:     $('aBody').value.trim(),
@@ -1281,29 +962,13 @@ function addAnnouncement(){
   showToast('✅ הודעה נוספה');
   queuePublish();
 }
-
 function clearAnnForm(){
-  ['aTitle','aBody','aFrom','aTo','aTimeFrom','aTimeTo'].forEach(id => {
-    const el = $(id); if(el) el.value = '';
-  });
+  ['aTitle','aBody','aFrom','aTo','aTimeFrom','aTimeTo'].forEach(id => { const e = $(id); if(e) e.value = ''; });
   const ac = $('aActive'); if(ac) ac.checked = true;
   clearAnnImg();
 }
-
-function toggleAnn(i){
-  announcements[i].active = !announcements[i].active;
-  ss(K.a, announcements);
-  renderAnnList();
-  queuePublish();
-}
-
-function deleteAnn(i){
-  announcements.splice(i, 1);
-  ss(K.a, announcements);
-  renderAnnList();
-  queuePublish();
-}
-
+function toggleAnn(i){ announcements[i].active = !announcements[i].active; ss(K.a, announcements); renderAnnList(); queuePublish(); }
+function deleteAnn(i){ announcements.splice(i,1); ss(K.a, announcements); renderAnnList(); queuePublish(); }
 function editAnn(i){
   const a = announcements[i];
   $('aTitle').value    = a.title    || '';
@@ -1312,10 +977,8 @@ function editAnn(i){
   $('aTo').value       = a.dateTo   || '';
   $('aTimeFrom').value = a.timeFrom || '';
   $('aTimeTo').value   = a.timeTo   || '';
-  const ac = $('aActive'); if(ac) ac.checked = !!a.active;
-  if(a.img) setAnnImgPreview(a.img);
-  else clearAnnImg();
-
+  $('aActive').checked = !!a.active;
+  if(a.img) setAnnImgPreview(a.img); else clearAnnImg();
   announcements.splice(i, 1);
   ss(K.a, announcements);
   renderAnnList();
@@ -1323,14 +986,12 @@ function editAnn(i){
   window.scrollTo({ top:0, behavior:'smooth' });
   showToast('✏️ ערוך ולחץ "הוסף" לשמירה');
 }
-
-/* ── תמונת הודעה ── */
 function handleAnnImg(file){
   if(!file || !file.type.startsWith('image/')) return;
   compressImg(file, 1200, .8).then(b64 => setAnnImgPreview(b64));
 }
 function setAnnImgPreview(src){
-  const h = $('aImg'); if(h) h.dataset.b64 = src;
+  $('aImg').dataset.b64 = src;
   const p = $('annImgPrev'), t = $('annImgThumb');
   if(p && t){ t.src = src; p.style.display = 'block'; }
 }
@@ -1339,21 +1000,17 @@ function clearAnnImg(){
   const p = $('annImgPrev'); if(p) p.style.display = 'none';
   const f = $('aImgFile'); if(f) f.value = '';
 }
-
 (function bindAnnUpload(){
   const area = $('annUplArea'), fi = $('aImgFile');
-  if(area && fi){
-    area.addEventListener('click', () => fi.click());
-    area.addEventListener('dragover', e => { e.preventDefault(); area.style.borderColor = 'var(--cy)'; });
-    area.addEventListener('dragleave', () => area.style.borderColor = 'rgba(0,229,255,.35)');
-    area.addEventListener('drop', e => {
-      e.preventDefault();
-      area.style.borderColor = 'rgba(0,229,255,.35)';
-      const f = e.dataTransfer && e.dataTransfer.files[0];
-      if(f) handleAnnImg(f);
-    });
-    fi.addEventListener('change', () => { if(fi.files[0]) handleAnnImg(fi.files[0]); });
-  }
+  if(!area || !fi) return;
+  area.addEventListener('click', () => fi.click());
+  area.addEventListener('dragover', e => { e.preventDefault(); area.style.borderColor = 'var(--cy)'; });
+  area.addEventListener('dragleave', () => area.style.borderColor = 'rgba(0,229,255,.35)');
+  area.addEventListener('drop', e => {
+    e.preventDefault(); area.style.borderColor = 'rgba(0,229,255,.35)';
+    const f = e.dataTransfer && e.dataTransfer.files[0]; if(f) handleAnnImg(f);
+  });
+  fi.addEventListener('change', () => { if(fi.files[0]) handleAnnImg(fi.files[0]); });
 })();
 
 /* ============================================================
@@ -1370,7 +1027,6 @@ function loadGalUI(){
   if($('galIntervalVal'))   $('galIntervalVal').textContent = iv;
   if($('galTransSel'))      $('galTransSel').value = w.galTrans || 'fade';
 }
-
 function saveGalSettings(){
   const w = sg(K.w) || {};
   w.galInterval = parseInt($('galIntervalRange').value) || 5;
@@ -1378,38 +1034,27 @@ function saveGalSettings(){
   ss(K.w, w);
   queuePublish();
 }
-
 function renderGalGrid(){
-  const el = $('galGrid');
-  if(!el) return;
+  const el = $('galGrid'); if(!el) return;
   el.innerHTML = gallery.map((src,i) => `
     <div class="gal-item">
       <img src="${esc(src)}" onerror="this.style.opacity='.3'">
       <button class="gal-del" onclick="deleteGalleryImg(${i})">✕</button>
-    </div>
-  `).join('');
-  el.innerHTML += `
-    <div class="gal-add" onclick="$('galFile').click()">
-      <div class="gal-add-ico">＋</div>
-      <div class="gal-add-txt">הוסף</div>
-    </div>`;
+    </div>`).join('');
+  el.innerHTML += `<div class="gal-add" onclick="$('galFile').click()">
+    <div class="gal-add-ico">＋</div><div class="gal-add-txt">הוסף</div></div>`;
 }
-
 async function deleteGalleryImg(i){
   const src = gallery[i];
-  /* ניסיון למחוק את הקובץ מהריפו אם הוא בתיקיית /gallery/ */
   if(src && src.includes('/gallery/')){
     try{
       const fname = 'gallery/' + src.split('/gallery/')[1].split('?')[0];
       const rGet = await ghFetch(fname);
       if(rGet.ok){
         const d = await rGet.json();
-        await ghFetch(fname, {
-          method:'DELETE',
-          body:JSON.stringify({ message:'delete '+fname, sha:d.sha })
-        });
+        await ghFetch(fname, { method:'DELETE', body:JSON.stringify({ message:'delete '+fname, sha:d.sha }) });
       }
-    }catch(e){ console.warn('gallery delete failed:', e); }
+    }catch(e){ console.warn('gallery delete:', e); }
   }
   gallery.splice(i, 1);
   ss(K.g, gallery);
@@ -1417,17 +1062,11 @@ async function deleteGalleryImg(i){
   queuePublish();
   showToast('🗑️ נמחקה');
 }
-
 async function uploadGalleryFiles(files){
-  if(!getToken()){
-    showToast('❌ אין טוקן — עבור ללשונית טוקן', 'error');
-    return;
-  }
+  if(!getToken()){ showToast('❌ אין טוקן', 'error'); return; }
   const prog = $('galProg'), bar = $('galProgBar'), txt = $('galProgTxt');
   if(prog) prog.style.display = 'block';
-  let done = 0;
-  const total = files.length;
-
+  let done = 0; const total = files.length;
   for(const file of files){
     if(!file.type.startsWith('image/')) continue;
     try{
@@ -1435,39 +1074,26 @@ async function uploadGalleryFiles(files){
       const b64data = b64full.split(',')[1];
       const ts = Date.now() + '_' + Math.floor(Math.random() * 9999);
       const fname = 'gallery/img_' + ts + '.jpg';
-
       const body = { message:'add gallery image ' + ts, content:b64data };
       const r = await ghFetch(fname, { method:'PUT', body:JSON.stringify(body) });
-
       if(r.ok){
         const d = await r.json();
         const url = (d.content && d.content.download_url)
           || `https://raw.githubusercontent.com/${REPO.user}/${REPO.name}/main/${fname}`;
         gallery.push(url);
         done++;
-      } else {
-        showToast('❌ שגיאת העלאה ' + r.status, 'error');
-      }
-    }catch(e){
-      showToast('❌ ' + e.message, 'error');
-    }
+      } else { showToast('❌ שגיאת העלאה ' + r.status, 'error'); }
+    }catch(e){ showToast('❌ ' + e.message, 'error'); }
     if(bar) bar.style.width = Math.round(done/total*100) + '%';
     if(txt) txt.textContent = done + '/' + total;
   }
-
   ss(K.g, gallery);
   renderGalGrid();
   queuePublish();
-
-  setTimeout(() => {
-    if(prog) prog.style.display = 'none';
-    if(bar)  bar.style.width = '0%';
-  }, 800);
-
+  setTimeout(() => { if(prog) prog.style.display = 'none'; if(bar) bar.style.width = '0%'; }, 800);
   if(done > 0) showToast(`✅ ${done} תמונות נוספו`);
   const gf = $('galFile'); if(gf) gf.value = '';
 }
-
 (function bindGalleryUpload(){
   const area = $('galUplArea'), fi = $('galFile');
   if(area && fi){
@@ -1475,48 +1101,32 @@ async function uploadGalleryFiles(files){
     area.addEventListener('dragover', e => { e.preventDefault(); area.style.borderColor = 'var(--cy)'; });
     area.addEventListener('dragleave', () => area.style.borderColor = 'rgba(0,229,255,.35)');
     area.addEventListener('drop', e => {
-      e.preventDefault();
-      area.style.borderColor = 'rgba(0,229,255,.35)';
+      e.preventDefault(); area.style.borderColor = 'rgba(0,229,255,.35)';
       if(e.dataTransfer && e.dataTransfer.files.length) uploadGalleryFiles(e.dataTransfer.files);
     });
     fi.addEventListener('change', () => { if(fi.files.length) uploadGalleryFiles(fi.files); });
   }
   const ri = $('galIntervalRange'), rv = $('galIntervalVal'), ts = $('galTransSel');
-  if(ri && rv){
-    ri.addEventListener('input', () => { rv.textContent = ri.value; saveGalSettings(); });
-  }
+  if(ri && rv) ri.addEventListener('input', () => { rv.textContent = ri.value; saveGalSettings(); });
   if(ts) ts.addEventListener('change', saveGalSettings);
 })();
 
 /* ============================================================
-   YouTube
+   MUSIC
    ============================================================ */
-let _ytMode = 'video';
-function loadYTUI(){
-  const w = sg(K.w) || {};
-  if($('ytEnabled')) $('ytEnabled').checked = !!w.ytShow;
-  if($('ytUrl'))     $('ytUrl').value = w.ytUrl || '';
-  _ytMode = w.ytMode || 'video';
-  setYTMode(_ytMode, false);
+function loadMusicUI(){
+  const m = sg(K.m) || {};
+  if($('musicEnabled')) $('musicEnabled').checked = !!m.enabled;
+  if($('musicUrl'))     $('musicUrl').value = m.url || '';
 }
-function setYTMode(mode, save = true){
-  _ytMode = mode;
-  const mv = $('ytModeVideo'), mm = $('ytModeMusic');
-  if(mv) mv.classList.toggle('sel', mode === 'video');
-  if(mm) mm.classList.toggle('sel', mode === 'music');
-  if(save) saveYT();
-}
-function saveYT(){
-  const w = sg(K.w) || {};
-  w.ytShow = $('ytEnabled').checked;
-  w.ytUrl  = $('ytUrl').value.trim();
-  w.ytMode = _ytMode;
-  ss(K.w, w);
+function saveMusic(){
+  const m = { enabled: $('musicEnabled').checked, url: $('musicUrl').value.trim() };
+  ss(K.m, m);
   queuePublish();
 }
-(function bindYT(){
-  const u = $('ytUrl');
-  if(u) u.addEventListener('input', () => { clearTimeout(u._tm); u._tm = setTimeout(saveYT, 500); });
+(function bindMusic(){
+  const u = $('musicUrl');
+  if(u) u.addEventListener('input', () => { clearTimeout(u._tm); u._tm = setTimeout(saveMusic, 500); });
 })();
 
 /* ============================================================
@@ -1529,11 +1139,7 @@ function loadEmergUI(){
   if($('emergBody'))   $('emergBody').value     = c.body  || '';
 }
 function saveEmerg(){
-  const c = {
-    active: $('emergActive').checked,
-    title:  $('emergTitle').value.trim(),
-    body:   $('emergBody').value.trim()
-  };
+  const c = { active:$('emergActive').checked, title:$('emergTitle').value.trim(), body:$('emergBody').value.trim() };
   ss(K.e, c);
   queuePublish();
 }
@@ -1543,30 +1149,10 @@ function saveEmerg(){
    ============================================================ */
 function loadSleepUI(){
   const c = sg(K.sl) || {};
-  if($('sleepManual'))  $('sleepManual').checked  = !!c.manualOff;
-  if($('sleepEnabled')) $('sleepEnabled').checked = !!c.enabled;
-  if($('sleepFrom'))    $('sleepFrom').value      = c.from || '23:00';
-  if($('sleepTo'))      $('sleepTo').value        = c.to   || '07:00';
-
-  const days = c.days || [0,1,2,3,4];
-  const con = $('sleepDays'); if(!con) return;
-  const DN = ['ראשון','שני','שלישי','רביעי','חמישי','שישי','שבת'];
-  con.innerHTML = DN.map((n,i) =>
-    `<button type="button" class="day-btn${days.includes(i)?' sel':''}" data-d="${i}">${n}</button>`
-  ).join('');
-  con.querySelectorAll('.day-btn').forEach(b => {
-    b.addEventListener('click', () => { b.classList.toggle('sel'); saveSleep(); });
-  });
+  if($('sleepManual')) $('sleepManual').checked = !!c.manualOff;
 }
 function saveSleep(){
-  const days = [...document.querySelectorAll('#sleepDays .day-btn.sel')].map(b => +b.dataset.d);
-  const c = {
-    manualOff: $('sleepManual').checked,
-    enabled:   $('sleepEnabled').checked,
-    days,
-    from:      $('sleepFrom').value || '23:00',
-    to:        $('sleepTo').value   || '07:00'
-  };
+  const c = { manualOff:$('sleepManual').checked };
   ss(K.sl, c);
   queuePublish();
 }
@@ -1580,14 +1166,19 @@ function loadDesignUI(){
   if(d.accent && $('colorAccent')) $('colorAccent').value = d.accent;
   if(d.bg     && $('colorBg'))     $('colorBg').value     = d.bg;
   if(d.txt    && $('colorTxt'))    $('colorTxt').value    = d.txt;
+  if(d.bubbleBg     && $('bubBg')) $('bubBg').value = d.bubbleBg;
+  if(d.bubbleBorder && $('bubBd')) $('bubBd').value = d.bubbleBorder;
+  if(d.bubbleTxt    && $('bubTx')) $('bubTx').value = d.bubbleTxt;
 
   if(d.fontFamily && $('fontFamily')) $('fontFamily').value = d.fontFamily;
-  if(d.fontSize && $('fontSize')){
+  if(d.fontSize !== undefined && $('fontSize')){
     $('fontSize').value = d.fontSize;
     if($('fontSizeVal')) $('fontSizeVal').textContent = d.fontSize + 'px';
   }
-
-  if(d.glassBlur !== undefined && $('glassBlur')) $('glassBlur').value = d.glassBlur;
+  if(d.glassBlur !== undefined && $('glassBlur')){
+    $('glassBlur').value = d.glassBlur;
+    if($('glassBlurVal')) $('glassBlurVal').textContent = d.glassBlur;
+  }
   if(d.cardOpacity !== undefined && $('cardOpacity')){
     $('cardOpacity').value = d.cardOpacity;
     if($('cardOpacityVal')) $('cardOpacityVal').textContent = d.cardOpacity + '%';
@@ -1597,55 +1188,56 @@ function loadDesignUI(){
     if($('bgOverlayVal')) $('bgOverlayVal').textContent = d.bgOverlay + '%';
   }
 
-  /* תמונת רקע */
   const p = $('bgImgPrev'), t = $('bgImgThumb');
   if(d.bgImage){
     if(p && t){ t.src = d.bgImage; p.style.display = 'block'; }
-  } else if(p){
-    p.style.display = 'none';
-  }
+  } else if(p){ p.style.display = 'none'; }
 
   previewColors();
+  previewBubble();
 }
-
 function previewColors(){
   const map = [
-    ['colorMain',   'prevMain'],
-    ['colorAccent', 'prevAccent'],
-    ['colorBg',     'prevBg'],
-    ['colorTxt',    'prevTxt']
+    ['colorMain','prevMain'],['colorAccent','prevAccent'],
+    ['colorBg','prevBg'],['colorTxt','prevTxt'],
+    ['bubBg','prevBubBg'],['bubBd','prevBubBd'],['bubTx','prevBubTx']
   ];
   map.forEach(([k,v]) => {
     const el = $(k), pv = $(v);
     if(el && pv) pv.style.background = el.value;
   });
 }
-
+function previewBubble(){
+  previewColors();
+  const bg = $('bubBg').value, bd = $('bubBd').value, tx = $('bubTx').value;
+  const p = $('bubPrev');
+  p.style.background = bg;
+  p.style.color = tx;
+  p.style.borderRight = '4px solid ' + bd;
+}
 function saveDesign(){
-  const d = {
-    main:        $('colorMain')?.value   || '#00E5FF',
-    accent:      $('colorAccent')?.value || '#FF1493',
-    bg:          $('colorBg')?.value     || '#0A0E1A',
-    txt:         $('colorTxt')?.value    || '#E8F0FF',
-    fontFamily:  $('fontFamily')?.value  || 'Heebo',
-    fontSize:    parseInt($('fontSize')?.value) || 16,
-    glassBlur:   parseInt($('glassBlur')?.value) || 14,
-    cardOpacity: parseInt($('cardOpacity')?.value) || 55,
-    bgOverlay:   parseInt($('bgOverlay')?.value)  || 55,
-    bgImage:     (sg(K.d) || {}).bgImage || ''  /* נשמר נפרד */
-  };
-  /* אם יש תמונת רקע חדשה ב-data attribute, קח אותה */
-  const newBg = $('bgImgThumb')?.dataset.b64;
-  if(newBg) d.bgImage = newBg;
-
+  const d = sg(K.d) || {};
+  d.main        = $('colorMain').value;
+  d.accent      = $('colorAccent').value;
+  d.bg          = $('colorBg').value;
+  d.txt         = $('colorTxt').value;
+  d.bubbleBg    = $('bubBg').value;
+  d.bubbleBorder= $('bubBd').value;
+  d.bubbleTxt   = $('bubTx').value;
+  d.fontFamily  = $('fontFamily').value;
+  d.fontSize    = parseInt($('fontSize').value) || 16;
+  d.glassBlur   = parseInt($('glassBlur').value) || 14;
+  d.cardOpacity = parseInt($('cardOpacity').value) || 55;
+  d.bgOverlay   = parseInt($('bgOverlay').value)  || 55;
+  /* bgImage נשאר כפי שהוא (מעודכן ע"י handleBgImg) */
   ss(K.d, d);
   showToast('✅ עיצוב נשמר');
   queuePublish();
 }
-
 function resetDesign(){
   const d = {
     main:'#00E5FF', accent:'#FF1493', bg:'#0A0E1A', txt:'#E8F0FF',
+    bubbleBg:'#FFFFFF', bubbleBorder:'#00E5FF', bubbleTxt:'#0B1426',
     fontFamily:'Heebo', fontSize:16,
     glassBlur:14, cardOpacity:55, bgOverlay:55,
     bgImage:''
@@ -1655,13 +1247,11 @@ function resetDesign(){
   showToast('✅ עיצוב אופס');
   queuePublish();
 }
-
-/* ── תמונת רקע ── */
 function handleBgImg(file){
   if(!file || !file.type.startsWith('image/')) return;
   compressImg(file, 1920, .82).then(b64 => {
     const p = $('bgImgPrev'), t = $('bgImgThumb');
-    if(p && t){ t.src = b64; t.dataset.b64 = b64; p.style.display = 'block'; }
+    if(p && t){ t.src = b64; p.style.display = 'block'; }
     const d = sg(K.d) || {};
     d.bgImage = b64;
     ss(K.d, d);
@@ -1669,31 +1259,27 @@ function handleBgImg(file){
   });
 }
 function clearBgImg(){
-  const p = $('bgImgPrev'), t = $('bgImgThumb');
-  if(p) p.style.display = 'none';
-  if(t){ t.src = ''; delete t.dataset.b64; }
+  const p = $('bgImgPrev'); if(p) p.style.display = 'none';
+  const t = $('bgImgThumb'); if(t) t.src = '';
   const d = sg(K.d) || {};
   d.bgImage = '';
   ss(K.d, d);
   queuePublish();
 }
-
-(function bindDesign(){
+(function bindDesignSliders(){
   const area = $('bgUplArea'), fi = $('bgImgFile');
   if(area && fi){
     area.addEventListener('click', () => fi.click());
     fi.addEventListener('change', () => { if(fi.files[0]) handleBgImg(fi.files[0]); });
   }
-  const bo = $('bgOverlay');
-  if(bo) bo.addEventListener('input', () => { $('bgOverlayVal').textContent = bo.value + '%'; });
-  const co = $('cardOpacity');
-  if(co) co.addEventListener('input', () => { $('cardOpacityVal').textContent = co.value + '%'; });
-  const fs = $('fontSize');
-  if(fs) fs.addEventListener('input', () => { $('fontSizeVal').textContent = fs.value + 'px'; });
+  [['fontSize','fontSizeVal','px'],['glassBlur','glassBlurVal',''],['cardOpacity','cardOpacityVal','%'],['bgOverlay','bgOverlayVal','%']]
+    .forEach(([k,v,s])=>{
+      const el = $(k); if(el) el.addEventListener('input', () => { $(v).textContent = el.value + s; });
+    });
 })();
 
 /* ============================================================
-   SETTINGS  + ZMANIM
+   SETTINGS
    ============================================================ */
 const ZMANIM_LIST = [
   { key:'alot',     label:'עלות השחר',  def:true  },
@@ -1707,28 +1293,28 @@ const ZMANIM_LIST = [
 
 function loadSettingsUI(){
   const s = sg(K.s) || {};
-  if($('bldgName')) $('bldgName').value = s.bldgName || '';
-  if($('maintMode')) $('maintMode').checked = !!s.maintenance;
-  if($('maintMsg'))  $('maintMsg').value    = s.maintMsg || '';
-  if($('qrUrl'))     $('qrUrl').value       = s.qrUrl    || '';
-  if($('hideNews'))  $('hideNews').checked  = !!s.hideNews;
-  updateQRPreview();
+  if($('bldgName'))    $('bldgName').value    = s.bldgName    || '';
+  if($('bldgAddr'))    $('bldgAddr').value    = s.bldgAddr    || '';
+  if($('weatherCity')) $('weatherCity').value = s.weatherCity || '';
+  if($('weatherLat'))  $('weatherLat').value  = s.weatherLat  || '';
+  if($('weatherLon'))  $('weatherLon').value  = s.weatherLon  || '';
+  if($('qrUrl'))       $('qrUrl').value       = s.qrUrl       || '';
+  if($('hideNews'))    $('hideNews').checked  = !!s.hideNews;
+  if($('maintMode'))   $('maintMode').checked = !!s.maintenance;
+  if($('maintMsg'))    $('maintMsg').value    = s.maintMsg    || '';
+  if($('adminPassword')) $('adminPassword').placeholder = (s.adminPassword && s.adminPassword.length) ? '(' + s.adminPassword.length + ' תווים — להשאיר ריק לשמירה)' : 'לפחות 4 תווים';
   loadZmanimUI();
 }
-
 function loadZmanimUI(){
   const s = sg(K.s) || {}, zc = s.zmanimConfig || {};
-  const el = $('zmanimToggles');
-  if(!el) return;
+  const el = $('zmanimToggles'); if(!el) return;
   el.innerHTML = ZMANIM_LIST.map(z => {
     const on = zc[z.key] !== undefined ? zc[z.key] : z.def;
     return `
       <div class="tog-row">
         <div class="tog-info"><div class="tog-lbl">${z.label}</div></div>
-        <label class="toggle">
-          <input type="checkbox" id="zman_${z.key}" ${on?'checked':''} onchange="saveZmanim()">
-          <div class="ttrack"></div><div class="tthumb"></div>
-        </label>
+        <label class="toggle"><input type="checkbox" id="zman_${z.key}" ${on?'checked':''} onchange="saveZmanim()">
+          <div class="ttrack"></div><div class="tthumb"></div></label>
       </div>`;
   }).join('');
 }
@@ -1744,28 +1330,32 @@ function setAllZmanim(v){
   ZMANIM_LIST.forEach(z => { const el = $('zman_'+z.key); if(el) el.checked = v; });
   saveZmanim();
 }
-
 function saveSettings(){
   const s = sg(K.s) || {};
-  s.bldgName    = $('bldgName')?.value.trim()  || '';
-  s.maintenance = $('maintMode')?.checked      || false;
-  s.maintMsg    = $('maintMsg')?.value.trim()  || '';
-  s.qrUrl       = $('qrUrl')?.value.trim()     || '';
-  s.hideNews    = $('hideNews')?.checked       || false;
+  s.bldgName    = $('bldgName').value.trim();
+  s.bldgAddr    = $('bldgAddr').value.trim();
+  s.weatherCity = $('weatherCity').value.trim();
+  s.weatherLat  = $('weatherLat').value.trim()  || '31.7318';
+  s.weatherLon  = $('weatherLon').value.trim()  || '34.7430';
+  s.qrUrl       = $('qrUrl').value.trim();
+  s.hideNews    = $('hideNews').checked;
+  s.maintenance = $('maintMode').checked;
+  s.maintMsg    = $('maintMsg').value.trim();
+  /* adminPassword מטופלת בנפרד דרך saveAdminPassword */
   ss(K.s, s);
   queuePublish();
 }
-
-function updateQRPreview(){
-  const url = $('qrUrl')?.value.trim();
-  const p = $('qrPrev'), img = $('qrPrevImg');
-  if(!p || !img) return;
-  if(url){
-    p.classList.add('show');
-    img.src = 'https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=' + encodeURIComponent(url);
-  } else {
-    p.classList.remove('show');
-  }
+function saveAdminPassword(){
+  const v = $('adminPassword').value.trim();
+  if(!v){ showToast('הזן סיסמה חדשה', 'error'); return; }
+  if(v.length < 4){ showToast('לפחות 4 תווים', 'error'); return; }
+  const s = sg(K.s) || {};
+  s.adminPassword = v;
+  ss(K.s, s);
+  _currentPassword = v;
+  $('adminPassword').value = '';
+  showToast('✅ סיסמה עודכנה');
+  queuePublish();
 }
 
 /* ============================================================
@@ -1773,8 +1363,7 @@ function updateQRPreview(){
    ============================================================ */
 function refreshTokenStatus(){
   const t = getToken();
-  const s = $('tokenStatus');
-  if(!s) return;
+  const s = $('tokenStatus'); if(!s) return;
   if(t){
     s.textContent = '✅ טוקן קיים: ' + t.slice(0,8) + '••• (' + t.length + ' תווים)';
     s.className = 'token-status ok';
@@ -1783,14 +1372,10 @@ function refreshTokenStatus(){
     s.className = 'token-status err';
   }
   const inp = $('ghToken');
-  if(inp){
-    inp.value = '';
-    inp.placeholder = t ? 'מחק או הדבק טוקן חדש' : 'ghp_...';
-  }
+  if(inp){ inp.value = ''; inp.placeholder = t ? 'מחק או הדבק טוקן חדש' : 'ghp_...'; }
 }
 function saveToken(){
-  const inp = $('ghToken');
-  if(!inp) return;
+  const inp = $('ghToken'); if(!inp) return;
   const t = inp.value.trim();
   if(!t){ showToast('הדבק טוקן', 'error'); return; }
   localStorage.setItem('sp3_ghToken', t);
@@ -1811,9 +1396,7 @@ async function testConn(){
   showToast(ok ? '✅ החיבור תקין' : '❌ בעיית חיבור', ok ? 'success' : 'error');
 }
 
-/* ============================================================
-   IMAGE COMPRESSION
-   ============================================================ */
+/* ===== compressImg ===== */
 function compressImg(file, maxW, quality){
   return new Promise((resolve, reject) => {
     const img = new Image();
@@ -1832,18 +1415,27 @@ function compressImg(file, maxW, quality){
   });
 }
 
-/* ============================================================
-   INIT
-   ============================================================ */
-(async function init(){
-  /* טען מלוקאל ראשונה כדי שיהיה מה לראות מיד */
+/* ===== INIT (after unlock) ===== */
+async function initAfterUnlock(){
   loadAllUI();
   const btn = $('pubBtn'); if(btn) btn.style.display = 'flex';
-
   await checkConn();
   if(getToken()){
-    /* סנכרון ראשוני מ-GitHub — דורס את הלוקאל */
     await syncFromGitHub();
+  }
+}
+
+/* ===== הפעלת lock screen / סנכרון סיסמה ===== */
+(async function bootstrap(){
+  /* טען סיסמה ראשונית (אנונימי — GitHub API מתיר 60/שעה לקורא ציבורי) */
+  await loadAdminPasswordFromGitHub();
+
+  /* אם המשתמש כבר נכנס בפעם הקודמת בסשן — דלג על המסך */
+  if(sessionStorage.getItem('sp3_loggedIn') === '1'){
+    $('lock').style.display = 'none';
+    initAfterUnlock();
+  } else {
+    $('lockPwd').focus();
   }
 })();
 </script>
